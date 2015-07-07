@@ -15,5 +15,6 @@
   <modules>
     <module>qpid-jms-client</module>
     <module>qpid-amqp-1.0-client-jms</module>
+    <module>swiftmq</module>
   </modules>
 </project>

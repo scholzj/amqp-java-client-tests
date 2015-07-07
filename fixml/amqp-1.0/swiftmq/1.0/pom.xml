@@ -4,28 +4,32 @@
   http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>qpid-client-0.32</artifactId>
+  <artifactId>swiftmq-1.0</artifactId>
   <packaging>jar</packaging>
 
   <parent>
     <groupId>com.deutscheboerse.examples.java-client-tests</groupId>
-    <artifactId>qpid-client</artifactId>
+    <artifactId>swiftmq</artifactId>
     <version>1.0</version>
   </parent>
 
+  <repositories>
+    <repository>
+      <id>repo-local</id>
+      <url>file://${basedir}/repo-local</url>
+    </repository>
+  </repositories>
+
   <dependencies>
     <dependency>
-      <groupId>org.apache.qpid</groupId>
-      <artifactId>qpid-client</artifactId>
-      <version>0.32</version>
+      <groupId>com.swiftmq</groupId>
+      <artifactId>amqp</artifactId>
+      <version>1.0</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.geronimo.specs</groupId>
-      <artifactId>geronimo-jms_1.1_spec</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
+      <groupId>com</groupId>
+      <artifactId>swiftmq</artifactId>
+      <version>1.0</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
