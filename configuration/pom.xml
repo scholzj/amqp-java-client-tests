@@ -8,18 +8,12 @@
   <packaging>jar</packaging>
 
   <parent>
-    <groupId>com.deutscheboerse.examples.java-client-tests</groupId>
+    <groupId>com.deutscheboerse.java-client-tests</groupId>
     <artifactId>java-client-tests</artifactId>
     <version>1.0</version>
   </parent>
 
   <build>
-    <testResources>
-      <testResource>
-        <directory>src/test/resources</directory>
-        <filtering>true</filtering>
-      </testResource>
-    </testResources>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -33,23 +27,5 @@
         </executions>
       </plugin>
     </plugins>
-    <!--plugins>
-      <plugin>
-        <artifactId>maven-remote-resources-plugin</artifactId>
-        <version>1.5</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>bundle</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <includes>
-            <include>**/*.*</include>
-          </includes>
-        </configuration>
-      </plugin>
-    </plugins-->
   </build>
 </project>

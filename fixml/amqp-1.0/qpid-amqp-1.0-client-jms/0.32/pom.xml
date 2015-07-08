@@ -8,7 +8,7 @@
   <packaging>jar</packaging>
 
   <parent>
-    <groupId>com.deutscheboerse.examples.java-client-tests</groupId>
+    <groupId>com.deutscheboerse.java-client-tests</groupId>
     <artifactId>qpid-amqp-1.0-client-jms</artifactId>
     <version>1.0</version>
   </parent>
@@ -28,7 +28,7 @@
       <artifactId>junit</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.deutscheboerse.examples.java-client-tests</groupId>
+      <groupId>com.deutscheboerse.java-client-tests</groupId>
       <artifactId>configuration</artifactId>
       <version>1.0</version>
       <scope>test</scope>

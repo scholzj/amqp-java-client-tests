@@ -7,7 +7,7 @@
   <packaging>pom</packaging>
 
   <parent>
-    <groupId>com.deutscheboerse.examples.java-client-tests</groupId>
+    <groupId>com.deutscheboerse.java-client-tests</groupId>
     <artifactId>fixml</artifactId>
     <version>1.0</version>
   </parent>
