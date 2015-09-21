@@ -12,21 +12,21 @@ import javax.naming.NamingException;
  * Created by schojak on 21.09.2015.
  */
 public class TestFailover {
-    protected static String USER1_KEYSTORE = Settings.get("user1.keystore");
-    protected static String USER1_KEYSTORE_PASSWORD = Settings.get("user1.keystore_password");
-    protected static String USER1_KEYSTORE_ALIAS = Settings.get("user1.key_alias");
+    private static final String USER1_KEYSTORE = Settings.get("user1.keystore");
+    private static final String USER1_KEYSTORE_PASSWORD = Settings.get("user1.keystore_password");
+    private static final String USER1_KEYSTORE_ALIAS = Settings.get("user1.key_alias");
 
-    public static String ADMIN_USERNAME = Settings.get("admin.username");
-    public static String ADMIN_PASSWORD = Settings.get("admin.password");
+    private static final String ADMIN_USERNAME = Settings.get("admin.username");
+    private static final String ADMIN_PASSWORD = Settings.get("admin.password");
 
-    protected static String HOSTNAME = Settings.get("broker.hostname");
-    protected static String TCP_PORT = Settings.get("broker.tcp_port");
-    protected static String SSL_PORT = Settings.get("broker.ssl_port");
+    private static final String HOSTNAME = Settings.get("broker.hostname");
+    private static final String TCP_PORT = Settings.get("broker.tcp_port");
+    private static final String SSL_PORT = Settings.get("broker.ssl_port");
 
-    protected static String TRUSTSTORE = Settings.get("broker.truststore");
-    protected static String TRUSTSTORE_PASSWORD = Settings.get("broker.truststore_password");
+    private static final String TRUSTSTORE = Settings.get("broker.truststore");
+    private static final String TRUSTSTORE_PASSWORD = Settings.get("broker.truststore_password");
 
-    protected static String RTG_QUEUE = Settings.get("routing.rtg_queue");
+    private static final String RTG_QUEUE = Settings.get("routing.rtg_queue");
 
     @BeforeClass
     public static void prepare() {

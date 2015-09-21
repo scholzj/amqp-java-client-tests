@@ -17,8 +17,8 @@ import static org.junit.Assert.*;
  * Created by schojak on 02.09.2015.
  */
 public class TestLVQ {
-    protected static String LVQ_QUEUE = Settings.get("routing.lvq_queue");
-    protected static String LVQ_KEY = Settings.get("routing.lvq_key");
+    private static final String LVQ_QUEUE = Settings.get("routing.lvq_queue");
+    private static final String LVQ_KEY = Settings.get("routing.lvq_key");
 
     @BeforeClass
     public static void prepare() {
@@ -31,8 +31,7 @@ public class TestLVQ {
     public void testLVQQueueBasic() throws JMSException, NamingException {
         Connection connection = Utils.getAdminConnection("jms.validatePropertyNames=False");
         connection.start();
-        Session session = null;
-        session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+        Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
         MessageProducer sender = session.createProducer(Utils.getQueue(LVQ_QUEUE));
 
@@ -78,12 +77,11 @@ public class TestLVQ {
 
         Connection connection = Utils.getAdminConnection("jms.validatePropertyNames=False&jms.forceAsyncSend=True");
         connection.start();
-        Session session = null;
-        session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+        Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
         MessageProducer sender = session.createProducer(Utils.getQueue(LVQ_QUEUE));
 
-        List<String> keys = new LinkedList<String>();
+        List<String> keys = new LinkedList<>();
         keys.add("A");
         keys.add("B");
         keys.add("C");

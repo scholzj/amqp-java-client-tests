@@ -14,14 +14,14 @@ import static org.junit.Assert.*;
  * Created by schojak on 02.09.2015.
  */
 public class TestQueueing {
-    protected static String RTG_QUEUE = Settings.get("routing.rtg_queue");
-    protected static String RTG_TOPIC = Settings.get("routing.rtg_topic");
-    protected static String RTG_ROUTING_KEY = Settings.get("routing.rtg_routing_key");
-    protected static String DLQ_QUEUE = Settings.get("routing.dlq_queue");
-    protected static String DLQ_TOPIC = Settings.get("routing.dlq_topic");
-    protected static String DLQ_ROUTING_KEY = Settings.get("routing.dlq_routing_key");
-    protected static String RING_QUEUE = Settings.get("routing.ring_queue");
-    protected static String SMALL_QUEUE = Settings.get("routing.small_queue");
+    private static final String RTG_QUEUE = Settings.get("routing.rtg_queue");
+    private static final String RTG_TOPIC = Settings.get("routing.rtg_topic");
+    private static final String RTG_ROUTING_KEY = Settings.get("routing.rtg_routing_key");
+    private static final String DLQ_QUEUE = Settings.get("routing.dlq_queue");
+    private static final String DLQ_TOPIC = Settings.get("routing.dlq_topic");
+    private static final String DLQ_ROUTING_KEY = Settings.get("routing.dlq_routing_key");
+    private static final String RING_QUEUE = Settings.get("routing.ring_queue");
+    private static final String SMALL_QUEUE = Settings.get("routing.small_queue");
 
     @BeforeClass
     public static void prepare() {
@@ -69,8 +69,7 @@ public class TestQueueing {
     public void testRingQueue() throws JMSException, NamingException {
         Connection connection = Utils.getAdminConnection();
         connection.start();
-        Session session = null;
-        session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+        Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
         MessageProducer sender = session.createProducer(Utils.getQueue(RING_QUEUE));
         sender.send(session.createTextMessage("A"));

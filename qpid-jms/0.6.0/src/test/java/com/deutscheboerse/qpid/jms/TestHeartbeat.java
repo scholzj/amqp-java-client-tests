@@ -12,9 +12,9 @@ import javax.naming.NamingException;
  * Created by schojak on 02.09.2015.
  */
 public class TestHeartbeat {
-    protected static Integer IDLE_TIMEOUT = 1000; //milliseconds
-    protected static Integer WAIT_TIME = 5000; //milliseconds
-    protected static String RTG_QUEUE = Settings.get("routing.rtg_queue");
+    private static final Integer IDLE_TIMEOUT = 1000; //milliseconds
+    private static final Integer WAIT_TIME = 5000; //milliseconds
+    private static final String RTG_QUEUE = Settings.get("routing.rtg_queue");
 
     @BeforeClass
     public static void prepare() {
@@ -27,8 +27,7 @@ public class TestHeartbeat {
     public void testIdleTimeout() throws JMSException, NamingException, InterruptedException {
         Connection connection = Utils.getAdminConnection("amqp.idleTimeout=" + IDLE_TIMEOUT);
         connection.start();
-        Session session = null;
-        session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+        Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
         MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
         Message received = receiver.receive();

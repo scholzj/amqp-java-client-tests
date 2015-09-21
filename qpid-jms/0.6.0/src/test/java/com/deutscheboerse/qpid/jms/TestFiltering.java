@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
  * Created by schojak on 02.09.2015.
  */
 public class TestFiltering {
-    protected static String RTG_QUEUE = Settings.get("routing.rtg_queue");
+    private static final String RTG_QUEUE = Settings.get("routing.rtg_queue");
 
     @BeforeClass
     public static void prepare() {
@@ -37,7 +37,7 @@ public class TestFiltering {
         sender.send(msg);
 
         MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE), "\"amqp.correlation_id\" = '" + UUID.randomUUID().toString() + "'");
-        Message notRcvMsg = msg = receiver.receive(1000);
+        Message notRcvMsg = receiver.receive(1000);
 
         assertNull("Received unexpected message", notRcvMsg);
 
@@ -98,7 +98,7 @@ public class TestFiltering {
         sender.send(msg);
 
         MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE), "\"filter.test\" = '" + UUID.randomUUID().toString() + "'");
-        Message notRcvMsg = msg = receiver.receive(1000);
+        Message notRcvMsg = receiver.receive(1000);
 
         assertNull("Received unexpected message", notRcvMsg);
 
@@ -128,7 +128,7 @@ public class TestFiltering {
         sender.send(msg);
 
         MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE), "filterTest = '" + UUID.randomUUID().toString() + "'");
-        Message notRcvMsg = msg = receiver.receive(1000);
+        Message notRcvMsg = receiver.receive(1000);
 
         assertNull("Received unexpected message", notRcvMsg);
 

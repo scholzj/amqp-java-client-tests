@@ -7,7 +7,7 @@ import java.util.Properties;
  * Created by schojak on 21.09.2015.
  */
 public class Settings {
-    protected static Properties settings = new Properties();
+    private static final Properties settings = new Properties();
 
     static {
         try

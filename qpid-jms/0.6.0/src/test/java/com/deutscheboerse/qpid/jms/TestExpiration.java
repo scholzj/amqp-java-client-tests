@@ -14,8 +14,8 @@ import static org.junit.Assert.assertNull;
  * Created by schojak on 02.09.2015.
  */
 public class TestExpiration {
-    protected static int EXPIRATION_TIME = 500; // milliseconds
-    protected static String TTL_QUEUE = Settings.get("routing.ttl_queue");
+    private static final int EXPIRATION_TIME = 500; // milliseconds
+    private static final String TTL_QUEUE = Settings.get("routing.ttl_queue");
 
     @BeforeClass
     public static void prepare() {

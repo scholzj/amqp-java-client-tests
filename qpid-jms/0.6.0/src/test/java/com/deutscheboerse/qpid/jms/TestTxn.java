@@ -14,7 +14,7 @@ import static org.junit.Assert.assertEquals;
  * Created by schojak on 02.09.2015.
  */
 public class TestTxn {
-    protected static String TXN_QUEUE = Settings.get("routing.txn_queue");
+    private static final String TXN_QUEUE = Settings.get("routing.txn_queue");
 
     @BeforeClass
     public static void prepare() {

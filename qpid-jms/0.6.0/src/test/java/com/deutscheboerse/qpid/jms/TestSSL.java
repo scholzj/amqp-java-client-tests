@@ -14,31 +14,31 @@ import static org.junit.Assert.fail;
  * Created by schojak on 02.09.2015.
  */
 public class TestSSL {
-    protected static String USER1_KEYSTORE = Settings.get("user1.keystore");
-    protected static String USER1_KEYSTORE_PASSWORD = Settings.get("user1.keystore_password");
-    protected static String USER1_KEYSTORE_ALIAS = Settings.get("user1.key_alias");
-    protected static String USER1_INVALID_KEYSTORE = Settings.get("user1.invalid_keystore");
-    protected static String USER1_INVALID_KEYSTORE_PASSWORD = Settings.get("user1.invalid_keystore_password");
-    protected static String USER1_INVALID_KEYSTORE_ALIAS = Settings.get("user1.invalid_key_alias");
-    protected static String USER1_SIGNED_BY_KEYSTORE = Settings.get("user1.signedby_keystore");
-    protected static String USER1_SIGNED_BY_KEYSTORE_PASSWORD = Settings.get("user1.signedby_keystore_password");
-    protected static String USER1_SIGNED_BY_KEYSTORE_ALIAS = Settings.get("user1.signedby_key_alias");
-    protected static String USER2_KEYSTORE = Settings.get("user2.keystore");
-    protected static String USER2_KEYSTORE_PASSWORD = Settings.get("user2.keystore_password");
-    protected static String USER2_KEYSTORE_ALIAS = Settings.get("user2.key_alias");
+    private static final String USER1_KEYSTORE = Settings.get("user1.keystore");
+    private static final String USER1_KEYSTORE_PASSWORD = Settings.get("user1.keystore_password");
+    private static final String USER1_KEYSTORE_ALIAS = Settings.get("user1.key_alias");
+    private static final String USER1_INVALID_KEYSTORE = Settings.get("user1.invalid_keystore");
+    private static final String USER1_INVALID_KEYSTORE_PASSWORD = Settings.get("user1.invalid_keystore_password");
+    private static final String USER1_INVALID_KEYSTORE_ALIAS = Settings.get("user1.invalid_key_alias");
+    private static final String USER1_SIGNED_BY_KEYSTORE = Settings.get("user1.signedby_keystore");
+    private static final String USER1_SIGNED_BY_KEYSTORE_PASSWORD = Settings.get("user1.signedby_keystore_password");
+    private static final String USER1_SIGNED_BY_KEYSTORE_ALIAS = Settings.get("user1.signedby_key_alias");
+    private static final String USER2_KEYSTORE = Settings.get("user2.keystore");
+    private static final String USER2_KEYSTORE_PASSWORD = Settings.get("user2.keystore_password");
+    private static final String USER2_KEYSTORE_ALIAS = Settings.get("user2.key_alias");
 
-    public static String ADMIN_USERNAME = Settings.get("admin.username");
-    public static String ADMIN_PASSWORD = Settings.get("admin.password");
+    private static final String ADMIN_USERNAME = Settings.get("admin.username");
+    private static final String ADMIN_PASSWORD = Settings.get("admin.password");
 
-    protected static String IP_ADDRESS = Settings.get("broker.ip_address");
-    protected static String SSL_PORT = Settings.get("broker.ssl_port");
+    private static final String IP_ADDRESS = Settings.get("broker.ip_address");
+    private static final String SSL_PORT = Settings.get("broker.ssl_port");
 
-    protected static String TRUSTSTORE = Settings.get("broker.truststore");
-    protected static String TRUSTSTORE_PASSWORD = Settings.get("broker.truststore_password");
-    protected static String INVALID_TRUSTSTORE = Settings.get("broker.invalid_truststore");
-    protected static String INVALID_TRUSTSTORE_PASSWORD = Settings.get("broker.invalid_truststore_password");
+    private static final String TRUSTSTORE = Settings.get("broker.truststore");
+    private static final String TRUSTSTORE_PASSWORD = Settings.get("broker.truststore_password");
+    private static final String INVALID_TRUSTSTORE = Settings.get("broker.invalid_truststore");
+    private static final String INVALID_TRUSTSTORE_PASSWORD = Settings.get("broker.invalid_truststore_password");
 
-    protected static String RTG_QUEUE = Settings.get("routing.rtg_queue");
+    private static final String RTG_QUEUE = Settings.get("routing.rtg_queue");
 
     @BeforeClass
     public static void prepare() {
@@ -50,8 +50,7 @@ public class TestSSL {
     public void testSuccessfullClientAuthentication() throws JMSException, NamingException, InterruptedException {
         Connection connection = Utils.getSSLConnection(USER1_KEYSTORE, USER1_KEYSTORE_PASSWORD, USER1_KEYSTORE_ALIAS);
         connection.start();
-        Session session = null;
-        session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+        Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
         MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
         Message received = receiver.receive(1000);
@@ -64,8 +63,7 @@ public class TestSSL {
     public void testUnsuccessfullClientAuthentication() throws JMSException, NamingException, InterruptedException {
         Connection connection = Utils.getSSLConnection(USER1_INVALID_KEYSTORE, USER1_INVALID_KEYSTORE_PASSWORD, USER1_INVALID_KEYSTORE_ALIAS);
         connection.start();
-        Session session = null;
-        session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+        Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
         MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
         Message received = receiver.receive(1000);
@@ -80,8 +78,7 @@ public class TestSSL {
         try {
             Connection connection = Utils.getSSLConnection(IP_ADDRESS, SSL_PORT, USER1_KEYSTORE, USER1_KEYSTORE_PASSWORD, USER1_KEYSTORE_ALIAS, TRUSTSTORE, TRUSTSTORE_PASSWORD, "");
             connection.start();
-            Session session = null;
-            session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+            Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
             MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
             Message received = receiver.receive(1000);
@@ -101,8 +98,7 @@ public class TestSSL {
         try {
             Connection connection = Utils.getSSLConnection(IP_ADDRESS, SSL_PORT, USER1_KEYSTORE, USER1_KEYSTORE_PASSWORD, USER1_KEYSTORE_ALIAS, TRUSTSTORE, TRUSTSTORE_PASSWORD, "transport.verifyHost=false");
             connection.start();
-            Session session = null;
-            session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+            Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
             MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
             Message received = receiver.receive(1000);
@@ -122,8 +118,7 @@ public class TestSSL {
         try {
             Connection connection = Utils.getSSLConnection(USER1_KEYSTORE, USER1_KEYSTORE_PASSWORD, USER1_KEYSTORE_ALIAS, INVALID_TRUSTSTORE, INVALID_TRUSTSTORE_PASSWORD);
             connection.start();
-            Session session = null;
-            session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+            Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
             MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
             Message received = receiver.receive(1000);
@@ -143,8 +138,7 @@ public class TestSSL {
         try {
             Connection connection = Utils.getSSLConnection(USER1_KEYSTORE, USER1_KEYSTORE_PASSWORD, USER1_KEYSTORE_ALIAS, INVALID_TRUSTSTORE, INVALID_TRUSTSTORE_PASSWORD, "transport.trustAll=True");
             connection.start();
-            Session session = null;
-            session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+            Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
             MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
             Message received = receiver.receive(1000);
@@ -163,8 +157,7 @@ public class TestSSL {
     public void testSSLv3() throws JMSException, NamingException, InterruptedException {
         Connection connection = Utils.getSSLConnection(USER1_KEYSTORE, USER1_KEYSTORE_PASSWORD, USER1_KEYSTORE_ALIAS, TRUSTSTORE, TRUSTSTORE_PASSWORD, "transport.enabledProtocols=SSLv3&transport.disabledProtocols=null");
         connection.start();
-        Session session = null;
-        session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+        Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
         MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
         Message received = receiver.receive(1000);
@@ -177,8 +170,7 @@ public class TestSSL {
     public void testSSLv2() throws JMSException, NamingException, InterruptedException {
         Connection connection = Utils.getSSLConnection(USER1_KEYSTORE, USER1_KEYSTORE_PASSWORD, USER1_KEYSTORE_ALIAS, TRUSTSTORE, TRUSTSTORE_PASSWORD, "transport.enabledProtocols=SSLv2Hello,SSLv3&transport.disabledProtocols=null");
         connection.start();
-        Session session = null;
-        session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+        Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
         MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
         Message received = receiver.receive(1000);
@@ -191,8 +183,7 @@ public class TestSSL {
     public void testTLSv1() throws JMSException, NamingException, InterruptedException {
         Connection connection = Utils.getSSLConnection(USER1_KEYSTORE, USER1_KEYSTORE_PASSWORD, USER1_KEYSTORE_ALIAS, TRUSTSTORE, TRUSTSTORE_PASSWORD, "transport.enabledProtocols=TLSv1");
         connection.start();
-        Session session = null;
-        session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+        Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
         MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
         Message received = receiver.receive(1000);
@@ -205,8 +196,7 @@ public class TestSSL {
     public void testCipherSuite3DES() throws JMSException, NamingException, InterruptedException {
         Connection connection = Utils.getSSLConnection(USER1_KEYSTORE, USER1_KEYSTORE_PASSWORD, USER1_KEYSTORE_ALIAS, TRUSTSTORE, TRUSTSTORE_PASSWORD, "transport.enabledCipherSuites=SSL_RSA_WITH_3DES_EDE_CBC_SHA");
         connection.start();
-        Session session = null;
-        session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+        Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
         MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
         Message received = receiver.receive(1000);
@@ -219,8 +209,7 @@ public class TestSSL {
     public void testCipherSuiteAES128() throws JMSException, NamingException, InterruptedException {
         Connection connection = Utils.getSSLConnection(USER1_KEYSTORE, USER1_KEYSTORE_PASSWORD, USER1_KEYSTORE_ALIAS, TRUSTSTORE, TRUSTSTORE_PASSWORD, "transport.enabledCipherSuites=TLS_RSA_WITH_AES_128_CBC_SHA");
         connection.start();
-        Session session = null;
-        session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+        Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
         MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
         Message received = receiver.receive(1000);
@@ -235,8 +224,7 @@ public class TestSSL {
     public void testCipherSuiteAES256() throws JMSException, NamingException, InterruptedException {
         Connection connection = Utils.getSSLConnection(USER1_KEYSTORE, USER1_KEYSTORE_PASSWORD, USER1_KEYSTORE_ALIAS, TRUSTSTORE, TRUSTSTORE_PASSWORD, "transport.enabledCipherSuites=TLS_RSA_WITH_AES_256_CBC_SHA");
         connection.start();
-        Session session = null;
-        session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+        Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
         MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
         Message received = receiver.receive(1000);
@@ -249,8 +237,7 @@ public class TestSSL {
     public void testPlainOverSSLWithClientAuth() throws JMSException, NamingException, InterruptedException {
         Connection connection = Utils.getSSLConnection(USER1_KEYSTORE, USER1_KEYSTORE_PASSWORD, USER1_KEYSTORE_ALIAS, TRUSTSTORE, TRUSTSTORE_PASSWORD, "jms.username=" + ADMIN_USERNAME + "&jms.password=" + ADMIN_PASSWORD + "&amqp.saslMechanisms=PLAIN");
         connection.start();
-        Session session = null;
-        session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+        Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
         MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
         Message received = receiver.receive(1000);
@@ -263,8 +250,7 @@ public class TestSSL {
     public void testPlainOverSSL() throws JMSException, NamingException, InterruptedException {
         Connection connection = Utils.getConnection("amqps://cbgd03:11234?jms.username=admin&jms.password=admin&transport.trustStoreLocation=c:/opt/!_AMQP/IdeaProjects/amqp-tests/qpid-jms-client-0.5/src/main/resources/cbgd03-1234.truststore&transport.trustStorePassword=123456&amqp.saslMechanisms=PLAIN");
         connection.start();
-        Session session = null;
-        session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+        Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
         MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
         Message received = receiver.receive(1000);
@@ -277,8 +263,7 @@ public class TestSSL {
     public void testAnonymousOverSSLWithClientAuth() throws JMSException, NamingException, InterruptedException {
         Connection connection = Utils.getSSLConnection(USER1_KEYSTORE, USER1_KEYSTORE_PASSWORD, USER1_KEYSTORE_ALIAS, TRUSTSTORE, TRUSTSTORE_PASSWORD, "amqp.saslMechanisms=ANONYMOUS");
         connection.start();
-        Session session = null;
-        session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+        Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
         MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
         Message received = receiver.receive(1000);
@@ -291,8 +276,7 @@ public class TestSSL {
     public void testSignedByCannotLogin() throws JMSException, NamingException, InterruptedException {
         Connection connection = Utils.getSSLConnection(USER1_SIGNED_BY_KEYSTORE, USER1_SIGNED_BY_KEYSTORE_PASSWORD, USER1_SIGNED_BY_KEYSTORE_ALIAS);
         connection.start();
-        Session session = null;
-        session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+        Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
         session.close();
         connection.close();

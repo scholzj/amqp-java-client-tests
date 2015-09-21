@@ -13,18 +13,18 @@ import javax.naming.NamingException;
 import static org.junit.Assert.fail;
 
 public class TestSecurity {
-    protected static String USER1_USERNAME = Settings.get("user1.username");
-    protected static String USER1_PASSWORD = Settings.get("user1.password");
+    private static final String USER1_USERNAME = Settings.get("user1.username");
+    private static final String USER1_PASSWORD = Settings.get("user1.password");
 
-    protected static String USER2_USERNAME = Settings.get("user2.username");
-    protected static String USER2_PASSWORD = Settings.get("user2.password");
+    private static final String USER2_USERNAME = Settings.get("user2.username");
+    private static final String USER2_PASSWORD = Settings.get("user2.password");
 
-    protected static String RTG_QUEUE = Settings.get("routing.rtg_queue");
-    protected static String RTG_TOPIC = Settings.get("routing.rtg_topic");
-    protected static String RTG_ROUTING_KEY = Settings.get("routing.rtg_routing_key");
-    protected static String FORBIDDEN_QUEUE = Settings.get("routing.forbidden_queue");
-    protected static String FORBIDDEN_TOPIC = Settings.get("routing.forbidden_topic");
-    protected static String FORBIDDEN_ROUTING_KEY = Settings.get("routing.forbidden_routing_key");
+    private static final String RTG_QUEUE = Settings.get("routing.rtg_queue");
+    private static final String RTG_TOPIC = Settings.get("routing.rtg_topic");
+    private static final String RTG_ROUTING_KEY = Settings.get("routing.rtg_routing_key");
+    private static final String FORBIDDEN_QUEUE = Settings.get("routing.forbidden_queue");
+    private static final String FORBIDDEN_TOPIC = Settings.get("routing.forbidden_topic");
+    private static final String FORBIDDEN_ROUTING_KEY = Settings.get("routing.forbidden_routing_key");
 
     @BeforeClass
     public static void prepare() {
@@ -36,8 +36,7 @@ public class TestSecurity {
      public void testAuthenticationDefault() throws JMSException, NamingException, InterruptedException {
         Connection connection = Utils.getConnection(USER1_USERNAME, USER1_PASSWORD);
         connection.start();
-        Session session = null;
-        session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+        Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
         MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
         Message received = receiver.receive(1000);
@@ -50,8 +49,7 @@ public class TestSecurity {
     public void testAuthenticationPlain() throws JMSException, NamingException, InterruptedException {
         Connection connection = Utils.getConnection(USER1_USERNAME, USER1_PASSWORD, "amqp.saslMechanisms=PLAIN");
         connection.start();
-        Session session = null;
-        session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+        Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
         MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
         Message received = receiver.receive(1000);
@@ -64,8 +62,7 @@ public class TestSecurity {
     public void testAuthenticationCramMD5() throws JMSException, NamingException, InterruptedException {
         Connection connection = Utils.getConnection(USER1_USERNAME, USER1_PASSWORD, "amqp.saslMechanisms=CRAM-MD5");
         connection.start();
-        Session session = null;
-        session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+        Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
         MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
         Message received = receiver.receive(1000);
@@ -78,8 +75,7 @@ public class TestSecurity {
     public void testAuthenticationAnonymous() throws JMSException, NamingException, InterruptedException {
         Connection connection = Utils.getConnection("amqp://cbgd03.xeop.de:21234?amqp.saslMechanisms=ANONYMOUS");
         connection.start();
-        Session session = null;
-        session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+        Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
         MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
         TextMessage received = (TextMessage)receiver.receive(1000);
@@ -92,8 +88,7 @@ public class TestSecurity {
     public void testWrongPassword() throws JMSException, NamingException, InterruptedException {
         Connection connection = Utils.getConnection(USER1_USERNAME, "wrongpassword");
         connection.start();
-        Session session = null;
-        session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+        Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
         MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
         TextMessage received = (TextMessage)receiver.receive(1000);
@@ -106,8 +101,7 @@ public class TestSecurity {
     public void testWrongUsername() throws JMSException, NamingException, InterruptedException {
         Connection connection = Utils.getConnection("nonexistentuser", "mypassword");
         connection.start();
-        Session session = null;
-        session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+        Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
         MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
         TextMessage received = (TextMessage)receiver.receive(1000);
@@ -120,8 +114,7 @@ public class TestSecurity {
     public void testACLDeniedConsumer() throws JMSException, NamingException, InterruptedException {
         Connection connection = Utils.getConnection(USER1_USERNAME, USER1_PASSWORD);
         connection.start();
-        Session session = null;
-        session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+        Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
         MessageConsumer receiver = session.createConsumer(Utils.getQueue(FORBIDDEN_QUEUE));
         TextMessage received = (TextMessage)receiver.receive(1000);
@@ -134,8 +127,7 @@ public class TestSecurity {
     public void testACLDeniedProducerForbiddenTopic() throws JMSException, NamingException, InterruptedException {
         Connection connection = Utils.getConnection(USER1_USERNAME, USER1_PASSWORD);
         connection.start();
-        Session session = null;
-        session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+        Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
         MessageProducer sender = session.createProducer(Utils.getTopic(FORBIDDEN_TOPIC));
         Message msg = session.createMessage();

@@ -11,13 +11,13 @@ import java.util.Properties;
  * Created by schojak on 02.09.2015.
  */
 public class Utils {
-    public static String HOSTNAME = Settings.get("broker.hostname");
-    public static String TCP_PORT = Settings.get("broker.tcp_port");
-    public static String SSL_PORT = Settings.get("broker.ssl_port");
-    public static String TRUSTSTORE = Settings.get("broker.truststore");
-    public static String TRUSTSTORE_PASSWORD = Settings.get("broker.truststore_password");
-    public static String ADMIN_USERNAME = Settings.get("admin.username");
-    public static String ADMIN_PASSWORD = Settings.get("admin.password");
+    private static final String HOSTNAME = Settings.get("broker.hostname");
+    private static final String TCP_PORT = Settings.get("broker.tcp_port");
+    private static final String SSL_PORT = Settings.get("broker.ssl_port");
+    private static final String TRUSTSTORE = Settings.get("broker.truststore");
+    private static final String TRUSTSTORE_PASSWORD = Settings.get("broker.truststore_password");
+    private static final String ADMIN_USERNAME = Settings.get("admin.username");
+    private static final String ADMIN_PASSWORD = Settings.get("admin.password");
 
 
 
@@ -39,7 +39,7 @@ public class Utils {
         return getConnection(HOSTNAME, TCP_PORT, username, password, options);
     }
 
-    public static Connection getConnection(String hostname, String port, String username, String password, String options) throws JMSException, NamingException {
+    private static Connection getConnection(String hostname, String port, String username, String password, String options) throws JMSException, NamingException {
         if (options == null)
         {
             options = "";
