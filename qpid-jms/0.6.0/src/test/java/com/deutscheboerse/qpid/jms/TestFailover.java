@@ -1,8 +1,12 @@
 package com.deutscheboerse.qpid.jms;
 
+import java.io.File;
+
 import com.deutscheboerse.configuration.Settings;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
+
 import utils.Utils;
 
 import javax.jms.*;
@@ -12,7 +16,7 @@ import javax.naming.NamingException;
  * Created by schojak on 21.09.2015.
  */
 public class TestFailover {
-    private static final String USER1_KEYSTORE = Settings.get("user1.keystore");
+    private static final String USER1_KEYSTORE = Settings.getResourceDirectory() + File.separator + Settings.get("user1.keystore");
     private static final String USER1_KEYSTORE_PASSWORD = Settings.get("user1.keystore_password");
     private static final String USER1_KEYSTORE_ALIAS = Settings.get("user1.key_alias");
 
@@ -23,7 +27,7 @@ public class TestFailover {
     private static final String TCP_PORT = Settings.get("broker.tcp_port");
     private static final String SSL_PORT = Settings.get("broker.ssl_port");
 
-    private static final String TRUSTSTORE = Settings.get("broker.truststore");
+    private static final String TRUSTSTORE = Settings.getResourceDirectory() + File.separator + Settings.get("broker.truststore");
     private static final String TRUSTSTORE_PASSWORD = Settings.get("broker.truststore_password");
 
     private static final String RTG_QUEUE = Settings.get("routing.rtg_queue");

@@ -5,6 +5,8 @@ import com.deutscheboerse.configuration.Settings;
 import javax.jms.*;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+
+import java.io.File;
 import java.util.Properties;
 
 /**
@@ -14,14 +16,10 @@ public class Utils {
     private static final String HOSTNAME = Settings.get("broker.hostname");
     private static final String TCP_PORT = Settings.get("broker.tcp_port");
     private static final String SSL_PORT = Settings.get("broker.ssl_port");
-    private static final String TRUSTSTORE = Settings.get("broker.truststore");
+    private static final String TRUSTSTORE = Settings.getResourceDirectory() + File.separator + Settings.get("broker.truststore");
     private static final String TRUSTSTORE_PASSWORD = Settings.get("broker.truststore_password");
     private static final String ADMIN_USERNAME = Settings.get("admin.username");
     private static final String ADMIN_PASSWORD = Settings.get("admin.password");
-
-
-
-    // getSSLConnection
 
     public static Connection getAdminConnection() throws JMSException, NamingException {
         return getConnection(ADMIN_USERNAME, ADMIN_PASSWORD, "");
