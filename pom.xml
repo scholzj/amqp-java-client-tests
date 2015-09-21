@@ -51,7 +51,7 @@
 
   <modules>
     <module>configuration</module>
-    <module>fixml</module>
+    <module>qpid-jms</module>
   </modules>
 
   <build>
