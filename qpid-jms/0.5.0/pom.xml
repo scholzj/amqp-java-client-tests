@@ -9,20 +9,13 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>qpid-jms-0.6.0</artifactId>
-
-    <repositories>
-        <repository>
-            <id>apache</id>
-            <url>https://repository.apache.org/content/repositories/snapshots</url>
-        </repository>
-    </repositories>
+    <artifactId>qpid-jms-0.5.0</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>org.apache.qpid</groupId>
             <artifactId>qpid-jms-client</artifactId>
-            <version>0.6.0-SNAPSHOT</version>
+            <version>0.5.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.geronimo.specs</groupId>
@@ -44,4 +37,5 @@
             <type>test-jar</type>
         </dependency>
     </dependencies>
+
 </project>
