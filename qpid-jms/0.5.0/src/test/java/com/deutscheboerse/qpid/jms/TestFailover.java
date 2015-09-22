@@ -42,8 +42,7 @@ public class TestFailover {
     public void testPlainFailover() throws JMSException, NamingException, InterruptedException {
         Connection connection = Utils.getConnection("failover:(amqp://" + HOSTNAME + ":" + TCP_PORT + "?amqp.idleTimeout=0,amqp://" + HOSTNAME + ":" + TCP_PORT + "?amqp.idleTimeout=0)?failover.maxReconnectAttempts=1&failover.reconnectDelay=1000&amqp.idleTimeout=0&jms.username=" + ADMIN_USERNAME + "&jms.password=" + ADMIN_PASSWORD + "");
         connection.start();
-        Session session = null;
-        session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+        Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
         MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
         receiver.receive(1000);
@@ -57,8 +56,7 @@ public class TestFailover {
     public void testPlainFailoverNested() throws JMSException, NamingException, InterruptedException {
         Connection connection = Utils.getConnection("failover:(amqp://" + HOSTNAME + ":" + TCP_PORT + ",amqp://" + HOSTNAME + ":" + TCP_PORT + ")?failover.maxReconnectAttempts=1&failover.reconnectDelay=1000&amqp.idleTimeout=0&jms.username=" + ADMIN_USERNAME + "&jms.password=" + ADMIN_PASSWORD + "&failover.nested.amqp.idleTimeout=0");
         connection.start();
-        Session session = null;
-        session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+        Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
         MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
         receiver.receive(1000);
@@ -72,8 +70,7 @@ public class TestFailover {
     public void testSSLFailover() throws JMSException, NamingException, InterruptedException {
         Connection connection = Utils.getConnection("failover:(amqps://" + HOSTNAME + ":" + SSL_PORT + "?transport.keyStoreLocation=" + USER1_KEYSTORE + "&transport.trustStoreLocation=" + TRUSTSTORE + "&transport.keyStorePassword=" + USER1_KEYSTORE_PASSWORD + "&transport.trustStorePassword=" + TRUSTSTORE_PASSWORD + "&transport.keyAlias=" + USER1_KEYSTORE_ALIAS + "&amqp.idleTimeout=0)?failover.maxReconnectAttempts=1&failover.reconnectDelay=1000");
         connection.start();
-        Session session = null;
-        session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+        Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
         MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
         receiver.receive(1000);
@@ -87,8 +84,7 @@ public class TestFailover {
     public void testSSLFailoverNested() throws JMSException, NamingException, InterruptedException {
         Connection connection = Utils.getConnection("failover:(amqps://" + HOSTNAME + ":" + SSL_PORT + ",amqps://" + HOSTNAME + ":" + SSL_PORT + ")?failover.maxReconnectAttempts=1&failover.reconnectDelay=1000&failover.nested.transport.keyStoreLocation=" + USER1_KEYSTORE + "&failover.nested.transport.trustStoreLocation=" + TRUSTSTORE + "&failover.nested.transport.keyStorePassword=" + USER1_KEYSTORE_PASSWORD + "&failover.nested.transport.trustStorePassword=" + TRUSTSTORE_PASSWORD + "&failover.nested.transport.keyAlias=" + USER1_KEYSTORE_ALIAS + "&failover.nested.amqp.idleTimeout=0");
         connection.start();
-        Session session = null;
-        session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+        Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
         MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
         receiver.receive(1000);

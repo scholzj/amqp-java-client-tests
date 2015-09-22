@@ -159,19 +159,25 @@ public class TestSecurity {
         try {
             Connection connection = Utils.getConnection(USER2_USERNAME, USER2_PASSWORD);
             connection.start();
+            Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
             Connection connection2 = Utils.getConnection(USER2_USERNAME, USER2_PASSWORD);
             connection2.start();
+            Session session2 = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
             Connection connection3 = Utils.getConnection(USER2_USERNAME, USER2_PASSWORD);
             connection3.start();
+            Session session3 = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
             Connection connection4 = Utils.getConnection(USER2_USERNAME, USER2_PASSWORD);
             connection4.start();
+            Session session4 = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
             Connection connection5 = Utils.getConnection(USER2_USERNAME, USER2_PASSWORD);
             connection5.start();
+            Session session5 = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
             try
             {
                 Connection connection6 = Utils.getConnection(USER2_USERNAME, USER2_PASSWORD);
                 connection6.start();
+                Session session6 = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
                 fail("Managed to open 6th connection");
             }
             catch (JMSException e)
