@@ -52,6 +52,7 @@
   <modules>
     <module>configuration</module>
     <module>qpid-jms</module>
+    <module>qpid-amqp-0.10-jms</module>
   </modules>
 
   <build>
