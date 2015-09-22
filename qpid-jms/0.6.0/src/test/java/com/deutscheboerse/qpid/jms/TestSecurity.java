@@ -39,7 +39,7 @@ public class TestSecurity {
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
         MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
-        Message received = receiver.receive(1000);
+        receiver.receive(1000);
 
         session.close();
         connection.close();
@@ -52,7 +52,7 @@ public class TestSecurity {
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
         MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
-        Message received = receiver.receive(1000);
+        receiver.receive(1000);
 
         session.close();
         connection.close();
@@ -65,7 +65,7 @@ public class TestSecurity {
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
         MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
-        Message received = receiver.receive(1000);
+        receiver.receive(1000);
 
         session.close();
         connection.close();
@@ -78,7 +78,7 @@ public class TestSecurity {
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
         MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
-        TextMessage received = (TextMessage)receiver.receive(1000);
+        receiver.receive(1000);
 
         session.close();
         connection.close();
@@ -91,7 +91,7 @@ public class TestSecurity {
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
         MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
-        TextMessage received = (TextMessage)receiver.receive(1000);
+        receiver.receive(1000);
 
         session.close();
         connection.close();
@@ -104,7 +104,7 @@ public class TestSecurity {
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
         MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
-        TextMessage received = (TextMessage)receiver.receive(1000);
+        receiver.receive(1000);
 
         session.close();
         connection.close();
@@ -117,7 +117,7 @@ public class TestSecurity {
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
         MessageConsumer receiver = session.createConsumer(Utils.getQueue(FORBIDDEN_QUEUE));
-        TextMessage received = (TextMessage)receiver.receive(1000);
+        receiver.receive(1000);
 
         session.close();
         connection.close();

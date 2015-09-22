@@ -30,11 +30,11 @@ public class TestHeartbeat {
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
         MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
-        Message received = receiver.receive();
+        receiver.receive();
 
         Thread.sleep(WAIT_TIME);
 
-        Message received2 = receiver.receive();
+        receiver.receive();
 
         session.close();
         connection.close();

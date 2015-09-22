@@ -24,7 +24,7 @@ public class Settings {
         }
         catch (URISyntaxException e)
         {
-            System.err.println("Could not load get absolute path to resources directory");
+            System.err.println("Could not get absolute path to resources directory");
         }
     }
 
