@@ -1,5 +1,6 @@
 package com.deutscheboerse.configuration;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
@@ -33,8 +34,8 @@ public class Settings {
         return settings.getProperty(property);
     }
 
-    public static String getResourceDirectory()
+    public static String getPath(String property)
     {
-        return resourceDirectory;
+        return resourceDirectory + File.separator + settings.getProperty(property);
     }
 }

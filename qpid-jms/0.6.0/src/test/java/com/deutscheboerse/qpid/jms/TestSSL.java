@@ -1,7 +1,5 @@
 package com.deutscheboerse.qpid.jms;
 
-import java.io.File;
-
 import com.deutscheboerse.configuration.Settings;
 
 import org.junit.BeforeClass;
@@ -18,16 +16,16 @@ import static org.junit.Assert.fail;
  * Created by schojak on 02.09.2015.
  */
 public class TestSSL {
-    private static final String USER1_KEYSTORE = Settings.getResourceDirectory() + File.separator + Settings.get("user1.keystore");
+    private static final String USER1_KEYSTORE = Settings.getPath("user1.keystore");
     private static final String USER1_KEYSTORE_PASSWORD = Settings.get("user1.keystore_password");
     private static final String USER1_KEYSTORE_ALIAS = Settings.get("user1.key_alias");
-    private static final String USER1_INVALID_KEYSTORE = Settings.getResourceDirectory() + File.separator + Settings.get("user1.invalid_keystore");
+    private static final String USER1_INVALID_KEYSTORE = Settings.getPath("user1.invalid_keystore");
     private static final String USER1_INVALID_KEYSTORE_PASSWORD = Settings.get("user1.invalid_keystore_password");
     private static final String USER1_INVALID_KEYSTORE_ALIAS = Settings.get("user1.invalid_key_alias");
-    private static final String USER1_SIGNED_BY_KEYSTORE = Settings.getResourceDirectory() + File.separator + Settings.get("user1.signedby_keystore");
+    private static final String USER1_SIGNED_BY_KEYSTORE = Settings.getPath("user1.signedby_keystore");
     private static final String USER1_SIGNED_BY_KEYSTORE_PASSWORD = Settings.get("user1.signedby_keystore_password");
     private static final String USER1_SIGNED_BY_KEYSTORE_ALIAS = Settings.get("user1.signedby_key_alias");
-    private static final String USER2_KEYSTORE = Settings.getResourceDirectory() + File.separator + Settings.get("user2.keystore");
+    private static final String USER2_KEYSTORE = Settings.getPath("user2.keystore");
     private static final String USER2_KEYSTORE_PASSWORD = Settings.get("user2.keystore_password");
     private static final String USER2_KEYSTORE_ALIAS = Settings.get("user2.key_alias");
 
@@ -37,9 +35,9 @@ public class TestSSL {
     private static final String IP_ADDRESS = Settings.get("broker.ip_address");
     private static final String SSL_PORT = Settings.get("broker.ssl_port");
 
-    private static final String TRUSTSTORE = Settings.getResourceDirectory() + File.separator + Settings.get("broker.truststore");
+    private static final String TRUSTSTORE = Settings.getPath("broker.truststore");
     private static final String TRUSTSTORE_PASSWORD = Settings.get("broker.truststore_password");
-    private static final String INVALID_TRUSTSTORE = Settings.getResourceDirectory() + File.separator + Settings.get("broker.invalid_truststore");
+    private static final String INVALID_TRUSTSTORE = Settings.getPath("broker.invalid_truststore");
     private static final String INVALID_TRUSTSTORE_PASSWORD = Settings.get("broker.invalid_truststore_password");
 
     private static final String RTG_QUEUE = Settings.get("routing.rtg_queue");
