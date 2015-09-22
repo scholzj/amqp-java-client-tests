@@ -7,6 +7,7 @@ import utils.Utils;
 
 import javax.jms.Connection;
 import javax.jms.JMSException;
+import javax.jms.Session;
 import javax.naming.NamingException;
 
 /**
@@ -27,8 +28,11 @@ public class TestMisc {
     public void testDuplicateClientID() throws JMSException, NamingException {
         Connection connection = Utils.getConnection(USER1_USERNAME, USER1_PASSWORD, "jms.clientID=myTestClient");
         connection.start();
+        Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+
         Connection connection2 = Utils.getConnection(USER1_USERNAME, USER1_PASSWORD, "jms.clientID=myTestClient");
         connection2.start();
+        Session session2 = connection2.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
         connection.close();
         connection2.close();
