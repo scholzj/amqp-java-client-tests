@@ -17,7 +17,7 @@ public class Settings {
         try
         {
             settings.load(Settings.class.getResourceAsStream("/settings.properties"));
-            resourceDirectory = Paths.get(Settings.class.getResource("/settings.properties").toURI()).toFile().getParentFile().getAbsolutePath();
+            resourceDirectory = Paths.get(Settings.class.getResource("/settings.properties").toURI()).toFile().getParentFile().getAbsolutePath().replace("\\", "/");
         }
         catch (IOException e)
         {
@@ -36,6 +36,6 @@ public class Settings {
 
     public static String getPath(String property)
     {
-        return resourceDirectory + File.separator + settings.getProperty(property);
+        return resourceDirectory + "/" + settings.getProperty(property);
     }
 }
