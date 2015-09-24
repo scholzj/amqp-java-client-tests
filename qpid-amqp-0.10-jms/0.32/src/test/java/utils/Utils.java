@@ -157,7 +157,7 @@ public class Utils {
             return this;
         }
 
-        public Connection build() throws NamingException, JMSException {
+        private String url() {
             String brokerOptionsString = "";
             String connectionOptionsString = "";
 
@@ -228,15 +228,29 @@ public class Utils {
             String brokerList = String.format("tcp://%1$s:%2$s%3$s", hostname, port, brokerOptionsString);
             String connURL = String.format("amqp://%1$s:%2$s@%3$s/?brokerlist='%4$s'%5$s", username, password, clientID, brokerList, connectionOptionsString);
 
+            return connURL;
+        }
 
+        public Connection build() throws NamingException, JMSException {
             Properties props = new Properties();
             props.setProperty("java.naming.factory.initial", "org.apache.qpid.jndi.PropertiesFileInitialContextFactory");
-            props.setProperty("connectionfactory.connection", connURL);
+            props.setProperty("connectionfactory.connection", url());
 
             InitialContext ctx = new InitialContext(props);
             ConnectionFactory fact = (ConnectionFactory) ctx.lookup("connection");
 
             return fact.createConnection();
+        }
+
+        public XAConnection buildXA() throws NamingException, JMSException {
+            Properties props = new Properties();
+            props.setProperty("java.naming.factory.initial", "org.apache.qpid.jndi.PropertiesFileInitialContextFactory");
+            props.setProperty("connectionfactory.connection", url());
+
+            InitialContext ctx = new InitialContext(props);
+            XAQueueConnectionFactory fact = (XAQueueConnectionFactory) ctx.lookup("connection");
+
+            return fact.createXAConnection();
         }
     }
 

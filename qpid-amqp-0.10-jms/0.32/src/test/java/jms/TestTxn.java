@@ -212,6 +212,4 @@ public class TestTxn {
 
         connection.close();
     }
-
-    // TODO: XA transaction tests ???
 }
