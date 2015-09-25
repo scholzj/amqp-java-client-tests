@@ -13,7 +13,6 @@
     <artifactId>qpid-amqp-0.10-jms</artifactId>
 
     <packaging>pom</packaging>
-    <version>1.0</version>
     <modules>
         <module>0.32</module>
     </modules>

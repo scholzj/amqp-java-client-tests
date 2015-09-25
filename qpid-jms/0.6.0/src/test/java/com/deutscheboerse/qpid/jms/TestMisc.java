@@ -8,8 +8,6 @@ import utils.Utils;
 import javax.jms.*;
 import javax.naming.NamingException;
 
-import static org.junit.Assert.assertNull;
-
 /**
  * Created by schojak on 02.09.2015.
  */
@@ -34,7 +32,9 @@ public class TestMisc {
         connection2.start();
         Session session2 = connection2.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
+        session.close();
         connection.close();
+        session2.close();
         connection2.close();
     }
 }

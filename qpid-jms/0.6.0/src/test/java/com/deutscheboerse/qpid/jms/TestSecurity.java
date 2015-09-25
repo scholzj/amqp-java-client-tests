@@ -179,16 +179,29 @@ public class TestSecurity {
                 connection6.start();
                 Session session6 = connection6.createSession(false, Session.CLIENT_ACKNOWLEDGE);
                 fail("Managed to open 6th connection");
+                if (session6 != null)
+                {
+                    session6.close();
+                }
+                if (connection6 != null)
+                {
+                    connection6.close();
+                }
             }
             catch (JMSException e)
             {
                 // pass
             }
 
+            session.close();
             connection.close();
+            session2.close();
             connection2.close();
+            session3.close();
             connection3.close();
+            session4.close();
             connection4.close();
+            session5.close();
             connection5.close();
         }
         catch (JMSException e)

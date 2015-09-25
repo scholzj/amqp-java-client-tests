@@ -34,7 +34,9 @@ public class TestMisc {
         connection2.start();
         Session session2 = connection2.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
+        session.close();
         connection.close();
+        session2.close();
         connection2.close();
     }
 }

@@ -1,8 +1,10 @@
 package com.deutscheboerse.qpid.jms;
 
 import com.deutscheboerse.configuration.Settings;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
+
 import utils.Utils;
 
 import javax.jms.*;
