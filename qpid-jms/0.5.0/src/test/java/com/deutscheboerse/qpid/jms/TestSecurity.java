@@ -34,7 +34,7 @@ public class TestSecurity {
 
     @Test
      public void testAuthenticationDefault() throws JMSException, NamingException, InterruptedException {
-        Connection connection = Utils.getConnection(USER1_USERNAME, USER1_PASSWORD);
+        Connection connection = Utils.getConnectionBuilder().username(USER1_USERNAME).password(USER1_PASSWORD).build();
         connection.start();
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
@@ -47,7 +47,7 @@ public class TestSecurity {
 
     @Test
     public void testAuthenticationPlain() throws JMSException, NamingException, InterruptedException {
-        Connection connection = Utils.getConnection(USER1_USERNAME, USER1_PASSWORD, "amqp.saslMechanisms=PLAIN");
+        Connection connection = Utils.getConnectionBuilder().username(USER1_USERNAME).password(USER1_PASSWORD).option("amqp.saslMechanisms=PLAIN").build();
         connection.start();
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
@@ -60,7 +60,7 @@ public class TestSecurity {
 
     @Test
     public void testAuthenticationCramMD5() throws JMSException, NamingException, InterruptedException {
-        Connection connection = Utils.getConnection(USER1_USERNAME, USER1_PASSWORD, "amqp.saslMechanisms=CRAM-MD5");
+        Connection connection = Utils.getConnectionBuilder().username(USER1_USERNAME).password(USER1_PASSWORD).option("amqp.saslMechanisms=CRAM-MD5").build();
         connection.start();
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
@@ -73,7 +73,7 @@ public class TestSecurity {
 
     @Test(expected = JMSSecurityException.class)
     public void testAuthenticationAnonymous() throws JMSException, NamingException, InterruptedException {
-        Connection connection = Utils.getConnection("amqp://cbgd03.xeop.de:21234?amqp.saslMechanisms=ANONYMOUS");
+        Connection connection = Utils.getConnectionBuilder().option("amqp.saslMechanisms=ANONYMOUS").build();
         connection.start();
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
@@ -86,7 +86,7 @@ public class TestSecurity {
 
     @Test(expected = JMSSecurityException.class)
     public void testWrongPassword() throws JMSException, NamingException, InterruptedException {
-        Connection connection = Utils.getConnection(USER1_USERNAME, "wrongpassword");
+        Connection connection = Utils.getConnectionBuilder().username(USER1_USERNAME).password("wrongpassword").build();
         connection.start();
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
@@ -99,7 +99,7 @@ public class TestSecurity {
 
     @Test(expected = JMSSecurityException.class)
     public void testWrongUsername() throws JMSException, NamingException, InterruptedException {
-        Connection connection = Utils.getConnection("nonexistentuser", "mypassword");
+        Connection connection = Utils.getConnectionBuilder().username("nonexistentuser").password("somepassword").build();
         connection.start();
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
@@ -112,7 +112,7 @@ public class TestSecurity {
 
     @Test(expected = JMSSecurityException.class)
     public void testACLDeniedConsumer() throws JMSException, NamingException, InterruptedException {
-        Connection connection = Utils.getConnection(USER1_USERNAME, USER1_PASSWORD);
+        Connection connection = Utils.getConnectionBuilder().username(USER1_USERNAME).password(USER1_PASSWORD).build();
         connection.start();
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
@@ -125,7 +125,7 @@ public class TestSecurity {
 
     @Test(expected = JMSSecurityException.class)
     public void testACLDeniedProducerForbiddenTopic() throws JMSException, NamingException, InterruptedException {
-        Connection connection = Utils.getConnection(USER1_USERNAME, USER1_PASSWORD);
+        Connection connection = Utils.getConnectionBuilder().username(USER1_USERNAME).password(USER1_PASSWORD).build();
         connection.start();
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
@@ -141,25 +141,25 @@ public class TestSecurity {
     @Test
     public void testMaximumAllowedConnections() throws JMSException, NamingException, InterruptedException {
         try {
-            Connection connection = Utils.getConnection(USER2_USERNAME, USER2_PASSWORD);
+            Connection connection = Utils.getConnectionBuilder().username(USER2_USERNAME).password(USER2_PASSWORD).build();
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
-            Connection connection2 = Utils.getConnection(USER2_USERNAME, USER2_PASSWORD);
+            Connection connection2 = Utils.getConnectionBuilder().username(USER2_USERNAME).password(USER2_PASSWORD).build();
             connection2.start();
             Session session2 = connection2.createSession(false, Session.CLIENT_ACKNOWLEDGE);
-            Connection connection3 = Utils.getConnection(USER2_USERNAME, USER2_PASSWORD);
+            Connection connection3 = Utils.getConnectionBuilder().username(USER2_USERNAME).password(USER2_PASSWORD).build();
             connection3.start();
             Session session3 = connection3.createSession(false, Session.CLIENT_ACKNOWLEDGE);
-            Connection connection4 = Utils.getConnection(USER2_USERNAME, USER2_PASSWORD);
+            Connection connection4 = Utils.getConnectionBuilder().username(USER2_USERNAME).password(USER2_PASSWORD).build();
             connection4.start();
             Session session4 = connection4.createSession(false, Session.CLIENT_ACKNOWLEDGE);
-            Connection connection5 = Utils.getConnection(USER2_USERNAME, USER2_PASSWORD);
+            Connection connection5 = Utils.getConnectionBuilder().username(USER2_USERNAME).password(USER2_PASSWORD).build();
             connection5.start();
             Session session5 = connection5.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
             try
             {
-                Connection connection6 = Utils.getConnection(USER2_USERNAME, USER2_PASSWORD);
+                Connection connection6 = Utils.getConnectionBuilder().username(USER2_USERNAME).password(USER2_PASSWORD).build();
                 connection6.start();
                 Session session6 = connection6.createSession(false, Session.CLIENT_ACKNOWLEDGE);
                 fail("Managed to open 6th connection");

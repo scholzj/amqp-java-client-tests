@@ -33,7 +33,7 @@ public class TestQueueing {
 
     @Test
     public void testRoutingKey() throws JMSException, NamingException {
-        Connection connection = Utils.getAdminConnection();
+        Connection connection = Utils.getAdminConnectionBuilder().build();
         connection.start();
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
@@ -51,7 +51,7 @@ public class TestQueueing {
 
     @Test
     public void testDeadLetterQueue() throws JMSException, NamingException {
-        Connection connection = Utils.getAdminConnection();
+        Connection connection = Utils.getAdminConnectionBuilder().build();
         connection.start();
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
@@ -69,7 +69,7 @@ public class TestQueueing {
 
     @Test
     public void testRingQueue() throws JMSException, NamingException {
-        Connection connection = Utils.getAdminConnection();
+        Connection connection = Utils.getAdminConnectionBuilder().build();
         connection.start();
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
@@ -101,7 +101,7 @@ public class TestQueueing {
     // Works only in 0.6.0 and higher
     @Test
     public void testFullQueue() throws JMSException, NamingException, InterruptedException, QmfException {
-        Connection connection = Utils.getAdminConnection();
+        Connection connection = Utils.getAdminConnectionBuilder().build();
         connection.start();
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
@@ -135,10 +135,5 @@ public class TestQueueing {
 
         session.close();
         connection.close();
-    }
-
-    @Test
-    public void testPurging() throws QmfException {
-        GlobalUtils.purgeQueue("broadcast.user1.dlqQueue");
     }
 }

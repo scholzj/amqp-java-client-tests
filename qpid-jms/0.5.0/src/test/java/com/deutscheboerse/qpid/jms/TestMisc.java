@@ -26,11 +26,11 @@ public class TestMisc {
     // Test the sender rollback feature
     @Test
     public void testDuplicateClientID() throws JMSException, NamingException {
-        Connection connection = Utils.getConnection(USER1_USERNAME, USER1_PASSWORD, "jms.clientID=myTestClient");
+        Connection connection = Utils.getConnectionBuilder().username(USER1_USERNAME).password(USER1_PASSWORD).clientID("myTestClient").build();
         connection.start();
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
-        Connection connection2 = Utils.getConnection(USER1_USERNAME, USER1_PASSWORD, "jms.clientID=myTestClient");
+        Connection connection2 = Utils.getConnectionBuilder().username(USER1_USERNAME).password(USER1_PASSWORD).clientID("myTestClient").build();
         connection2.start();
         Session session2 = connection2.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 

@@ -32,6 +32,7 @@ public class TestSSL {
 
     private static final String IP_ADDRESS = Settings.get("broker.ip_address");
     private static final String SSL_PORT = Settings.get("broker.ssl_port");
+    private static final String TCP_PORT = Settings.get("broker.tcp_port");
 
     private static final String TRUSTSTORE = Settings.getPath("broker.truststore");
     private static final String TRUSTSTORE_PASSWORD = Settings.get("broker.truststore_password");
@@ -177,6 +178,33 @@ public class TestSSL {
     @Test(expected = JMSException.class, timeout = 10000)
     public void testSignedByCannotLogin() throws JMSException, NamingException, InterruptedException {
         Connection connection = Utils.getSSLConnectionBuilder().keystore(USER1_SIGNED_BY_KEYSTORE).keystorePassword(USER1_SIGNED_BY_KEYSTORE_PASSWORD).keystoreAlias(USER1_SIGNED_BY_KEYSTORE_ALIAS).build();
+        connection.start();
+        Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+
+        session.close();
+        connection.close();
+    }
+
+    @Test(expected = JMSException.class)
+    public void testSSLConnectionToNonSSLPort() throws JMSException, NamingException, InterruptedException {
+
+        // Default timeout of 60 seconds would slow down the test too much
+        System.setProperty("qpid.ssl_timeout", "5000");
+
+        Connection connection = Utils.getSSLConnectionBuilder().keystore(USER1_KEYSTORE).keystorePassword(USER1_KEYSTORE_PASSWORD).keystoreAlias(USER1_KEYSTORE_ALIAS).port(TCP_PORT).build();
+        connection.start();
+        Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+
+        session.close();
+        connection.close();
+
+        // Remove the property again
+        System.clearProperty("qpid.ssl_timeout");
+    }
+
+    @Test(expected = JMSException.class)
+    public void testNonSSLConnectionToSSLPort() throws JMSException, NamingException, InterruptedException {
+        Connection connection = Utils.getAdminConnectionBuilder().port(SSL_PORT).build();
         connection.start();
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 

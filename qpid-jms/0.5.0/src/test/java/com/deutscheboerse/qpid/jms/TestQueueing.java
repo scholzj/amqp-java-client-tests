@@ -33,7 +33,7 @@ public class TestQueueing {
 
     @Test
     public void testRoutingKey() throws JMSException, NamingException {
-        Connection connection = Utils.getAdminConnection();
+        Connection connection = Utils.getAdminConnectionBuilder().build();
         connection.start();
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
@@ -51,7 +51,7 @@ public class TestQueueing {
 
     @Test
     public void testDeadLetterQueue() throws JMSException, NamingException {
-        Connection connection = Utils.getAdminConnection();
+        Connection connection = Utils.getAdminConnectionBuilder().build();
         connection.start();
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
@@ -69,7 +69,7 @@ public class TestQueueing {
 
     @Test
     public void testRingQueue() throws JMSException, NamingException {
-        Connection connection = Utils.getAdminConnection();
+        Connection connection = Utils.getAdminConnectionBuilder().build();
         connection.start();
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 

@@ -28,7 +28,7 @@ public class TestExpiration {
     public void testMessageExpiration() throws JMSException, NamingException, InterruptedException {
 
 
-        Connection connection = Utils.getAdminConnection();
+        Connection connection = Utils.getAdminConnectionBuilder().build();
         connection.start();
 
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);

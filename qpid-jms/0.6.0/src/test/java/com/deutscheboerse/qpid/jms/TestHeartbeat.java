@@ -25,7 +25,7 @@ public class TestHeartbeat {
     // Test the idle timeout
     @Test
     public void testIdleTimeout() throws JMSException, NamingException, InterruptedException {
-        Connection connection = Utils.getAdminConnection("amqp.idleTimeout=" + IDLE_TIMEOUT);
+        Connection connection = Utils.getAdminConnectionBuilder().option("amqp.idleTimeout=" + IDLE_TIMEOUT).build();
         connection.start();
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 

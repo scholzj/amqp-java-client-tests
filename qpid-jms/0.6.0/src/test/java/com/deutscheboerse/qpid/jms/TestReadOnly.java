@@ -35,7 +35,7 @@ public class TestReadOnly {
         // Clean the queue first
         GlobalUtils.purgeQueue(RO_QUEUE);
 
-        Connection senderConnection = Utils.getAdminConnection();
+        Connection senderConnection = Utils.getAdminConnectionBuilder().build();
         senderConnection.start();
 
         // Sender session
@@ -50,7 +50,7 @@ public class TestReadOnly {
         session.close();
         senderConnection.close();
 
-        Connection receiverConnection = Utils.getConnection(USER1_USERNAME, USER1_PASSWORD, "jms.sendAcksAsync=False");
+        Connection receiverConnection = Utils.getConnectionBuilder().username(USER1_USERNAME).password(USER1_PASSWORD).option("jms.sendAcksAsync=False").build();
         receiverConnection.start();
 
         // First receiver
@@ -100,7 +100,7 @@ public class TestReadOnly {
         // Clean the queue first
         GlobalUtils.purgeQueue(RO_QUEUE);
 
-        Connection senderConnection = Utils.getAdminConnection();
+        Connection senderConnection = Utils.getAdminConnectionBuilder().build();
         senderConnection.start();
 
         // Sender session
@@ -115,7 +115,7 @@ public class TestReadOnly {
         session.close();
         senderConnection.close();
 
-        Connection receiverConnection = Utils.getConnection(USER1_USERNAME, USER1_PASSWORD, "jms.sendAcksAsync=False");
+        Connection receiverConnection = Utils.getConnectionBuilder().username(USER1_USERNAME).password(USER1_PASSWORD).option("jms.sendAcksAsync=False").build();
         receiverConnection.start();
 
         // First receiver

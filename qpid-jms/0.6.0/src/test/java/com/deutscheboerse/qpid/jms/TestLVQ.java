@@ -29,7 +29,7 @@ public class TestLVQ {
     // Test the LVQ feature
     @Test
     public void testLVQQueueBasic() throws JMSException, NamingException {
-        Connection connection = Utils.getAdminConnection("jms.validatePropertyNames=False");
+        Connection connection = Utils.getAdminConnectionBuilder().option("jms.validatePropertyNames=False").build();
         connection.start();
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
@@ -75,7 +75,7 @@ public class TestLVQ {
     public void testLVQQueueManyMessages() throws JMSException, NamingException {
         int MESSAGE_COUNT = 10000;
 
-        Connection connection = Utils.getAdminConnection("jms.validatePropertyNames=False&jms.forceAsyncSend=True");
+        Connection connection = Utils.getAdminConnectionBuilder().option("jms.forceAsyncSend=True").option("jms.validatePropertyNames=False").build();
         connection.start();
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
@@ -128,7 +128,7 @@ public class TestLVQ {
     // Test the LVQ feature
     @Test
     public void testLVQQueueInTxn() throws JMSException, NamingException {
-        Connection connection = Utils.getAdminConnection("jms.validatePropertyNames=False");
+        Connection connection = Utils.getAdminConnectionBuilder().option("jms.validatePropertyNames=False").build();
         connection.start();
         Session session = connection.createSession(true, Session.CLIENT_ACKNOWLEDGE);
 

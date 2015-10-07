@@ -25,7 +25,7 @@ public class TestFiltering {
 
     @Test
     public void testCorrelationIDFilteringAMQPStyle() throws JMSException, NamingException, InterruptedException {
-        Connection connection = Utils.getAdminConnection();
+        Connection connection = Utils.getAdminConnectionBuilder().build();
         connection.start();
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
@@ -55,7 +55,7 @@ public class TestFiltering {
 
     @Test
     public void testPropertiesFilteringWithoutPeriod() throws JMSException, NamingException, InterruptedException {
-        Connection connection = Utils.getAdminConnection();
+        Connection connection = Utils.getAdminConnectionBuilder().build();
         connection.start();
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 

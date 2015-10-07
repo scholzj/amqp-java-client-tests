@@ -27,7 +27,7 @@ public class TestTxn {
     public void testTxnCommit() throws JMSException, NamingException {
         int MESSAGE_COUNT = 10;
 
-        Connection connection = Utils.getAdminConnection();
+        Connection connection = Utils.getAdminConnectionBuilder().build();
         connection.start();
 
         // Sender session
@@ -83,7 +83,7 @@ public class TestTxn {
     public void testTxnSenderRollback() throws JMSException, NamingException {
         int MESSAGE_COUNT = 10;
 
-        Connection connection = Utils.getAdminConnection();
+        Connection connection = Utils.getAdminConnectionBuilder().build();
         connection.start();
 
         // Sender session
@@ -121,7 +121,7 @@ public class TestTxn {
     public void testTxnReceiverRollback() throws JMSException, NamingException {
         int MESSAGE_COUNT = 10;
 
-        Connection connection = Utils.getAdminConnection();
+        Connection connection = Utils.getAdminConnectionBuilder().build();
         connection.start();
 
         // Sender session
@@ -178,7 +178,7 @@ public class TestTxn {
     public void testTxnCommitLotOfMessages() throws JMSException, NamingException {
         int MESSAGE_COUNT = 100000;
 
-        Connection connection = Utils.getAdminConnection();
+        Connection connection = Utils.getAdminConnectionBuilder().build();
         connection.start();
 
         // Sender session

@@ -25,7 +25,7 @@ public class TestFiltering {
 
     @Test
     public void testCorrelationIDFilteringAMQPStyle() throws JMSException, NamingException, InterruptedException {
-        Connection connection = Utils.getAdminConnection();
+        Connection connection = Utils.getAdminConnectionBuilder().build();
         connection.start();
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
@@ -56,7 +56,7 @@ public class TestFiltering {
     // TODO: Enable after 3.2 GA is available
     /*@Test
     public void testCorrelationIDFilteringJMSStyle() throws JMSException, NamingException, InterruptedException {
-        Connection connection = utils.Utils.getAdminConnection();
+        Connection connection = Utils.getAdminConnectionBuilder().build();
         connection.start();
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
@@ -86,7 +86,7 @@ public class TestFiltering {
 
     @Test
     public void testPropertiesFilteringWithPeriod() throws JMSException, NamingException, InterruptedException {
-        Connection connection = Utils.getAdminConnection("jms.validatePropertyNames=False");
+        Connection connection = Utils.getAdminConnectionBuilder().option("jms.validatePropertyNames=False").build();
         connection.start();
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
@@ -116,7 +116,7 @@ public class TestFiltering {
 
     @Test
     public void testPropertiesFilteringWithoutPeriod() throws JMSException, NamingException, InterruptedException {
-        Connection connection = Utils.getAdminConnection();
+        Connection connection = Utils.getAdminConnectionBuilder().build();
         connection.start();
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 

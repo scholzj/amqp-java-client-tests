@@ -1,10 +1,8 @@
 package com.deutscheboerse.qpid.jms;
 
 import com.deutscheboerse.configuration.Settings;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
-
 import utils.Utils;
 
 import javax.jms.*;
@@ -34,6 +32,7 @@ public class TestSSL {
 
     private static final String IP_ADDRESS = Settings.get("broker.ip_address");
     private static final String SSL_PORT = Settings.get("broker.ssl_port");
+    private static final String TCP_PORT = Settings.get("broker.tcp_port");
 
     private static final String TRUSTSTORE = Settings.getPath("broker.truststore");
     private static final String TRUSTSTORE_PASSWORD = Settings.get("broker.truststore_password");
@@ -50,7 +49,7 @@ public class TestSSL {
 
     @Test
     public void testSuccessfullClientAuthentication() throws JMSException, NamingException, InterruptedException {
-        Connection connection = Utils.getSSLConnection(USER1_KEYSTORE, USER1_KEYSTORE_PASSWORD, USER1_KEYSTORE_ALIAS);
+        Connection connection = Utils.getSSLConnectionBuilder().keystore(USER1_KEYSTORE).keystorePassword(USER1_KEYSTORE_PASSWORD).keystoreAlias(USER1_KEYSTORE_ALIAS).build();
         connection.start();
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
@@ -63,7 +62,7 @@ public class TestSSL {
 
     @Test(expected = JMSException.class)
     public void testUnsuccessfullClientAuthentication() throws JMSException, NamingException, InterruptedException {
-        Connection connection = Utils.getSSLConnection(USER1_INVALID_KEYSTORE, USER1_INVALID_KEYSTORE_PASSWORD, USER1_INVALID_KEYSTORE_ALIAS);
+        Connection connection = Utils.getSSLConnectionBuilder().keystore(USER1_INVALID_KEYSTORE).keystorePassword(USER1_INVALID_KEYSTORE_PASSWORD).keystoreAlias(USER1_INVALID_KEYSTORE_ALIAS).build();
         connection.start();
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
@@ -78,7 +77,7 @@ public class TestSSL {
     public void testHostnameVerification() throws JMSException, NamingException, InterruptedException {
         // Test that wrong hostname fails
         try {
-            Connection connection = Utils.getSSLConnection(IP_ADDRESS, SSL_PORT, USER1_KEYSTORE, USER1_KEYSTORE_PASSWORD, USER1_KEYSTORE_ALIAS, TRUSTSTORE, TRUSTSTORE_PASSWORD, "");
+            Connection connection = Utils.getSSLConnectionBuilder().hostname(IP_ADDRESS).port(SSL_PORT).keystore(USER1_KEYSTORE).keystorePassword(USER1_KEYSTORE_PASSWORD).keystoreAlias(USER1_KEYSTORE_ALIAS).build();
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
@@ -98,7 +97,7 @@ public class TestSSL {
 
         // Test that hostname verification can be disabled
         try {
-            Connection connection = Utils.getSSLConnection(IP_ADDRESS, SSL_PORT, USER1_KEYSTORE, USER1_KEYSTORE_PASSWORD, USER1_KEYSTORE_ALIAS, TRUSTSTORE, TRUSTSTORE_PASSWORD, "transport.verifyHost=false");
+            Connection connection = Utils.getSSLConnectionBuilder().hostname(IP_ADDRESS).port(SSL_PORT).keystore(USER1_KEYSTORE).keystorePassword(USER1_KEYSTORE_PASSWORD).keystoreAlias(USER1_KEYSTORE_ALIAS).option("transport.verifyHost=false").build();
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
@@ -118,7 +117,7 @@ public class TestSSL {
     public void testWrongServerCertificate() throws JMSException, NamingException, InterruptedException {
         // Test that with invalid truststore the client doesn't connect
         try {
-            Connection connection = Utils.getSSLConnection(USER1_KEYSTORE, USER1_KEYSTORE_PASSWORD, USER1_KEYSTORE_ALIAS, INVALID_TRUSTSTORE, INVALID_TRUSTSTORE_PASSWORD);
+            Connection connection = Utils.getSSLConnectionBuilder().keystore(USER1_KEYSTORE).keystorePassword(USER1_KEYSTORE_PASSWORD).keystoreAlias(USER1_KEYSTORE_ALIAS).truststore(INVALID_TRUSTSTORE).truststorePassword(INVALID_TRUSTSTORE_PASSWORD).build();
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
@@ -138,7 +137,7 @@ public class TestSSL {
 
         // Test the "trust all" option
         try {
-            Connection connection = Utils.getSSLConnection(USER1_KEYSTORE, USER1_KEYSTORE_PASSWORD, USER1_KEYSTORE_ALIAS, INVALID_TRUSTSTORE, INVALID_TRUSTSTORE_PASSWORD, "transport.trustAll=True");
+            Connection connection = Utils.getSSLConnectionBuilder().keystore(USER1_KEYSTORE).keystorePassword(USER1_KEYSTORE_PASSWORD).keystoreAlias(USER1_KEYSTORE_ALIAS).truststore(INVALID_TRUSTSTORE).truststorePassword(INVALID_TRUSTSTORE_PASSWORD).option("transport.trustAll=True").build();
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
@@ -157,7 +156,7 @@ public class TestSSL {
 
     @Test(expected = JMSException.class)
     public void testSSLv3() throws JMSException, NamingException, InterruptedException {
-        Connection connection = Utils.getSSLConnection(USER1_KEYSTORE, USER1_KEYSTORE_PASSWORD, USER1_KEYSTORE_ALIAS, TRUSTSTORE, TRUSTSTORE_PASSWORD, "transport.enabledProtocols=SSLv3&transport.disabledProtocols=null");
+        Connection connection = Utils.getSSLConnectionBuilder().keystore(USER1_KEYSTORE).keystorePassword(USER1_KEYSTORE_PASSWORD).keystoreAlias(USER1_KEYSTORE_ALIAS).option("transport.enabledProtocols=SSLv3").option("transport.disabledProtocols=null").build();
         connection.start();
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
@@ -170,7 +169,7 @@ public class TestSSL {
 
     @Test(expected = JMSException.class)
     public void testSSLv2() throws JMSException, NamingException, InterruptedException {
-        Connection connection = Utils.getSSLConnection(USER1_KEYSTORE, USER1_KEYSTORE_PASSWORD, USER1_KEYSTORE_ALIAS, TRUSTSTORE, TRUSTSTORE_PASSWORD, "transport.enabledProtocols=SSLv2Hello,SSLv3&transport.disabledProtocols=null");
+        Connection connection = Utils.getSSLConnectionBuilder().keystore(USER1_KEYSTORE).keystorePassword(USER1_KEYSTORE_PASSWORD).keystoreAlias(USER1_KEYSTORE_ALIAS).option("transport.enabledProtocols=SSLv2Hello,SSLv3").option("transport.disabledProtocols=null").build();
         connection.start();
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
@@ -183,7 +182,7 @@ public class TestSSL {
 
     @Test
     public void testTLSv1() throws JMSException, NamingException, InterruptedException {
-        Connection connection = Utils.getSSLConnection(USER1_KEYSTORE, USER1_KEYSTORE_PASSWORD, USER1_KEYSTORE_ALIAS, TRUSTSTORE, TRUSTSTORE_PASSWORD, "transport.enabledProtocols=TLSv1");
+        Connection connection = Utils.getSSLConnectionBuilder().keystore(USER1_KEYSTORE).keystorePassword(USER1_KEYSTORE_PASSWORD).keystoreAlias(USER1_KEYSTORE_ALIAS).option("transport.enabledProtocols=TLSv1").build();
         connection.start();
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
@@ -196,7 +195,7 @@ public class TestSSL {
 
     @Test
     public void testCipherSuite3DES() throws JMSException, NamingException, InterruptedException {
-        Connection connection = Utils.getSSLConnection(USER1_KEYSTORE, USER1_KEYSTORE_PASSWORD, USER1_KEYSTORE_ALIAS, TRUSTSTORE, TRUSTSTORE_PASSWORD, "transport.enabledCipherSuites=SSL_RSA_WITH_3DES_EDE_CBC_SHA");
+        Connection connection = Utils.getSSLConnectionBuilder().keystore(USER1_KEYSTORE).keystorePassword(USER1_KEYSTORE_PASSWORD).keystoreAlias(USER1_KEYSTORE_ALIAS).option("transport.enabledCipherSuites=SSL_RSA_WITH_3DES_EDE_CBC_SHA").build();
         connection.start();
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
@@ -209,7 +208,7 @@ public class TestSSL {
 
     @Test
     public void testCipherSuiteAES128() throws JMSException, NamingException, InterruptedException {
-        Connection connection = Utils.getSSLConnection(USER1_KEYSTORE, USER1_KEYSTORE_PASSWORD, USER1_KEYSTORE_ALIAS, TRUSTSTORE, TRUSTSTORE_PASSWORD, "transport.enabledCipherSuites=TLS_RSA_WITH_AES_128_CBC_SHA");
+        Connection connection = Utils.getSSLConnectionBuilder().keystore(USER1_KEYSTORE).keystorePassword(USER1_KEYSTORE_PASSWORD).keystoreAlias(USER1_KEYSTORE_ALIAS).option("transport.enabledCipherSuites=TLS_RSA_WITH_AES_128_CBC_SHA").build();
         connection.start();
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
@@ -224,7 +223,7 @@ public class TestSSL {
     // http://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html
     @Test
     public void testCipherSuiteAES256() throws JMSException, NamingException, InterruptedException {
-        Connection connection = Utils.getSSLConnection(USER1_KEYSTORE, USER1_KEYSTORE_PASSWORD, USER1_KEYSTORE_ALIAS, TRUSTSTORE, TRUSTSTORE_PASSWORD, "transport.enabledCipherSuites=TLS_RSA_WITH_AES_256_CBC_SHA");
+        Connection connection = Utils.getSSLConnectionBuilder().keystore(USER1_KEYSTORE).keystorePassword(USER1_KEYSTORE_PASSWORD).keystoreAlias(USER1_KEYSTORE_ALIAS).option("transport.enabledCipherSuites=TLS_RSA_WITH_AES_256_CBC_SHA").build();
         connection.start();
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
@@ -237,7 +236,7 @@ public class TestSSL {
 
     @Test(expected = JMSSecurityException.class)
     public void testPlainOverSSLWithClientAuth() throws JMSException, NamingException, InterruptedException {
-        Connection connection = Utils.getSSLConnection(USER1_KEYSTORE, USER1_KEYSTORE_PASSWORD, USER1_KEYSTORE_ALIAS, TRUSTSTORE, TRUSTSTORE_PASSWORD, "jms.username=" + ADMIN_USERNAME + "&jms.password=" + ADMIN_PASSWORD + "&amqp.saslMechanisms=PLAIN");
+        Connection connection = Utils.getSSLConnectionBuilder().keystore(USER1_KEYSTORE).keystorePassword(USER1_KEYSTORE_PASSWORD).keystoreAlias(USER1_KEYSTORE_ALIAS).username(ADMIN_USERNAME).password(ADMIN_PASSWORD).option("amqp.saslMechanisms=PLAIN").build();
         connection.start();
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
@@ -250,7 +249,7 @@ public class TestSSL {
 
     @Test(expected = JMSException.class)
     public void testPlainOverSSL() throws JMSException, NamingException, InterruptedException {
-        Connection connection = Utils.getConnection("amqps://cbgd03:11234?jms.username=admin&jms.password=admin&transport.trustStoreLocation=" + TRUSTSTORE + "&transport.trustStorePassword=123456&amqp.saslMechanisms=PLAIN");
+        Connection connection = Utils.getSSLConnectionBuilder().username(ADMIN_USERNAME).password(ADMIN_PASSWORD).option("amqp.saslMechanisms=PLAIN").build();
         connection.start();
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
@@ -263,7 +262,7 @@ public class TestSSL {
 
     @Test(expected = JMSSecurityException.class)
     public void testAnonymousOverSSLWithClientAuth() throws JMSException, NamingException, InterruptedException {
-        Connection connection = Utils.getSSLConnection(USER1_KEYSTORE, USER1_KEYSTORE_PASSWORD, USER1_KEYSTORE_ALIAS, TRUSTSTORE, TRUSTSTORE_PASSWORD, "amqp.saslMechanisms=ANONYMOUS");
+        Connection connection = Utils.getSSLConnectionBuilder().keystore(USER1_KEYSTORE).keystorePassword(USER1_KEYSTORE_PASSWORD).keystoreAlias(USER1_KEYSTORE_ALIAS).option("amqp.saslMechanisms=ANONYMOUS").build();
         connection.start();
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
@@ -276,7 +275,27 @@ public class TestSSL {
 
     @Test(expected = JMSException.class)
     public void testSignedByCannotLogin() throws JMSException, NamingException, InterruptedException {
-        Connection connection = Utils.getSSLConnection(USER1_SIGNED_BY_KEYSTORE, USER1_SIGNED_BY_KEYSTORE_PASSWORD, USER1_SIGNED_BY_KEYSTORE_ALIAS);
+        Connection connection = Utils.getSSLConnectionBuilder().keystore(USER1_SIGNED_BY_KEYSTORE).keystorePassword(USER1_SIGNED_BY_KEYSTORE_PASSWORD).keystoreAlias(USER1_SIGNED_BY_KEYSTORE_ALIAS).build();
+        connection.start();
+        Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+
+        session.close();
+        connection.close();
+    }
+
+    @Test(expected = JMSException.class)
+    public void testSSLConnectionToNonSSLPort() throws JMSException, NamingException, InterruptedException {
+        Connection connection = Utils.getSSLConnectionBuilder().keystore(USER1_KEYSTORE).keystorePassword(USER1_KEYSTORE_PASSWORD).keystoreAlias(USER1_KEYSTORE_ALIAS).port(TCP_PORT).build();
+        connection.start();
+        Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+
+        session.close();
+        connection.close();
+    }
+
+    @Test(expected = JMSException.class)
+    public void testNonSSLConnectionToSSLPort() throws JMSException, NamingException, InterruptedException {
+        Connection connection = Utils.getAdminConnectionBuilder().port(SSL_PORT).build();
         connection.start();
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
@@ -287,25 +306,25 @@ public class TestSSL {
     @Test
     public void testMaximumAllowedConnectionsOverSSL() throws JMSException, NamingException, InterruptedException {
         try {
-            Connection connection = Utils.getSSLConnection(USER2_KEYSTORE, USER2_KEYSTORE_PASSWORD, USER2_KEYSTORE_ALIAS);
+            Connection connection = Utils.getSSLConnectionBuilder().keystore(USER2_KEYSTORE).keystorePassword(USER2_KEYSTORE_PASSWORD).keystoreAlias(USER2_KEYSTORE_ALIAS).build();
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
-            Connection connection2 = Utils.getSSLConnection(USER2_KEYSTORE, USER2_KEYSTORE_PASSWORD, USER2_KEYSTORE_ALIAS);
+            Connection connection2 = Utils.getSSLConnectionBuilder().keystore(USER2_KEYSTORE).keystorePassword(USER2_KEYSTORE_PASSWORD).keystoreAlias(USER2_KEYSTORE_ALIAS).build();
             connection2.start();
             Session session2 = connection2.createSession(false, Session.CLIENT_ACKNOWLEDGE);
-            Connection connection3 = Utils.getSSLConnection(USER2_KEYSTORE, USER2_KEYSTORE_PASSWORD, USER2_KEYSTORE_ALIAS);
+            Connection connection3 = Utils.getSSLConnectionBuilder().keystore(USER2_KEYSTORE).keystorePassword(USER2_KEYSTORE_PASSWORD).keystoreAlias(USER2_KEYSTORE_ALIAS).build();
             connection3.start();
             Session session3 = connection3.createSession(false, Session.CLIENT_ACKNOWLEDGE);
-            Connection connection4 = Utils.getSSLConnection(USER2_KEYSTORE, USER2_KEYSTORE_PASSWORD, USER2_KEYSTORE_ALIAS);
+            Connection connection4 = Utils.getSSLConnectionBuilder().keystore(USER2_KEYSTORE).keystorePassword(USER2_KEYSTORE_PASSWORD).keystoreAlias(USER2_KEYSTORE_ALIAS).build();
             connection4.start();
             Session session4 = connection4.createSession(false, Session.CLIENT_ACKNOWLEDGE);
-            Connection connection5 = Utils.getSSLConnection(USER2_KEYSTORE, USER2_KEYSTORE_PASSWORD, USER2_KEYSTORE_ALIAS);
+            Connection connection5 = Utils.getSSLConnectionBuilder().keystore(USER2_KEYSTORE).keystorePassword(USER2_KEYSTORE_PASSWORD).keystoreAlias(USER2_KEYSTORE_ALIAS).build();
             connection5.start();
             Session session5 = connection5.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
             try
             {
-                Connection connection6 = Utils.getSSLConnection(USER2_KEYSTORE, USER2_KEYSTORE_PASSWORD, USER2_KEYSTORE_ALIAS);
+                Connection connection6 = Utils.getSSLConnectionBuilder().keystore(USER2_KEYSTORE).keystorePassword(USER2_KEYSTORE_PASSWORD).keystoreAlias(USER2_KEYSTORE_ALIAS).build();
                 connection6.start();
                 Session session6 = connection6.createSession(false, Session.CLIENT_ACKNOWLEDGE);
                 fail("Managed to open 6th connection");
