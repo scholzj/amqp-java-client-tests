@@ -17,15 +17,15 @@ import java.util.Map;
 /**
  * Created by schojak on 7.10.15.
  */
+@SuppressWarnings("ALL")
 public class GlobalUtils
 {
-    private static Connection qmfConnection = null;
     private static Console qmfConsole = null;
     
     private static void initialize() throws QmfException
     {
         String connectionUrl = String.format("%1$s/%2$s@%3$s:%4$s", Settings.get("admin.username"), Settings.get("admin.password"), Settings.get("broker.hostname"), Settings.get("broker.tcp_port"));
-        qmfConnection = ConnectionHelper.createConnection(connectionUrl, "{reconnect: true}");
+        Connection qmfConnection = ConnectionHelper.createConnection(connectionUrl, "{reconnect: true}");
 
         qmfConsole = new Console();
         qmfConsole.disableEvents(); // Optimization, as we're only doing getObjects() calls.
@@ -48,8 +48,8 @@ public class GlobalUtils
                 long msgDepth = queue.getLongValue("msgDepth");
                 if (msgDepth > 0)
                 {
-                    Map<String, Object> inArgs = new HashMap<String, Object>();
-                    inArgs.put("request", new Integer(0));
+                    Map<String, Object> inArgs = new HashMap<>();
+                    inArgs.put("request", 0);
                     QmfData purgeArgs = new QmfData(inArgs);
                     queue.invokeMethod("purge", purgeArgs);
                 }

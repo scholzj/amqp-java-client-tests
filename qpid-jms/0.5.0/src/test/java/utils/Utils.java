@@ -25,11 +25,11 @@ public class Utils {
         return getConnectionBuilder().username(ADMIN_USERNAME).password(ADMIN_PASSWORD);
     }
 
-    public static ConnectionBuilder getConnectionBuilder() throws JMSException, NamingException {
+    public static ConnectionBuilder getConnectionBuilder() {
         return new ConnectionBuilder().hostname(HOSTNAME).port(TCP_PORT);
     }
 
-    public static ConnectionBuilder getSSLConnectionBuilder() throws JMSException, NamingException {
+    public static ConnectionBuilder getSSLConnectionBuilder() {
         return new ConnectionBuilder().hostname(HOSTNAME).ssl().port(SSL_PORT).truststore(TRUSTSTORE).truststorePassword(TRUSTSTORE_PASSWORD);
     }
 
@@ -212,9 +212,7 @@ public class Utils {
                 connectionOptionsString = sb.toString();
             }
 
-            String connURL = String.format("%1$s://%2$s:%3$s%4$s", protocol, hostname, port, connectionOptionsString);
-
-            return connURL;
+            return String.format("%1$s://%2$s:%3$s%4$s", protocol, hostname, port, connectionOptionsString);
         }
 
         public Connection build() throws NamingException, JMSException {

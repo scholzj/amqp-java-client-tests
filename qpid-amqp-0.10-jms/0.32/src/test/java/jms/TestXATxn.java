@@ -334,11 +334,7 @@ public class TestXATxn {
 
             fail("XA shoudl be unable to set timeout to more than 600 seconds1");
         }
-        catch (XAException e)
-        {
-            // pass
-        }
-        catch (IllegalStateException e)
+        catch (XAException | IllegalStateException e)
         {
             // pass
         }
@@ -379,7 +375,7 @@ public class TestXATxn {
     public void testTxnTimeout() throws JMSException, NamingException, XAException, InterruptedException {
         int MESSAGE_COUNT = 10;
         int TIMEOUT = 5; // seconds
-        int WAIT_TIME = (TIMEOUT * + 1) * 1000; // milliseconds
+        int WAIT_TIME = (TIMEOUT + 1) * 1000; // milliseconds
 
         XAConnection connection = Utils.getAdminConnectionBuilder().buildXA();
         connection.start();

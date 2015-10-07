@@ -12,9 +12,9 @@ public class MyXid implements Xid
     private static AtomicInteger next = new AtomicInteger();
     private static Random random = new Random();
 
-    protected int formatId;
-    protected byte gtrid[];
-    protected byte bqual[];
+    private int formatId;
+    private byte gtrid[];
+    private byte bqual[];
 
     public static MyXid createRandom() {
         int formatId = next.getAndIncrement();

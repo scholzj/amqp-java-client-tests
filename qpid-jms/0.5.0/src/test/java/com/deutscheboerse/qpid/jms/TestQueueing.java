@@ -23,7 +23,6 @@ public class TestQueueing {
     private static final String DLQ_TOPIC = Settings.get("routing.dlq_topic");
     private static final String DLQ_ROUTING_KEY = Settings.get("routing.dlq_routing_key");
     private static final String RING_QUEUE = Settings.get("routing.ring_queue");
-    private static final String SMALL_QUEUE = Settings.get("routing.small_queue");
 
     @BeforeClass
     public static void prepare() {

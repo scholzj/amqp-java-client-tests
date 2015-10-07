@@ -38,7 +38,7 @@ public class TestFiltering {
         sender.send(msg);
 
         MessageConsumer receiver = session.createConsumer(utils.Utils.getQueue(RTG_QUEUE), "JMSCorrelationID = '" + UUID.randomUUID().toString() + "'");
-        Message notRcvMsg = msg = receiver.receive(1000);
+        Message notRcvMsg = receiver.receive(1000);
 
         assertNull("Received unexpected message", notRcvMsg);
 
