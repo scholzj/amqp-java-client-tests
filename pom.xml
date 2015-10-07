@@ -9,6 +9,7 @@
   <packaging>pom</packaging>
 
   <properties>
+    <qpid.qmf2.version>0.32</qpid.qmf2.version>
     <geronimo.version>1.0</geronimo.version>
     <slf4j.version>1.7.12</slf4j.version>
     <junit.version>4.12</junit.version>
@@ -24,6 +25,11 @@
 
   <dependencyManagement>
     <dependencies>
+      <dependency>
+         <groupId>org.apache.qpid</groupId>
+         <artifactId>qpid-qmf2</artifactId>
+         <version>${qpid.qmf2.version}</version>
+      </dependency>
       <dependency>
         <groupId>org.apache.geronimo.specs</groupId>
         <artifactId>geronimo-jms_1.1_spec</artifactId>

@@ -1,6 +1,5 @@
 package com.deutscheboerse.utils;
 
-import org.apache.qpid.qmf2.common.ObjectId;
 import org.apache.qpid.qmf2.common.QmfData;
 import org.apache.qpid.qmf2.common.QmfException;
 import org.apache.qpid.qmf2.console.Console;
@@ -18,7 +17,8 @@ import java.util.Map;
 /**
  * Created by schojak on 7.10.15.
  */
-public class GlobalUtils {
+public class GlobalUtils
+{
     private static Connection qmfConnection = null;
     private static Console qmfConsole = null;
     
@@ -28,11 +28,12 @@ public class GlobalUtils {
         qmfConnection = ConnectionHelper.createConnection(connectionUrl, "{reconnect: true}");
 
         qmfConsole = new Console();
-        qmfConsole.disableEvents(); // Optimisation, as we're only doing getObjects() calls.
+        qmfConsole.disableEvents(); // Optimization, as we're only doing getObjects() calls.
         qmfConsole.addConnection(qmfConnection);
     }
     
-    public static void purgeQueue(String queueName) throws QmfException {
+    public static void purgeQueue(String queueName) throws QmfException
+    {
         if (qmfConsole == null)
         {
             initialize();
@@ -41,7 +42,6 @@ public class GlobalUtils {
         List<QmfConsoleData> queues = qmfConsole.getObjects("org.apache.qpid.broker", "queue");
         for (QmfConsoleData queue : queues)
         {
-            ObjectId queueId = queue.getObjectId();
             String name = queue.getStringValue("name");
             if (name.equals(queueName))
             {

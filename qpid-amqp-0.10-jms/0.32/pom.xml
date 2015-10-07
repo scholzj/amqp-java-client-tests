@@ -26,6 +26,10 @@
             <version>0.32</version>
         </dependency>
         <dependency>
+            <groupId>org.apache.qpid</groupId>
+            <artifactId>qpid-qmf2</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.apache.geronimo.specs</groupId>
             <artifactId>geronimo-jms_1.1_spec</artifactId>
         </dependency>
@@ -40,14 +44,14 @@
         <dependency>
             <groupId>com.deutscheboerse.java-client-tests</groupId>
             <artifactId>configuration</artifactId>
-            <version>1.0</version>
+            <version>${version}</version>
             <scope>test</scope>
             <type>test-jar</type>
         </dependency>
         <dependency>
             <groupId>com.deutscheboerse.java-client-tests</groupId>
             <artifactId>utils</artifactId>
-            <version>1.0</version>
+            <version>${version}</version>
             <scope>test</scope>
             <type>test-jar</type>
         </dependency>
