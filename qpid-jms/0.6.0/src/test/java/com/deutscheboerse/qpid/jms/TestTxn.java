@@ -57,7 +57,7 @@ public class TestTxn {
 
         session2.commit();
 
-        assertEquals("com.deutscheboerse.qpid.jms.Txn test received unexpected number of messages", MESSAGE_COUNT, receivedNo);
+        assertEquals("Txn test received unexpected number of messages", MESSAGE_COUNT, receivedNo);
 
         // Receiver session without txn
         Session session3 = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
