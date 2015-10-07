@@ -43,5 +43,12 @@
             <scope>test</scope>
             <type>test-jar</type>
         </dependency>
+        <dependency>
+            <groupId>com.deutscheboerse.java-client-tests</groupId>
+            <artifactId>utils</artifactId>
+            <version>1.0</version>
+            <scope>test</scope>
+            <type>test-jar</type>
+        </dependency>
     </dependencies>
 </project>

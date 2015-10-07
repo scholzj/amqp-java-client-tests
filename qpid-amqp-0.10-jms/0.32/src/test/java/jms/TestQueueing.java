@@ -1,6 +1,8 @@
 package jms;
 
 import com.deutscheboerse.configuration.Settings;
+import com.deutscheboerse.utils.GlobalUtils;
+import org.apache.qpid.qmf2.common.QmfException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import utils.Utils;
@@ -98,19 +100,13 @@ public class TestQueueing {
 
     // Works only in 0.6.0 and higher
     @Test
-    public void testFullQueue() throws JMSException, NamingException, InterruptedException {
+    public void testFullQueue() throws JMSException, NamingException, InterruptedException, QmfException {
         Connection connection = Utils.getAdminConnectionBuilder().connectionOption("sync_publish='all'").build();
         connection.start();
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
         // Clean the queue first
-        MessageConsumer receiver = session.createConsumer(Utils.getQueue(SMALL_QUEUE));
-        Message msg;
-
-        while ((msg = receiver.receive(1000)) != null)
-        {
-            msg.acknowledge();
-        }
+        GlobalUtils.purgeQueue(SMALL_QUEUE);
 
         MessageProducer sender = session.createProducer(Utils.getQueue(SMALL_QUEUE));
 
