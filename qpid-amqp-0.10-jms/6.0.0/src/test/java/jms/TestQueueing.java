@@ -46,6 +46,7 @@ public class TestQueueing {
         Message received = receiver.receive(1000);
         assertNotNull("Didn't received expected message", received);
 
+        session.close();
         connection.close();
     }
 
@@ -64,6 +65,7 @@ public class TestQueueing {
         Message received = receiver.receive(1000);
         assertNotNull("Didn't received expected message", received);
 
+        session.close();
         connection.close();
     }
 

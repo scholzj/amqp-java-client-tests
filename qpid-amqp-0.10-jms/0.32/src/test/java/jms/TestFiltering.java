@@ -23,7 +23,6 @@ public class TestFiltering {
         System.setProperty("org.slf4j.simpleLogger.showThreadName", "false");
     }
 
-    // TODO: Enable after 3.2 GA is available
     @Test
     public void testCorrelationIDFilteringJMSStyle() throws JMSException, NamingException, InterruptedException {
         Connection connection = Utils.getAdminConnectionBuilder().build();
