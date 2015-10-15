@@ -11,18 +11,22 @@
 
     <artifactId>qpid-jms-0.6.0</artifactId>
 
-    <repositories>
+    <!--<repositories>
         <repository>
-            <id>apache</id>
+            <id>apache-snapshots</id>
             <url>https://repository.apache.org/content/repositories/snapshots</url>
         </repository>
-    </repositories>
+        <repository>
+            <id>apache-rcs</id>
+            <url>https://repository.apache.org/content/repositories/orgapacheqpid-1046</url>
+        </repository>
+    </repositories>-->
 
     <dependencies>
         <dependency>
             <groupId>org.apache.qpid</groupId>
             <artifactId>qpid-jms-client</artifactId>
-            <version>0.6.0-SNAPSHOT</version>
+            <version>0.6.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.qpid</groupId>
