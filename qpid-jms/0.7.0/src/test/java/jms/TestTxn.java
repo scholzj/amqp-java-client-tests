@@ -1,4 +1,4 @@
-package com.deutscheboerse.qpid.jms;
+package jms;
 
 import com.deutscheboerse.configuration.Settings;
 import org.junit.BeforeClass;
@@ -73,7 +73,7 @@ public class TestTxn {
             received = receiver.receive(1000);
         }
 
-        assertEquals("com.deutscheboerse.qpid.jms.Txn test received unexpected number of messages after commit", 0, receivedNo);
+        assertEquals("Txn test received unexpected number of messages after commit", 0, receivedNo);
 
         connection.close();
     }
@@ -111,7 +111,7 @@ public class TestTxn {
             received = receiver.receive(1000);
         }
 
-        assertEquals("com.deutscheboerse.qpid.jms.Txn test received unexpected number of messages after rollback", 0, receivedNo);
+        assertEquals("Txn test received unexpected number of messages after rollback", 0, receivedNo);
 
         connection.close();
     }
@@ -151,6 +151,8 @@ public class TestTxn {
 
         session2.rollback();
         receiver.close();
+        // Since 0.7.0, session has to be closed to release the messages
+        session2.close();
 
         assertEquals("Txn test received unexpected number of messages", MESSAGE_COUNT, receivedNo);
 
