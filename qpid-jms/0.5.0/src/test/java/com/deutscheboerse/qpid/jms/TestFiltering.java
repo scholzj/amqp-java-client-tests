@@ -44,7 +44,7 @@ public class TestFiltering {
         MessageConsumer receiver2 = session.createConsumer(Utils.getQueue(RTG_QUEUE), "\"amqp.correlation_id\" = '" + correlationID + "'");
         Message rcvMsg = receiver2.receive(1000);
 
-        assertNotNull("Didn't received expected message", rcvMsg);
+        assertNotNull("Didn't receive expected message", rcvMsg);
         assertEquals("CorrelationID is wrong", correlationID, rcvMsg.getJMSCorrelationID());
 
         rcvMsg.acknowledge();
@@ -74,7 +74,7 @@ public class TestFiltering {
         MessageConsumer receiver2 = session.createConsumer(Utils.getQueue(RTG_QUEUE), "filterTest = '" + key + "'");
         Message rcvMsg = receiver2.receive(1000);
 
-        assertNotNull("Didn't received expected message", rcvMsg);
+        assertNotNull("Didn't receive expected message", rcvMsg);
         assertEquals("Key is wrong", key, rcvMsg.getStringProperty("filterTest"));
 
         rcvMsg.acknowledge();

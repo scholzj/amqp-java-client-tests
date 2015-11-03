@@ -119,7 +119,7 @@ public class TestLVQ {
 
             received = (TextMessage)receiver.receive(1000);
         }
-        assertEquals("Didn't received all messages", 0, keys.size());
+        assertEquals("Didn't receive all messages", 0, keys.size());
 
         session.close();
         connection.close();

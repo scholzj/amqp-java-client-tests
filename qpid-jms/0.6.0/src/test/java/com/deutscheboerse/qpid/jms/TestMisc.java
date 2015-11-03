@@ -59,7 +59,7 @@ public class TestMisc {
 
         MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
         Message received = receiver.receive(1000);
-        assertNotNull("Didn't received expected message", received);
+        assertNotNull("Didn't receive expected message", received);
         assertEquals("The Message IDs are different", msg.getJMSMessageID(), received.getJMSMessageID());
 
         connection.close();
@@ -79,7 +79,7 @@ public class TestMisc {
 
         MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
         Message received = receiver.receive(1000);
-        assertNotNull("Didn't received expected message", received);
+        assertNotNull("Didn't receive expected message", received);
         assertEquals("The Message IDs are different", msg.getJMSMessageID(), received.getJMSMessageID());
 
         connection.close();

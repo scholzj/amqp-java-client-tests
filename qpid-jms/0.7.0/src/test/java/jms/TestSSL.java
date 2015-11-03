@@ -109,7 +109,7 @@ public class TestSSL {
         }
         catch (JMSException e)
         {
-            fail("Didn't managed to connect with disabled hostname verification!");
+            fail("Didn't manage to connect with disabled hostname verification!");
         }
     }
 
@@ -150,7 +150,7 @@ public class TestSSL {
         }
         catch (JMSException e)
         {
-            fail("Didn't managed to connect with disabled server certificate validation!");
+            fail("Didn't manage to connect with disabled server certificate validation!");
         }
     }
 

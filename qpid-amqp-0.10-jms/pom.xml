@@ -2,20 +2,21 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+  <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <artifactId>java-client-tests</artifactId>
-        <groupId>com.deutscheboerse.java-client-tests</groupId>
-        <version>1.0</version>
-    </parent>
+  <parent>
+    <artifactId>java-client-tests</artifactId>
+    <groupId>com.deutscheboerse.java-client-tests</groupId>
+    <version>1.0</version>
+  </parent>
 
-    <artifactId>qpid-amqp-0.10-jms</artifactId>
+  <artifactId>qpid-amqp-0.10-jms</artifactId>
 
-    <packaging>pom</packaging>
-    <modules>
-        <module>0.32</module>
-        <module>6.0.0</module>
-    </modules>
+  <packaging>pom</packaging>
+  <modules>
+    <module>common-tests</module>
+    <module>0.32</module>
+    <module>6.0.0</module>
+  </modules>
 
 </project>

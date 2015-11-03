@@ -43,7 +43,7 @@ public class TestQueueing {
 
         MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
         Message received = receiver.receive(1000);
-        assertNotNull("Didn't received expected message", received);
+        assertNotNull("Didn't receive expected message", received);
 
         connection.close();
     }
@@ -61,7 +61,7 @@ public class TestQueueing {
 
         MessageConsumer receiver = session.createConsumer(Utils.getQueue(DLQ_QUEUE));
         Message received = receiver.receive(1000);
-        assertNotNull("Didn't received expected message", received);
+        assertNotNull("Didn't receive expected message", received);
 
         connection.close();
     }

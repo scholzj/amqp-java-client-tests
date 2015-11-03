@@ -230,7 +230,7 @@ public class Utils {
             return String.format("amqp://%1$s:%2$s@%3$s/?brokerlist='%4$s'%5$s", username, password, clientID, brokerList, connectionOptionsString);
         }
 
-        public Connection build() throws NamingException, JMSException {
+        public AutoCloseableConnection build() throws NamingException, JMSException {
             Properties props = new Properties();
             props.setProperty("java.naming.factory.initial", "org.apache.qpid.jndi.PropertiesFileInitialContextFactory");
             props.setProperty("connectionfactory.connection", url());
@@ -238,10 +238,10 @@ public class Utils {
             InitialContext ctx = new InitialContext(props);
             ConnectionFactory fact = (ConnectionFactory) ctx.lookup("connection");
 
-            return fact.createConnection();
+            return new AutoCloseableConnection(fact.createConnection());
         }
 
-        public XAConnection buildXA() throws NamingException, JMSException {
+        public AutoCloseableXAConnection buildXA() throws NamingException, JMSException {
             Properties props = new Properties();
             props.setProperty("java.naming.factory.initial", "org.apache.qpid.jndi.PropertiesFileInitialContextFactory");
             props.setProperty("connectionfactory.connection", url());
@@ -249,7 +249,7 @@ public class Utils {
             InitialContext ctx = new InitialContext(props);
             XAQueueConnectionFactory fact = (XAQueueConnectionFactory) ctx.lookup("connection");
 
-            return fact.createXAConnection();
+            return new AutoCloseableXAConnection(fact.createXAConnection());
         }
     }
 
