@@ -4,13 +4,13 @@ import javax.jms.JMSException;
 import javax.naming.NamingException;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import utils.Utils;
 
 public class TestMisc extends Misc {
 
     @BeforeClass
-    @Override
     public void prepare() {
-        super.prepare();
+        super.prepare(new Utils());
     }
 
     // Test the sender rollback feature

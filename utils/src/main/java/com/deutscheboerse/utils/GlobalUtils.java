@@ -25,7 +25,7 @@ public class GlobalUtils
     private static void initialize() throws QmfException
     {
         String connectionUrl = String.format("%1$s/%2$s@%3$s:%4$s", Settings.get("admin.username"), Settings.get("admin.password"), Settings.get("broker.hostname"), Settings.get("broker.tcp_port"));
-        Connection qmfConnection = ConnectionHelper.createConnection(connectionUrl, "{reconnect: true}");
+        Connection qmfConnection = ConnectionHelper.createConnection(connectionUrl, "{reconnect: true, sync_publish: all, sync_ack: true}");
 
         qmfConsole = new Console();
         qmfConsole.disableEvents(); // Optimization, as we're only doing getObjects() calls.

@@ -1,7 +1,6 @@
 package jms;
 
 import com.deutscheboerse.configuration.Settings;
-import utils.Utils;
 
 import javax.jms.*;
 import javax.naming.NamingException;
@@ -16,18 +15,13 @@ public class LVQ extends BaseTest {
     private static final String LVQ_QUEUE = Settings.get("routing.lvq_queue");
     private static final String LVQ_KEY = Settings.get("routing.lvq_key");
 
-    @Override
-    public void prepare() {
-        super.prepare();
-    }
-
     // Test the LVQ feature
     public void testLVQQueueBasic() throws JMSException, NamingException {
-        try (AutoCloseableConnection connection = Utils.getAdminConnectionBuilder().build()) {
+        try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().build()) {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
-            MessageProducer sender = session.createProducer(Utils.getQueue(LVQ_QUEUE));
+            MessageProducer sender = session.createProducer(this.utils.getQueue(LVQ_QUEUE));
 
             Message lvq1 = session.createTextMessage("A");
             lvq1.setStringProperty(LVQ_KEY, "1");
@@ -45,7 +39,7 @@ public class LVQ extends BaseTest {
             lvq4.setStringProperty(LVQ_KEY, "1");
             sender.send(lvq4);
 
-            MessageConsumer receiver = session.createConsumer(Utils.getQueue(LVQ_QUEUE));
+            MessageConsumer receiver = session.createConsumer(this.utils.getQueue(LVQ_QUEUE));
             TextMessage received = (TextMessage) receiver.receive(1000);
 
             if (received == null) {
@@ -64,11 +58,11 @@ public class LVQ extends BaseTest {
     public void testLVQQueueManyMessages() throws JMSException, NamingException {
         int MESSAGE_COUNT = 10000;
 
-        try (AutoCloseableConnection connection = Utils.getAdminConnectionBuilder().build()) {
+        try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().build()) {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
-            MessageProducer sender = session.createProducer(Utils.getQueue(LVQ_QUEUE));
+            MessageProducer sender = session.createProducer(this.utils.getQueue(LVQ_QUEUE));
 
             List<String> keys = new LinkedList<>();
             keys.add("A");
@@ -90,7 +84,7 @@ public class LVQ extends BaseTest {
                 sender.send(lvqMessage);
             }
 
-            MessageConsumer receiver = session.createConsumer(Utils.getQueue(LVQ_QUEUE));
+            MessageConsumer receiver = session.createConsumer(this.utils.getQueue(LVQ_QUEUE));
             TextMessage received = (TextMessage) receiver.receive(1000);
 
             while (received != null) {
@@ -110,11 +104,11 @@ public class LVQ extends BaseTest {
 
     // Test the LVQ feature
     public void testLVQQueueInTxn() throws JMSException, NamingException {
-        try (AutoCloseableConnection connection = Utils.getAdminConnectionBuilder().build()) {
+        try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().build()) {
             connection.start();
             Session session = connection.createSession(true, Session.CLIENT_ACKNOWLEDGE);
 
-            MessageProducer sender = session.createProducer(Utils.getQueue(LVQ_QUEUE));
+            MessageProducer sender = session.createProducer(this.utils.getQueue(LVQ_QUEUE));
 
             Message lvq1 = session.createTextMessage("A");
             lvq1.setStringProperty(LVQ_KEY, "1");
@@ -135,7 +129,7 @@ public class LVQ extends BaseTest {
             session.commit();
 
             Session session2 = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
-            MessageConsumer receiver = session2.createConsumer(Utils.getQueue(LVQ_QUEUE));
+            MessageConsumer receiver = session2.createConsumer(this.utils.getQueue(LVQ_QUEUE));
             TextMessage received = (TextMessage) receiver.receive(1000);
 
             if (received == null) {

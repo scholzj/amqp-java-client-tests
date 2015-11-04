@@ -4,14 +4,13 @@ import javax.jms.*;
 import javax.naming.NamingException;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
+import utils.Utils;
 
 public class TestSSL extends SSL {
 
     @BeforeClass
-    @Override
     public void prepare() {
-        super.prepare();
+        super.prepare(new Utils());
     }
 
     @Test

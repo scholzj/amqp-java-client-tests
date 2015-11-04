@@ -5,14 +5,14 @@ import javax.naming.NamingException;
 import org.apache.qpid.qmf2.common.QmfException;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import utils.Utils;
 
 
 public class TestQueueing extends Queueing {
 
     @BeforeClass
-    @Override
     public void prepare() {
-        super.prepare();
+        super.prepare(new Utils());
     }
 
     @Test

@@ -1,12 +1,10 @@
 package jms;
 
 import com.deutscheboerse.configuration.Settings;
-import utils.Utils;
 
 import javax.jms.*;
 import javax.naming.NamingException;
 import org.testng.Assert;
-
 import utils.AutoCloseableConnection;
 
 public class SSL extends BaseTest {
@@ -37,35 +35,30 @@ public class SSL extends BaseTest {
 
     private static final String RTG_QUEUE = Settings.get("routing.rtg_queue");
 
-    @Override
-    public void prepare() {
-        super.prepare();
-    }
-
     public void testSuccessfullClientAuthentication() throws JMSException, NamingException {
-        try (AutoCloseableConnection connection = Utils.getSSLConnectionBuilder().keystore(USER1_KEYSTORE).keystorePassword(USER1_KEYSTORE_PASSWORD).keystoreAlias(USER1_KEYSTORE_ALIAS).build()) {
+        try (AutoCloseableConnection connection = this.utils.getSSLConnectionBuilder().keystore(USER1_KEYSTORE).keystorePassword(USER1_KEYSTORE_PASSWORD).keystoreAlias(USER1_KEYSTORE_ALIAS).build()) {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
-            MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
+            MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             receiver.receive(1000);
         }
     }
 
     public void testUnsuccessfullClientAuthentication() throws JMSException, NamingException, InterruptedException {
-        try (AutoCloseableConnection connection = Utils.getSSLConnectionBuilder().keystore(USER1_INVALID_KEYSTORE).keystorePassword(USER1_INVALID_KEYSTORE_PASSWORD).keystoreAlias(USER1_INVALID_KEYSTORE_ALIAS).build()) {
+        try (AutoCloseableConnection connection = this.utils.getSSLConnectionBuilder().keystore(USER1_INVALID_KEYSTORE).keystorePassword(USER1_INVALID_KEYSTORE_PASSWORD).keystoreAlias(USER1_INVALID_KEYSTORE_ALIAS).build()) {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
-            MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
+            MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             receiver.receive(1000);
         }
     }
 
     public void testHostnameVerification() throws JMSException, NamingException, InterruptedException {
         // Test that wrong hostname fails
-        try (AutoCloseableConnection connection = Utils.getSSLConnectionBuilder().hostname(IP_ADDRESS).keystore(USER1_KEYSTORE).keystorePassword(USER1_KEYSTORE_PASSWORD).keystoreAlias(USER1_KEYSTORE_ALIAS).build()) {
+        try (AutoCloseableConnection connection = this.utils.getSSLConnectionBuilder().hostname(IP_ADDRESS).keystore(USER1_KEYSTORE).keystorePassword(USER1_KEYSTORE_PASSWORD).keystoreAlias(USER1_KEYSTORE_ALIAS).build()) {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
-            MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
+            MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             Message received = receiver.receive(1000);
             received.acknowledge();
             Assert.fail("Managed to connect with wrong hostname");
@@ -73,10 +66,10 @@ public class SSL extends BaseTest {
         }
 
         // Test that hostname verification can be disabled
-        try (AutoCloseableConnection connection = Utils.getSSLConnectionBuilder().hostname(IP_ADDRESS).keystore(USER1_KEYSTORE).keystorePassword(USER1_KEYSTORE_PASSWORD).keystoreAlias(USER1_KEYSTORE_ALIAS).brokerOption("ssl_verify_hostname='false'").build()) {
+        try (AutoCloseableConnection connection = this.utils.getSSLConnectionBuilder().hostname(IP_ADDRESS).keystore(USER1_KEYSTORE).keystorePassword(USER1_KEYSTORE_PASSWORD).keystoreAlias(USER1_KEYSTORE_ALIAS).brokerOption("ssl_verify_hostname='false'").build()) {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
-            MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
+            MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             receiver.receive(1000);
         }
         catch (JMSException expected) {
@@ -86,10 +79,10 @@ public class SSL extends BaseTest {
 
     public void testWrongServerCertificate() throws JMSException, NamingException, InterruptedException {
         // Test that with invalid truststore the client doesn't connect
-        try (AutoCloseableConnection connection = Utils.getSSLConnectionBuilder().keystore(USER1_KEYSTORE).keystorePassword(USER1_KEYSTORE_PASSWORD).keystoreAlias(USER1_KEYSTORE_ALIAS).truststore(INVALID_TRUSTSTORE).truststorePassword(INVALID_TRUSTSTORE_PASSWORD).build()) {
+        try (AutoCloseableConnection connection = this.utils.getSSLConnectionBuilder().keystore(USER1_KEYSTORE).keystorePassword(USER1_KEYSTORE_PASSWORD).keystoreAlias(USER1_KEYSTORE_ALIAS).truststore(INVALID_TRUSTSTORE).truststorePassword(INVALID_TRUSTSTORE_PASSWORD).build()) {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
-            MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
+            MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             Message received = receiver.receive(1000);
             received.acknowledge();
             Assert.fail("Managed to connect with wrong truststore");
@@ -99,34 +92,34 @@ public class SSL extends BaseTest {
     }
 
     public void testPlainOverSSLWithClientAuth() throws JMSException, NamingException, InterruptedException {
-        try (AutoCloseableConnection connection = Utils.getSSLConnectionBuilder().keystore(USER1_KEYSTORE).keystorePassword(USER1_KEYSTORE_PASSWORD).keystoreAlias(USER1_KEYSTORE_ALIAS).username(ADMIN_USERNAME).password(ADMIN_PASSWORD).brokerOption("sasl_mechs='PLAIN'").build()) {
+        try (AutoCloseableConnection connection = this.utils.getSSLConnectionBuilder().keystore(USER1_KEYSTORE).keystorePassword(USER1_KEYSTORE_PASSWORD).keystoreAlias(USER1_KEYSTORE_ALIAS).username(ADMIN_USERNAME).password(ADMIN_PASSWORD).brokerOption("sasl_mechs='PLAIN'").build()) {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
-            MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
+            MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             receiver.receive(1000);
         }
     }
 
     public void testPlainOverSSL() throws JMSException, NamingException, InterruptedException {
-        try (AutoCloseableConnection connection = Utils.getSSLConnectionBuilder().username(ADMIN_USERNAME).password(ADMIN_PASSWORD).brokerOption("sasl_mechs='PLAIN'").build()) {
+        try (AutoCloseableConnection connection = this.utils.getSSLConnectionBuilder().username(ADMIN_USERNAME).password(ADMIN_PASSWORD).brokerOption("sasl_mechs='PLAIN'").build()) {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
-            MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
+            MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             receiver.receive(1000);
         }
     }
 
     public void testAnonymousOverSSLWithClientAuth() throws JMSException, NamingException, InterruptedException {
-        try (AutoCloseableConnection connection = Utils.getSSLConnectionBuilder().keystore(USER1_KEYSTORE).keystorePassword(USER1_KEYSTORE_PASSWORD).keystoreAlias(USER1_KEYSTORE_ALIAS).brokerOption("sasl_mechs='ANONYMOUS'").build()) {
+        try (AutoCloseableConnection connection = this.utils.getSSLConnectionBuilder().keystore(USER1_KEYSTORE).keystorePassword(USER1_KEYSTORE_PASSWORD).keystoreAlias(USER1_KEYSTORE_ALIAS).brokerOption("sasl_mechs='ANONYMOUS'").build()) {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
-            MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
+            MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             receiver.receive(1000);
         }
     }
 
     public void testSignedByCannotLogin() throws JMSException, NamingException, InterruptedException {
-        try (AutoCloseableConnection connection = Utils.getSSLConnectionBuilder().keystore(USER1_SIGNED_BY_KEYSTORE).keystorePassword(USER1_SIGNED_BY_KEYSTORE_PASSWORD).keystoreAlias(USER1_SIGNED_BY_KEYSTORE_ALIAS).build()) {
+        try (AutoCloseableConnection connection = this.utils.getSSLConnectionBuilder().keystore(USER1_SIGNED_BY_KEYSTORE).keystorePassword(USER1_SIGNED_BY_KEYSTORE_PASSWORD).keystoreAlias(USER1_SIGNED_BY_KEYSTORE_ALIAS).build()) {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
         }
@@ -136,7 +129,7 @@ public class SSL extends BaseTest {
         // Default timeout of 60 seconds would slow down the test too much
         System.setProperty("qpid.ssl_timeout", "5000");
         
-        try (AutoCloseableConnection connection = Utils.getSSLConnectionBuilder().keystore(USER1_KEYSTORE).keystorePassword(USER1_KEYSTORE_PASSWORD).keystoreAlias(USER1_KEYSTORE_ALIAS).port(TCP_PORT).build()) {
+        try (AutoCloseableConnection connection = this.utils.getSSLConnectionBuilder().keystore(USER1_KEYSTORE).keystorePassword(USER1_KEYSTORE_PASSWORD).keystoreAlias(USER1_KEYSTORE_ALIAS).port(TCP_PORT).build()) {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
         } finally {
@@ -146,7 +139,7 @@ public class SSL extends BaseTest {
     }
 
     public void testNonSSLConnectionToSSLPort() throws JMSException, NamingException, InterruptedException {
-        try (AutoCloseableConnection connection = Utils.getAdminConnectionBuilder().port(SSL_PORT).build()) {
+        try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().port(SSL_PORT).build()) {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
         }
@@ -154,25 +147,25 @@ public class SSL extends BaseTest {
 
     public void testMaximumAllowedConnectionsOverSSL() throws JMSException, NamingException, InterruptedException {
         try {
-            Connection connection = Utils.getSSLConnectionBuilder().keystore(USER2_KEYSTORE).keystorePassword(USER2_KEYSTORE_PASSWORD).keystoreAlias(USER2_KEYSTORE_ALIAS).build();
+            Connection connection = this.utils.getSSLConnectionBuilder().keystore(USER2_KEYSTORE).keystorePassword(USER2_KEYSTORE_PASSWORD).keystoreAlias(USER2_KEYSTORE_ALIAS).build();
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
-            Connection connection2 = Utils.getSSLConnectionBuilder().keystore(USER2_KEYSTORE).keystorePassword(USER2_KEYSTORE_PASSWORD).keystoreAlias(USER2_KEYSTORE_ALIAS).build();
+            Connection connection2 = this.utils.getSSLConnectionBuilder().keystore(USER2_KEYSTORE).keystorePassword(USER2_KEYSTORE_PASSWORD).keystoreAlias(USER2_KEYSTORE_ALIAS).build();
             connection2.start();
             Session session2 = connection2.createSession(false, Session.CLIENT_ACKNOWLEDGE);
-            Connection connection3 = Utils.getSSLConnectionBuilder().keystore(USER2_KEYSTORE).keystorePassword(USER2_KEYSTORE_PASSWORD).keystoreAlias(USER2_KEYSTORE_ALIAS).build();
+            Connection connection3 = this.utils.getSSLConnectionBuilder().keystore(USER2_KEYSTORE).keystorePassword(USER2_KEYSTORE_PASSWORD).keystoreAlias(USER2_KEYSTORE_ALIAS).build();
             connection3.start();
             Session session3 = connection3.createSession(false, Session.CLIENT_ACKNOWLEDGE);
-            Connection connection4 = Utils.getSSLConnectionBuilder().keystore(USER2_KEYSTORE).keystorePassword(USER2_KEYSTORE_PASSWORD).keystoreAlias(USER2_KEYSTORE_ALIAS).build();
+            Connection connection4 = this.utils.getSSLConnectionBuilder().keystore(USER2_KEYSTORE).keystorePassword(USER2_KEYSTORE_PASSWORD).keystoreAlias(USER2_KEYSTORE_ALIAS).build();
             connection4.start();
             Session session4 = connection4.createSession(false, Session.CLIENT_ACKNOWLEDGE);
-            Connection connection5 = Utils.getSSLConnectionBuilder().keystore(USER2_KEYSTORE).keystorePassword(USER2_KEYSTORE_PASSWORD).keystoreAlias(USER2_KEYSTORE_ALIAS).build();
+            Connection connection5 = this.utils.getSSLConnectionBuilder().keystore(USER2_KEYSTORE).keystorePassword(USER2_KEYSTORE_PASSWORD).keystoreAlias(USER2_KEYSTORE_ALIAS).build();
             connection5.start();
             Session session5 = connection5.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
             try
             {
-                Connection connection6 = Utils.getSSLConnectionBuilder().keystore(USER2_KEYSTORE).keystorePassword(USER2_KEYSTORE_PASSWORD).keystoreAlias(USER2_KEYSTORE_ALIAS).build();
+                Connection connection6 = this.utils.getSSLConnectionBuilder().keystore(USER2_KEYSTORE).keystorePassword(USER2_KEYSTORE_PASSWORD).keystoreAlias(USER2_KEYSTORE_ALIAS).build();
                 connection6.start();
                 Session session6 = connection6.createSession(false, Session.CLIENT_ACKNOWLEDGE);
                 Assert.fail("Managed to open 6th connection");

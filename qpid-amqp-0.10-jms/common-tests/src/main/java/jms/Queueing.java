@@ -3,7 +3,6 @@ package jms;
 import com.deutscheboerse.configuration.Settings;
 import com.deutscheboerse.utils.GlobalUtils;
 import org.apache.qpid.qmf2.common.QmfException;
-import utils.Utils;
 
 import javax.jms.*;
 import javax.naming.NamingException;
@@ -20,21 +19,16 @@ public class Queueing extends BaseTest {
     private static final String RING_QUEUE = Settings.get("routing.ring_queue");
     private static final String SMALL_QUEUE = Settings.get("routing.small_queue");
 
-    @Override
-    public void prepare() {
-        super.prepare();
-    }
-
     public void testRoutingKey() throws JMSException, NamingException {
-        try (AutoCloseableConnection connection = Utils.getAdminConnectionBuilder().connectionOption("sync_publish='all'").build()) {
+        try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().connectionOption("sync_publish='all'").build()) {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
             
-            MessageProducer sender = session.createProducer(Utils.getTopic(RTG_TOPIC, RTG_ROUTING_KEY));
+            MessageProducer sender = session.createProducer(this.utils.getTopic(RTG_TOPIC, RTG_ROUTING_KEY));
             Message msg = session.createMessage();
             sender.send(msg);
             
-            MessageConsumer receiver = session.createConsumer(Utils.getQueue(RTG_QUEUE));
+            MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             Message received = receiver.receive(5000);
             received.acknowledge();
             Assert.assertNotNull(received, "Didn't receive expected message");
@@ -42,15 +36,15 @@ public class Queueing extends BaseTest {
     }
 
     public void testDeadLetterQueue() throws JMSException, NamingException {
-        try (AutoCloseableConnection connection = Utils.getAdminConnectionBuilder().build()) {
+        try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().build()) {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
             
-            MessageProducer sender = session.createProducer(Utils.getTopic(DLQ_TOPIC, DLQ_ROUTING_KEY));
+            MessageProducer sender = session.createProducer(this.utils.getTopic(DLQ_TOPIC, DLQ_ROUTING_KEY));
             Message msg = session.createMessage();
             sender.send(msg);
             
-            MessageConsumer receiver = session.createConsumer(Utils.getQueue(DLQ_QUEUE));
+            MessageConsumer receiver = session.createConsumer(this.utils.getQueue(DLQ_QUEUE));
             Message received = receiver.receive(1000);
             received.acknowledge();
             Assert.assertNotNull(received, "Didn't receive expected message");
@@ -60,16 +54,16 @@ public class Queueing extends BaseTest {
     public void testRingQueue() throws JMSException, NamingException {
         String messagesToBeSent[] = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
         String messagesToBeReceived[] = {"F", "G", "H", "I", "J"};
-        try (AutoCloseableConnection connection = Utils.getAdminConnectionBuilder().connectionOption("sync_publish='all'").build()) {
+        try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().connectionOption("sync_publish='all'").build()) {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
             
-            MessageProducer sender = session.createProducer(Utils.getQueue(RING_QUEUE));
+            MessageProducer sender = session.createProducer(this.utils.getQueue(RING_QUEUE));
             for (String message : messagesToBeSent) {
                 sender.send(session.createTextMessage(message));
             }
             
-            MessageConsumer receiver = session.createConsumer(Utils.getQueue(RING_QUEUE));
+            MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RING_QUEUE));
             int index = 1;
             for (String expectedMessage : messagesToBeReceived) {
                 Message message = receiver.receive(1000);
@@ -83,14 +77,14 @@ public class Queueing extends BaseTest {
 
     // Works only in 0.6.0 and higher
     public void testFullQueue() throws JMSException, NamingException, InterruptedException, QmfException {
-        try (AutoCloseableConnection connection = Utils.getAdminConnectionBuilder().connectionOption("sync_publish='all'").build()) {
+        try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().connectionOption("sync_publish='all'").build()) {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
             
             // Clean the queue first
             GlobalUtils.purgeQueue(SMALL_QUEUE);
             
-            MessageProducer sender = session.createProducer(Utils.getQueue(SMALL_QUEUE));
+            MessageProducer sender = session.createProducer(this.utils.getQueue(SMALL_QUEUE));
             
             try
             {

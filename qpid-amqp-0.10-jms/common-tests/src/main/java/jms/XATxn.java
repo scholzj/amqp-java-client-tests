@@ -1,8 +1,6 @@
 package jms;
 
 import com.deutscheboerse.configuration.Settings;
-import utils.Utils;
-import utils.MyXid;
 
 import javax.jms.*;
 import javax.jms.IllegalStateException;
@@ -13,26 +11,22 @@ import javax.transaction.xa.Xid;
 import org.testng.Assert;
 import utils.AutoCloseableConnection;
 import utils.AutoCloseableXAConnection;
+import utils.MyXid;
 
 public class XATxn extends BaseTest {
     private static final String TXN_QUEUE = Settings.get("routing.txn_queue");
-    
-    @Override
-    public void prepare() {
-        super.prepare();
-    }
     
     // Test the commit feature
     public void testTxnCommit() throws JMSException, NamingException, XAException {
         int MESSAGE_COUNT = 10;
         
-        try (AutoCloseableXAConnection connection = Utils.getAdminConnectionBuilder().buildXA()) {
+        try (AutoCloseableXAConnection connection = this.utils.getAdminConnectionBuilder().buildXA()) {
             connection.start();
             
             // Sender session
             XASession xaSession = connection.createXASession();
             Session session = xaSession.getSession();
-            MessageProducer sender = session.createProducer(Utils.getQueue(TXN_QUEUE));
+            MessageProducer sender = session.createProducer(this.utils.getQueue(TXN_QUEUE));
             
             XAResource resource = xaSession.getXAResource();
             Xid xid = MyXid.createRandom();
@@ -50,7 +44,7 @@ public class XATxn extends BaseTest {
             // Receiver session Txn
             XASession xaSession2 = connection.createXASession();
             Session session2 = xaSession2.getSession();
-            MessageConsumer receiver = session2.createConsumer(Utils.getQueue(TXN_QUEUE));
+            MessageConsumer receiver = session2.createConsumer(this.utils.getQueue(TXN_QUEUE));
             
             XAResource resource2 = xaSession2.getXAResource();
             Xid xid2 = MyXid.createRandom();
@@ -75,11 +69,11 @@ public class XATxn extends BaseTest {
         }
         
         // Receiver session without txn
-        try (AutoCloseableConnection connection2 = Utils.getAdminConnectionBuilder().build()) {
+        try (AutoCloseableConnection connection2 = this.utils.getAdminConnectionBuilder().build()) {
             connection2.start();
             Session session3 = connection2.createSession(false, Session.CLIENT_ACKNOWLEDGE);
             
-            MessageConsumer receiver = session3.createConsumer(Utils.getQueue(TXN_QUEUE));
+            MessageConsumer receiver = session3.createConsumer(this.utils.getQueue(TXN_QUEUE));
             int receivedNo = 0;
             
             Message received = receiver.receive(1000);
@@ -98,13 +92,13 @@ public class XATxn extends BaseTest {
     public void testTxnSenderRollback() throws JMSException, NamingException, XAException {
         int MESSAGE_COUNT = 10;
         
-        try (AutoCloseableXAConnection connection = Utils.getAdminConnectionBuilder().buildXA()) {
+        try (AutoCloseableXAConnection connection = this.utils.getAdminConnectionBuilder().buildXA()) {
             connection.start();
             
             // Sender session
             XASession xaSession = connection.createXASession();
             Session session = xaSession.getSession();
-            MessageProducer sender = session.createProducer(Utils.getQueue(TXN_QUEUE));
+            MessageProducer sender = session.createProducer(this.utils.getQueue(TXN_QUEUE));
             
             XAResource resource = xaSession.getXAResource();
             Xid xid = MyXid.createRandom();
@@ -121,11 +115,11 @@ public class XATxn extends BaseTest {
         }
         
         // Receiver session without txn
-        try (AutoCloseableConnection connection2 = Utils.getAdminConnectionBuilder().build()) {
+        try (AutoCloseableConnection connection2 = this.utils.getAdminConnectionBuilder().build()) {
             connection2.start();
             Session session2 = connection2.createSession(false, Session.CLIENT_ACKNOWLEDGE);
             
-            MessageConsumer receiver = session2.createConsumer(Utils.getQueue(TXN_QUEUE));
+            MessageConsumer receiver = session2.createConsumer(this.utils.getQueue(TXN_QUEUE));
             int receivedNo = 0;
             
             Message received = receiver.receive(1000);
@@ -144,13 +138,13 @@ public class XATxn extends BaseTest {
     public void testTxnReceiverRollback() throws JMSException, NamingException, XAException {
         int MESSAGE_COUNT = 10;
         
-        try (AutoCloseableXAConnection connection = Utils.getAdminConnectionBuilder().buildXA()) {
+        try (AutoCloseableXAConnection connection = this.utils.getAdminConnectionBuilder().buildXA()) {
             connection.start();
             
             // Sender session
             XASession xaSession = connection.createXASession();
             Session session = xaSession.getSession();
-            MessageProducer sender = session.createProducer(Utils.getQueue(TXN_QUEUE));
+            MessageProducer sender = session.createProducer(this.utils.getQueue(TXN_QUEUE));
             
             XAResource resource = xaSession.getXAResource();
             Xid xid = MyXid.createRandom();
@@ -172,7 +166,7 @@ public class XATxn extends BaseTest {
             // Receiver session Txn
             XASession xaSession2 = connection.createXASession();
             Session session2 = xaSession2.getSession();
-            MessageConsumer receiver = session2.createConsumer(Utils.getQueue(TXN_QUEUE));
+            MessageConsumer receiver = session2.createConsumer(this.utils.getQueue(TXN_QUEUE));
             
             XAResource resource2 = xaSession2.getXAResource();
             Xid xid2 = MyXid.createRandom();
@@ -199,11 +193,11 @@ public class XATxn extends BaseTest {
         }
         
         // Receiver session without txn
-        try (AutoCloseableConnection connection2 = Utils.getAdminConnectionBuilder().build()) {
+        try (AutoCloseableConnection connection2 = this.utils.getAdminConnectionBuilder().build()) {
             connection2.start();
             Session session3 = connection2.createSession(false, Session.CLIENT_ACKNOWLEDGE);
             
-            MessageConsumer receiver = session3.createConsumer(Utils.getQueue(TXN_QUEUE));
+            MessageConsumer receiver = session3.createConsumer(this.utils.getQueue(TXN_QUEUE));
             int receivedNo = 0;
             
             Message received = receiver.receive(1000);
@@ -222,13 +216,13 @@ public class XATxn extends BaseTest {
     public void testTxnCommitLotOfMessages() throws JMSException, NamingException, XAException {
         int MESSAGE_COUNT = 100000;
         
-        try (AutoCloseableXAConnection connection = Utils.getAdminConnectionBuilder().buildXA()) {
+        try (AutoCloseableXAConnection connection = this.utils.getAdminConnectionBuilder().buildXA()) {
             connection.start();
             
             // Sender session
             XASession xaSession = connection.createXASession();
             Session session = xaSession.getSession();
-            MessageProducer sender = session.createProducer(Utils.getQueue(TXN_QUEUE));
+            MessageProducer sender = session.createProducer(this.utils.getQueue(TXN_QUEUE));
             
             XAResource resource = xaSession.getXAResource();
             Xid xid = MyXid.createRandom();
@@ -246,7 +240,7 @@ public class XATxn extends BaseTest {
             // Receiver session Txn
             XASession xaSession2 = connection.createXASession();
             Session session2 = xaSession2.getSession();
-            MessageConsumer receiver = session2.createConsumer(Utils.getQueue(TXN_QUEUE));
+            MessageConsumer receiver = session2.createConsumer(this.utils.getQueue(TXN_QUEUE));
             
             XAResource resource2 = xaSession2.getXAResource();
             Xid xid2 = MyXid.createRandom();
@@ -271,11 +265,11 @@ public class XATxn extends BaseTest {
         }
         
         // Receiver session without txn
-        try (AutoCloseableConnection connection2 = Utils.getAdminConnectionBuilder().build()) {
+        try (AutoCloseableConnection connection2 = this.utils.getAdminConnectionBuilder().build()) {
             connection2.start();
             Session session3 = connection2.createSession(false, Session.CLIENT_ACKNOWLEDGE);
             
-            MessageConsumer receiver = session3.createConsumer(Utils.getQueue(TXN_QUEUE));
+            MessageConsumer receiver = session3.createConsumer(this.utils.getQueue(TXN_QUEUE));
             int receivedNo = 0;
             
             Message received = receiver.receive(1000);
@@ -294,13 +288,13 @@ public class XATxn extends BaseTest {
     public void testTxnMaximumTimeout() throws JMSException, NamingException, XAException {
         int MESSAGE_COUNT = 10;
         
-        try (AutoCloseableXAConnection connection = Utils.getAdminConnectionBuilder().buildXA()) {
+        try (AutoCloseableXAConnection connection = this.utils.getAdminConnectionBuilder().buildXA()) {
             connection.start();
             
             // Sender session
             XASession xaSession = connection.createXASession();
             Session session = xaSession.getSession();
-            MessageProducer sender = session.createProducer(Utils.getQueue(TXN_QUEUE));
+            MessageProducer sender = session.createProducer(this.utils.getQueue(TXN_QUEUE));
             
             try {
                 XAResource resource = xaSession.getXAResource();
@@ -326,12 +320,12 @@ public class XATxn extends BaseTest {
     public void testTxnBelowMaximumTimeout() throws JMSException, NamingException, XAException {
         int MESSAGE_COUNT = 10;
         
-        try (AutoCloseableXAConnection connection = Utils.getAdminConnectionBuilder().buildXA()) {
+        try (AutoCloseableXAConnection connection = this.utils.getAdminConnectionBuilder().buildXA()) {
             connection.start();
             // Sender session
             XASession xaSession = connection.createXASession();
             Session session = xaSession.getSession();
-            MessageProducer sender = session.createProducer(Utils.getQueue(TXN_QUEUE));
+            MessageProducer sender = session.createProducer(this.utils.getQueue(TXN_QUEUE));
             
             XAResource resource = xaSession.getXAResource();
             resource.setTransactionTimeout(600);
@@ -352,13 +346,13 @@ public class XATxn extends BaseTest {
         int TIMEOUT = 5; // seconds
         int WAIT_TIME = (TIMEOUT + 1) * 1000; // milliseconds
         
-        try (AutoCloseableXAConnection connection = Utils.getAdminConnectionBuilder().buildXA()) {
+        try (AutoCloseableXAConnection connection = this.utils.getAdminConnectionBuilder().buildXA()) {
             connection.start();
             
             // Sender session
             XASession xaSession = connection.createXASession();
             Session session = xaSession.getSession();
-            MessageProducer sender = session.createProducer(Utils.getQueue(TXN_QUEUE));
+            MessageProducer sender = session.createProducer(this.utils.getQueue(TXN_QUEUE));
             
             XAResource resource = xaSession.getXAResource();
             resource.setTransactionTimeout(TIMEOUT);
@@ -383,13 +377,13 @@ public class XATxn extends BaseTest {
         int MESSAGE_COUNT = 10;
         int WAIT_TIME = (60 + 1) * 1000; // milliseconds
         
-        try (AutoCloseableXAConnection connection = Utils.getAdminConnectionBuilder().buildXA()) {
+        try (AutoCloseableXAConnection connection = this.utils.getAdminConnectionBuilder().buildXA()) {
             connection.start();
             
             // Sender session
             XASession xaSession = connection.createXASession();
             Session session = xaSession.getSession();
-            MessageProducer sender = session.createProducer(Utils.getQueue(TXN_QUEUE));
+            MessageProducer sender = session.createProducer(this.utils.getQueue(TXN_QUEUE));
             
             XAResource resource = xaSession.getXAResource();
             Xid xid = MyXid.createRandom();

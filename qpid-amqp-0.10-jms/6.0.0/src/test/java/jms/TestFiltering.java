@@ -4,13 +4,13 @@ import javax.jms.*;
 import javax.naming.NamingException;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import utils.Utils;
 
 public class TestFiltering extends Filtering {
 
     @BeforeClass
-    @Override
     public void prepare() {
-        super.prepare();
+        super.prepare(new Utils());
     }
 
     @Test

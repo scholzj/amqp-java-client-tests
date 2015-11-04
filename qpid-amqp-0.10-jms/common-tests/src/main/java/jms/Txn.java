@@ -1,7 +1,6 @@
 package jms;
 
 import com.deutscheboerse.configuration.Settings;
-import utils.Utils;
 
 import javax.jms.*;
 import javax.naming.NamingException;
@@ -11,22 +10,17 @@ import utils.AutoCloseableConnection;
 public class Txn extends BaseTest {
     private static final String TXN_QUEUE = Settings.get("routing.txn_queue");
     
-    @Override
-    public void prepare() {
-        super.prepare();
-    }
-    
     // Test the commit feature
     public void testTxnCommit() throws JMSException, NamingException {
         int MESSAGE_COUNT = 10;
         
-        try (AutoCloseableConnection connection = Utils.getAdminConnectionBuilder().build()) {
+        try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().build()) {
             connection.start();
             
             // Sender session
             Session session = connection.createSession(true, Session.CLIENT_ACKNOWLEDGE);
             
-            MessageProducer sender = session.createProducer(Utils.getQueue(TXN_QUEUE));
+            MessageProducer sender = session.createProducer(this.utils.getQueue(TXN_QUEUE));
             
             for (int i = 0; i < MESSAGE_COUNT; i++) {
                 sender.send(session.createMessage());
@@ -37,7 +31,7 @@ public class Txn extends BaseTest {
             // Receiver session with com.deutscheboerse.qpid.jms.Txn
             Session session2 = connection.createSession(true, Session.CLIENT_ACKNOWLEDGE);
             
-            MessageConsumer receiver = session2.createConsumer(Utils.getQueue(TXN_QUEUE));
+            MessageConsumer receiver = session2.createConsumer(this.utils.getQueue(TXN_QUEUE));
             int receivedNo = 0;
             
             Message received = receiver.receive(1000);
@@ -55,7 +49,7 @@ public class Txn extends BaseTest {
             // Receiver session without txn
             Session session3 = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
             
-            receiver = session3.createConsumer(Utils.getQueue(TXN_QUEUE));
+            receiver = session3.createConsumer(this.utils.getQueue(TXN_QUEUE));
             receivedNo = 0;
             
             received = receiver.receive(1000);
@@ -74,13 +68,13 @@ public class Txn extends BaseTest {
     public void testTxnSenderRollback() throws JMSException, NamingException {
         int MESSAGE_COUNT = 10;
         
-        try (AutoCloseableConnection connection = Utils.getAdminConnectionBuilder().build()) {
+        try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().build()) {
             connection.start();
             
             // Sender session
             Session session = connection.createSession(true, Session.CLIENT_ACKNOWLEDGE);
             
-            MessageProducer sender = session.createProducer(Utils.getQueue(TXN_QUEUE));
+            MessageProducer sender = session.createProducer(this.utils.getQueue(TXN_QUEUE));
             
             for (int i = 0; i < MESSAGE_COUNT; i++) {
                 sender.send(session.createMessage());
@@ -91,7 +85,7 @@ public class Txn extends BaseTest {
             // Receiver session without txn
             Session session3 = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
             
-            MessageConsumer receiver = session3.createConsumer(Utils.getQueue(TXN_QUEUE));
+            MessageConsumer receiver = session3.createConsumer(this.utils.getQueue(TXN_QUEUE));
             int receivedNo = 0;
             
             Message received = receiver.receive(1000);
@@ -110,13 +104,13 @@ public class Txn extends BaseTest {
     public void testTxnReceiverRollback() throws JMSException, NamingException {
         int MESSAGE_COUNT = 10;
         
-        try (AutoCloseableConnection connection = Utils.getAdminConnectionBuilder().build()) {
+        try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().build()) {
             connection.start();
             
             // Sender session
             Session session = connection.createSession(true, Session.CLIENT_ACKNOWLEDGE);
             
-            MessageProducer sender = session.createProducer(Utils.getQueue(TXN_QUEUE));
+            MessageProducer sender = session.createProducer(this.utils.getQueue(TXN_QUEUE));
             
             for (int i = 0; i < MESSAGE_COUNT; i++) {
                 sender.send(session.createMessage());
@@ -127,7 +121,7 @@ public class Txn extends BaseTest {
             // Receiver session with Txn
             Session session2 = connection.createSession(true, Session.AUTO_ACKNOWLEDGE);
             
-            MessageConsumer receiver = session2.createConsumer(Utils.getQueue(TXN_QUEUE));
+            MessageConsumer receiver = session2.createConsumer(this.utils.getQueue(TXN_QUEUE));
             int receivedNo = 0;
             
             Message received = receiver.receive(1000);
@@ -146,7 +140,7 @@ public class Txn extends BaseTest {
             // Receiver session without txn
             Session session3 = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
             
-            receiver = session3.createConsumer(Utils.getQueue(TXN_QUEUE));
+            receiver = session3.createConsumer(this.utils.getQueue(TXN_QUEUE));
             receivedNo = 0;
             
             received = receiver.receive(1000);
@@ -165,13 +159,13 @@ public class Txn extends BaseTest {
     public void testTxnCommitLotOfMessages() throws JMSException, NamingException {
         int MESSAGE_COUNT = 100000;
         
-        try (AutoCloseableConnection connection = Utils.getAdminConnectionBuilder().build()) {
+        try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().build()) {
             connection.start();
             
             // Sender session
             Session session = connection.createSession(true, Session.CLIENT_ACKNOWLEDGE);
             
-            MessageProducer sender = session.createProducer(Utils.getQueue(TXN_QUEUE));
+            MessageProducer sender = session.createProducer(this.utils.getQueue(TXN_QUEUE));
             
             for (int i = 0; i < MESSAGE_COUNT; i++) {
                 sender.send(session.createMessage());
@@ -182,7 +176,7 @@ public class Txn extends BaseTest {
             // Receiver session with Txn
             Session session2 = connection.createSession(true, Session.CLIENT_ACKNOWLEDGE);
             
-            MessageConsumer receiver = session2.createConsumer(Utils.getQueue(TXN_QUEUE));
+            MessageConsumer receiver = session2.createConsumer(this.utils.getQueue(TXN_QUEUE));
             int receivedNo = 0;
             
             Message received = receiver.receive(1000);

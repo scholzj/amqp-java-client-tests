@@ -5,13 +5,13 @@ import javax.naming.NamingException;
 import javax.transaction.xa.XAException;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import utils.Utils;
 
 public class TestXATxn extends XATxn {
     
     @BeforeClass
-    @Override
     public void prepare() {
-        super.prepare();
+        super.prepare(new Utils());
     }
     
     // Test the commit feature

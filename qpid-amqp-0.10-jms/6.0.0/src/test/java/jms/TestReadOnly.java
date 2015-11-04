@@ -6,13 +6,13 @@ import javax.jms.*;
 import javax.naming.NamingException;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import utils.Utils;
 
 public class TestReadOnly extends ReadOnly {
     
     @BeforeClass
-    @Override
     public void prepare() {
-        super.prepare();
+        super.prepare(new Utils());
     }
     
     // Test the read only queue feature
