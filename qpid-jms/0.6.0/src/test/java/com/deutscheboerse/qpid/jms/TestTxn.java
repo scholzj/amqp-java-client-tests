@@ -18,7 +18,7 @@ public class TestTxn {
 
     @BeforeClass
     public static void prepare() {
-        System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "trace");
+        System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "warn");
         System.setProperty("org.slf4j.simpleLogger.showThreadName", "false");
     }
 
@@ -121,7 +121,7 @@ public class TestTxn {
     public void testTxnReceiverRollback() throws JMSException, NamingException {
         int MESSAGE_COUNT = 10;
 
-        Connection connection = Utils.getAdminConnectionBuilder().option("amqp.traceFrames=true").build();
+        Connection connection = Utils.getAdminConnectionBuilder().build();
         connection.start();
 
         // Sender session
