@@ -75,7 +75,7 @@ public class TestLVQ {
     public void testLVQQueueManyMessages() throws JMSException, NamingException {
         int MESSAGE_COUNT = 10000;
 
-        Connection connection = Utils.getAdminConnectionBuilder().option("jms.forceAsyncSend=True").option("jms.validatePropertyNames=False").build();
+        Connection connection = Utils.getAdminConnectionBuilder().syncPublish(false).option("jms.validatePropertyNames=False").build();
         connection.start();
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 

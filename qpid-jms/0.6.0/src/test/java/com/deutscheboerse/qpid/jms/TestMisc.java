@@ -49,7 +49,7 @@ public class TestMisc {
     public void testMessageIDFormatUUID() throws JMSException, NamingException, QmfException {
         GlobalUtils.purgeQueue(RTG_QUEUE);
 
-        Connection connection = Utils.getAdminConnectionBuilder().option("jms.forceAsyncSend=True").option("jms.messageIDType=UUID").build();
+        Connection connection = Utils.getAdminConnectionBuilder().syncPublish(false).option("jms.messageIDType=UUID").build();
         connection.start();
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
@@ -69,7 +69,7 @@ public class TestMisc {
     public void testMessageIDFormatUUIDString() throws JMSException, NamingException, QmfException {
         GlobalUtils.purgeQueue(RTG_QUEUE);
 
-        Connection connection = Utils.getAdminConnectionBuilder().option("jms.forceAsyncSend=True").option("jms.messageIDType=UUID_STRING").build();
+        Connection connection = Utils.getAdminConnectionBuilder().syncPublish(false).option("jms.messageIDType=UUID_STRING").build();
         connection.start();
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 

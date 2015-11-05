@@ -53,8 +53,7 @@ public class TestFiltering {
         connection.close();
     }
 
-    // TODO: Enable after 3.2 GA is available
-    /*@Test
+    @Test
     public void testCorrelationIDFilteringJMSStyle() throws JMSException, NamingException, InterruptedException {
         Connection connection = Utils.getAdminConnectionBuilder().build();
         connection.start();
@@ -68,7 +67,7 @@ public class TestFiltering {
         sender.send(msg);
 
         MessageConsumer receiver = session.createConsumer(utils.Utils.getQueue(RTG_QUEUE), "JMSCorrelationID = '" + UUID.randomUUID().toString() + "'");
-        Message notRcvMsg = msg = receiver.receive(1000);
+        Message notRcvMsg = receiver.receive(1000);
 
         assertNull("Received unexpected message", notRcvMsg);
 
@@ -82,7 +81,7 @@ public class TestFiltering {
 
         session.close();
         connection.close();
-    }*/
+    }
 
     @Test
     public void testPropertiesFilteringWithPeriod() throws JMSException, NamingException, InterruptedException {

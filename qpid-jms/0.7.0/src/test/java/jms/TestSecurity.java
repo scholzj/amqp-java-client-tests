@@ -141,7 +141,7 @@ public class TestSecurity {
     // Works only in 0.6.0 and higher
     @Test(expected = JMSSecurityException.class)
     public void testACLDeniedProducerForbiddenRoutingKey() throws JMSException, NamingException, InterruptedException {
-        Connection connection = Utils.getConnectionBuilder().username(USER1_USERNAME).password(USER1_PASSWORD).option("jms.forceSyncSend=True").build();
+        Connection connection = Utils.getConnectionBuilder().username(USER1_USERNAME).password(USER1_PASSWORD).syncPublish(true).build();
         connection.start();
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 

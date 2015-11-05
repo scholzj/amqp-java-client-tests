@@ -76,6 +76,7 @@ public class Utils {
         private String truststore;
         private String truststorePassword;
         private Boolean ssl = false;
+        private Boolean syncPublish = null;
         private List<String> options = new LinkedList<>();
 
         public ConnectionBuilder() {
@@ -141,6 +142,11 @@ public class Utils {
             return this;
         }
 
+        public ConnectionBuilder syncPublish(Boolean syncPublish) {
+            this.syncPublish = syncPublish;
+            return this;
+        }
+
         private String url() {
             String protocol = "amqp";
             String connectionOptionsString = "";
@@ -197,6 +203,17 @@ public class Utils {
             if (clientID != null)
             {
                 options.add("jms.clientID=" + clientID);
+            }
+
+            if (syncPublish != null)
+            {
+                if (syncPublish) {
+                    options.add("jms.forceSyncSend=True");
+                }
+                else
+                {
+                    options.add("jms.forceAsyncSend=True");
+                }
             }
 
             if (options.size() > 0)
