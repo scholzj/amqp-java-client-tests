@@ -15,6 +15,7 @@
     <packaging>pom</packaging>
     <version>1.0</version>
     <modules>
+        <module>common-tests</module>
         <module>0.5.0</module>
         <module>0.6.0</module>
         <module>0.7.0</module>

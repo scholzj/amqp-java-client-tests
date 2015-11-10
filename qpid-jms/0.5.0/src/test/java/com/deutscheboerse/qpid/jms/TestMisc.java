@@ -1,42 +1,22 @@
 package com.deutscheboerse.qpid.jms;
 
-import com.deutscheboerse.configuration.Settings;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import javax.jms.JMSException;
+import javax.naming.NamingException;
+import jms.Misc;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 import utils.Utils;
 
-import javax.jms.Connection;
-import javax.jms.JMSException;
-import javax.jms.Session;
-import javax.naming.NamingException;
-
-/**
- * Created by schojak on 02.09.2015.
- */
-public class TestMisc {
-    private static final String USER1_USERNAME = Settings.get("user1.username");
-    private static final String USER1_PASSWORD = Settings.get("user1.password");
-
+public class TestMisc extends Misc {
     @BeforeClass
-    public static void prepare() {
-        System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "warn");
-        System.setProperty("org.slf4j.simpleLogger.showThreadName", "false");
+    public void prepare() {
+        super.prepare(new Utils());
     }
 
     // Test the sender rollback feature
     @Test
+    @Override
     public void testDuplicateClientID() throws JMSException, NamingException {
-        Connection connection = Utils.getConnectionBuilder().username(USER1_USERNAME).password(USER1_PASSWORD).clientID("myTestClient").build();
-        connection.start();
-        Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
-
-        Connection connection2 = Utils.getConnectionBuilder().username(USER1_USERNAME).password(USER1_PASSWORD).clientID("myTestClient").build();
-        connection2.start();
-        Session session2 = connection2.createSession(false, Session.CLIENT_ACKNOWLEDGE);
-
-        session.close();
-        connection.close();
-        session2.close();
-        connection2.close();
+        super.testDuplicateClientID();
     }
 }

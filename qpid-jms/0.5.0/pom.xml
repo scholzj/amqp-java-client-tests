@@ -16,31 +16,24 @@
             <groupId>org.apache.qpid</groupId>
             <artifactId>qpid-jms-client</artifactId>
             <version>0.5.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-jms_1.1_spec</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.deutscheboerse.java-client-tests</groupId>
-            <artifactId>configuration</artifactId>
-            <version>1.0</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>com.deutscheboerse.java-client-tests</groupId>
-            <artifactId>utils</artifactId>
-            <version>1.0</version>
-            <scope>test</scope>
-        </dependency>
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.deutscheboerse.java-client-tests</groupId>
+      <artifactId>qpid-amqp-jms-common-tests</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
     </dependencies>
 
 </project>
