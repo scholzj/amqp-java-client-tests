@@ -1,9 +1,11 @@
 package jms;
 
+import com.deutscheboerse.utils.GlobalUtils;
 import javax.jms.JMSException;
 import javax.naming.NamingException;
 import org.apache.qpid.qmf2.common.QmfException;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import utils.Utils;
 
@@ -12,6 +14,11 @@ public class TestQueueing extends Queueing {
     @BeforeClass
     public void prepare() {
         super.prepare(new Utils());
+    }
+    
+    @BeforeMethod
+    public void deleteAllQueues() {
+        GlobalUtils.getInstance().purgeAllQueues();
     }
     
     @Test

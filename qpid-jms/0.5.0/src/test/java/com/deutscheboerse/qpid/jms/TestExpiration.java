@@ -1,20 +1,27 @@
 package com.deutscheboerse.qpid.jms;
 
+import com.deutscheboerse.utils.GlobalUtils;
 import utils.Utils;
 
 import javax.jms.*;
 import javax.naming.NamingException;
 import jms.Expiration;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class TestExpiration extends Expiration {
-
+    
     @BeforeClass
     public void prepare() {
         super.prepare(new Utils());
     }
-
+    
+    @BeforeMethod
+    public void deleteAllQueues() {
+        GlobalUtils.getInstance().purgeAllQueues();
+    }
+    
     // Test the sender rollback feature
     @Test
     @Override

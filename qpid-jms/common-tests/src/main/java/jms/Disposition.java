@@ -27,9 +27,6 @@ public class Disposition extends BaseTest {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
             
-            // Clean the queue first
-            GlobalUtils.purgeQueue(RTG_QUEUE);
-            
             MessageProducer sender = session.createProducer(this.utils.getQueue(RTG_QUEUE));
             Message msg = session.createMessage();
             sender.send(msg);
@@ -89,9 +86,6 @@ public class Disposition extends BaseTest {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
             
-            // Clean the queue first
-            GlobalUtils.purgeQueue(RTG_QUEUE);
-            
             MessageProducer sender = session.createProducer(this.utils.getQueue(RTG_QUEUE));
             Message msg = session.createMessage();
             sender.send(msg);
@@ -127,9 +121,6 @@ public class Disposition extends BaseTest {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
             
-            // Clean the queue first
-            GlobalUtils.purgeQueue(RTG_QUEUE);
-            
             MessageProducer sender = session.createProducer(this.utils.getQueue(RTG_QUEUE));
             Message msg = session.createMessage();
             sender.send(msg);
@@ -162,9 +153,6 @@ public class Disposition extends BaseTest {
         try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().build()) {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
-            
-            // Clean the queue first
-            GlobalUtils.purgeQueue(RTG_QUEUE);
             
             MessageProducer sender = session.createProducer(this.utils.getQueue(RTG_QUEUE));
             Message msg = session.createMessage();

@@ -31,8 +31,6 @@ public class Misc extends BaseTest {
     }
     
     public void testMessageIDFormatUUID() throws JMSException, NamingException, QmfException {
-        GlobalUtils.purgeQueue(RTG_QUEUE);
-        
         try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().syncPublish(false).brokerOption("jms.messageIDType=UUID").build()) {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
@@ -49,8 +47,6 @@ public class Misc extends BaseTest {
     }
     
     public void testMessageIDFormatUUIDString() throws JMSException, NamingException, QmfException {
-        GlobalUtils.purgeQueue(RTG_QUEUE);
-        
         try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().syncPublish(false).brokerOption("jms.messageIDType=UUID_STRING").build()) {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);

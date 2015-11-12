@@ -19,9 +19,6 @@ public class ReadOnly extends BaseTest {
     public void testReadOnlyQueue() throws JMSException, NamingException, QmfException {
         int MESSAGE_COUNT = 10;
         
-        // Clean the queue first
-        GlobalUtils.purgeQueue(RO_QUEUE);
-        
         try (AutoCloseableConnection senderConnection = this.utils.getAdminConnectionBuilder().connectionOption("sync_publish='all'").build()) {
             senderConnection.start();
             
@@ -79,9 +76,6 @@ public class ReadOnly extends BaseTest {
     // Test the read only queue feature with transaction reader
     public void testReadOnlyQueueWithTxn() throws JMSException, NamingException, QmfException {
         int MESSAGE_COUNT = 10;
-        
-        // Clean the queue first
-        GlobalUtils.purgeQueue(RO_QUEUE);
         
         try (AutoCloseableConnection senderConnection = this.utils.getAdminConnectionBuilder().connectionOption("sync_publish='all'").build()) {
             senderConnection.start();

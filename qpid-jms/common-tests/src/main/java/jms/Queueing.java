@@ -83,9 +83,6 @@ public class Queueing extends BaseTest {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
             
-            // Clean the queue first
-            GlobalUtils.purgeQueue(SMALL_QUEUE);
-            
             MessageProducer sender = session.createProducer(this.utils.getQueue(SMALL_QUEUE));
             
             try
