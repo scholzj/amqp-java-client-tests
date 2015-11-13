@@ -5,6 +5,7 @@ import com.deutscheboerse.configuration.Settings;
 import javax.jms.*;
 import javax.naming.NamingException;
 import org.testng.Assert;
+import utils.AbstractConnectionBuilder;
 import utils.AutoCloseableConnection;
 
 public class SSL extends BaseTest {
@@ -144,59 +145,27 @@ public class SSL extends BaseTest {
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
         }
     }
-
+    
     public void testMaximumAllowedConnectionsOverSSL() throws JMSException, NamingException, InterruptedException {
-        try {
-            Connection connection = this.utils.getSSLConnectionBuilder().keystore(USER2_KEYSTORE).keystorePassword(USER2_KEYSTORE_PASSWORD).keystoreAlias(USER2_KEYSTORE_ALIAS).build();
-            connection.start();
-            Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
-            Connection connection2 = this.utils.getSSLConnectionBuilder().keystore(USER2_KEYSTORE).keystorePassword(USER2_KEYSTORE_PASSWORD).keystoreAlias(USER2_KEYSTORE_ALIAS).build();
-            connection2.start();
-            Session session2 = connection2.createSession(false, Session.CLIENT_ACKNOWLEDGE);
-            Connection connection3 = this.utils.getSSLConnectionBuilder().keystore(USER2_KEYSTORE).keystorePassword(USER2_KEYSTORE_PASSWORD).keystoreAlias(USER2_KEYSTORE_ALIAS).build();
-            connection3.start();
-            Session session3 = connection3.createSession(false, Session.CLIENT_ACKNOWLEDGE);
-            Connection connection4 = this.utils.getSSLConnectionBuilder().keystore(USER2_KEYSTORE).keystorePassword(USER2_KEYSTORE_PASSWORD).keystoreAlias(USER2_KEYSTORE_ALIAS).build();
-            connection4.start();
-            Session session4 = connection4.createSession(false, Session.CLIENT_ACKNOWLEDGE);
-            Connection connection5 = this.utils.getSSLConnectionBuilder().keystore(USER2_KEYSTORE).keystorePassword(USER2_KEYSTORE_PASSWORD).keystoreAlias(USER2_KEYSTORE_ALIAS).build();
-            connection5.start();
-            Session session5 = connection5.createSession(false, Session.CLIENT_ACKNOWLEDGE);
-
-            try
-            {
-                Connection connection6 = this.utils.getSSLConnectionBuilder().keystore(USER2_KEYSTORE).keystorePassword(USER2_KEYSTORE_PASSWORD).keystoreAlias(USER2_KEYSTORE_ALIAS).build();
-                connection6.start();
-                Session session6 = connection6.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+        AbstractConnectionBuilder connectionBuilder = this.utils.getSSLConnectionBuilder().keystore(USER2_KEYSTORE).keystorePassword(USER2_KEYSTORE_PASSWORD).keystoreAlias(USER2_KEYSTORE_ALIAS);
+        try (AutoCloseableConnection connection1 = connectionBuilder.build();
+             AutoCloseableConnection connection2 = connectionBuilder.build();
+             AutoCloseableConnection connection3 = connectionBuilder.build();
+             AutoCloseableConnection connection4 = connectionBuilder.build();
+             AutoCloseableConnection connection5 = connectionBuilder.build()) {
+            connection1.start(); connection1.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+            connection2.start(); connection2.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+            connection3.start(); connection3.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+            connection4.start(); connection4.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+            connection5.start(); connection5.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+            try (AutoCloseableConnection connection6 = connectionBuilder.build()) {
+                connection6.start(); connection6.createSession(false, Session.CLIENT_ACKNOWLEDGE);
                 Assert.fail("Managed to open 6th connection");
-                if (session6 != null)
-                {
-                    session6.close();
-                }
-                if (connection6 != null)
-                {
-                    connection6.close();
-                }
+            } catch (JMSException expected) {
             }
-            catch (JMSException e)
-            {
-                // pass
-            }
-
-            session.close();
-            connection.close();
-            session2.close();
-            connection2.close();
-            session3.close();
-            connection3.close();
-            session4.close();
-            connection4.close();
-            session5.close();
-            connection5.close();
-        }
-        catch (JMSException e)
-        {
+        } catch (JMSException e) {
             Assert.fail("Failed to open 5 connections!");
         }
     }
+
 }
