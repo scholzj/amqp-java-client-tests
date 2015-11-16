@@ -10,6 +10,7 @@ import javax.jms.Session;
 import javax.naming.NamingException;
 import org.apache.qpid.qmf2.common.QmfException;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import utils.AbstractUtils;
 import utils.AutoCloseableConnection;
 
@@ -21,7 +22,12 @@ public class Disposition extends BaseTest {
         System.setProperty("org.slf4j.simpleLogger.log.org.apache.qpid.jms.provider.amqp.FRAMES", "trace");
         super.prepare(utils);
     }
-    
+
+    @BeforeMethod
+    public void deleteAllQueues() {
+        GlobalUtils.getInstance().purgeAllQueues();
+    }
+
     public void testAcceptDisposition() throws JMSException, NamingException, QmfException {
         try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().build()) {
             connection.start();
@@ -49,16 +55,12 @@ public class Disposition extends BaseTest {
         }
     }
     
-    // TODO: Rejected messages are discarded by the Qpid broker
-    /*
+    // Note: Rejected messages are discarded by the Qpid broker
     public void testRejectDisposition() throws JMSException, NamingException, QmfException {
         try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().brokerOption("amqp.traceFrames=true").build()) {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
-            
-            // Clean the queue first
-            GlobalUtils.purgeQueue(RTG_QUEUE);
-            
+
             MessageProducer sender = session.createProducer(this.utils.getQueue(RTG_QUEUE));
             Message msg = session.createMessage();
             sender.send(msg);
@@ -74,12 +76,12 @@ public class Disposition extends BaseTest {
             
             receiver.close();
             
-            // Is the rejected message still there
+            // Is the rejected message really gone?
             receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             received = receiver.receive(1000);
-            Assert.assertNotNull(received, "Didn't received rejected message");
+            Assert.assertNull(received, "Received unexpected message");
         }
-    }*/
+    }
     
     public void testReleasedDisposition() throws JMSException, NamingException, QmfException {
         try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().brokerOption("amqp.traceFrames=true").build()) {
@@ -94,6 +96,7 @@ public class Disposition extends BaseTest {
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             Message received = receiver.receive(1000);
             Assert.assertNotNull(received, "Didn't received expected message");
+            Assert.assertEquals(received.getJMSRedelivered(), false, "First receiver should not see the message as redelivered");
             
             // JMS_AMQP_ACK_TYPE=3 ... Released
             received.setIntProperty("JMS_AMQP_ACK_TYPE", 3);
@@ -102,17 +105,16 @@ public class Disposition extends BaseTest {
             // Was the release messages passed again to the same receiver?
             received = receiver.receive(1000);
             Assert.assertNotNull(received, "Didn't received released message again");
-            // TODO: Released messages are set as redelivered
-            //assertEquals("Released message is set as redelivered on a new receiver", false, received.getJMSRedelivered());
-            
+            // Not sure why does Qpid not set is as redelivered when the message is passed to the original receiver. Maybe it makes some sense
+            Assert.assertEquals(received.getJMSRedelivered(), false, "Released message is set as redelivered on the same receiver");
+
             receiver.close();
             
             // Is the released message still there
             receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             received = receiver.receive(1000);
             Assert.assertNotNull(received, "Didn't received released message");
-            // TODO: Released messages are set as redelivered
-            //assertEquals("Released message is set as redelivered on a new receiver", false, received.getJMSRedelivered());
+            Assert.assertEquals(received.getJMSRedelivered(), true, "Released message is set as redelivered on a new receiver");
         }
     }
     
