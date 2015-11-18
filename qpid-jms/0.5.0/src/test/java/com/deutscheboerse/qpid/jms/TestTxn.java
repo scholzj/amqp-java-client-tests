@@ -9,6 +9,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import utils.Utils;
 
+@Test(groups = { "disableInMRG-3.0.0" })
 public class TestTxn extends Txn {
     
     @BeforeClass

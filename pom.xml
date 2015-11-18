@@ -16,6 +16,7 @@
     <commons.cli.version>1.2</commons.cli.version>
     <log4j.version>1.2.17</log4j.version>
     <compiler.plugin.version>3.3</compiler.plugin.version>
+    <surefire.plugin.version>2.19</surefire.plugin.version>
     <assembly.plugin.version>2.5.4</assembly.plugin.version>
     <jar.plugin.version>2.6</jar.plugin.version>
     <jetty.plugin.version>6.1.26</jetty.plugin.version>
@@ -78,6 +79,16 @@
           <configuration>
             <source>1.7</source>
             <target>1.7</target>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>${surefire.plugin.version}</version>
+          <configuration>
+            <suiteXmlFiles>
+              <suiteXmlFile>./mrg-3.2.0.xml</suiteXmlFile>
+            </suiteXmlFiles>
           </configuration>
         </plugin>
       </plugins>

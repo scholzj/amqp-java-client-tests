@@ -20,20 +20,20 @@ public class TestFiltering extends Filtering {
     public void deleteAllQueues() {
         GlobalUtils.getInstance().purgeAllQueues();
     }
-    
-    @Test
+
+    @Test(groups = { "disableInMRG-3.0.0" })
     @Override
     public void testCorrelationIDFilteringAMQPStyle() throws JMSException, NamingException, InterruptedException {
         super.testCorrelationIDFilteringAMQPStyle();
     }
-    
-    @Test
+
+    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0" })
     @Override
     public void testCorrelationIDFilteringJMSStyle() throws JMSException, NamingException, InterruptedException {
         super.testCorrelationIDFilteringJMSStyle();
     }
-    
-    @Test
+
+    @Test(groups = { "disableInMRG-3.0.0" })
     @Override
     public void testPropertiesFilteringWithPeriod() throws JMSException, NamingException, InterruptedException {
         super.testPropertiesFilteringWithPeriod();

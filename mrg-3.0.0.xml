@@ -1,0 +1,16 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="mrg-3.0.0" verbose="1" >
+    <test name="amqp">
+        <groups>
+            <run>
+                <exclude name="disableInMRG-3.0.0"  />
+            </run>
+        </groups>
+
+        <packages>
+            <package name="jms.*" />
+            <package name="com.deutscheboerse.qpid.jms.*" />
+        </packages>
+    </test>
+</suite>

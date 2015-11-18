@@ -21,8 +21,8 @@ public class TestFiltering extends Filtering {
     public void deleteAllQueues() {
         GlobalUtils.getInstance().purgeAllQueues();
     }
-    
-    @Test
+
+    @Test(groups = { "disableInMRG-3.0.0" })
     @Override
     public void testCorrelationIDFilteringAMQPStyle() throws JMSException, NamingException, InterruptedException {
         super.testCorrelationIDFilteringAMQPStyle();

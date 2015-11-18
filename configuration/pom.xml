@@ -7,6 +7,14 @@
   <artifactId>configuration</artifactId>
   <packaging>jar</packaging>
 
+  <dependencies>
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
   <parent>
     <groupId>com.deutscheboerse.java-client-tests</groupId>
     <artifactId>java-client-tests</artifactId>

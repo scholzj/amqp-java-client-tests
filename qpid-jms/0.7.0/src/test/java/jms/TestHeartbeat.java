@@ -9,6 +9,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+@Test(groups = { "disableInMRG-3.0.0" })
 public class TestHeartbeat extends Heartbeat {
     
     @BeforeClass

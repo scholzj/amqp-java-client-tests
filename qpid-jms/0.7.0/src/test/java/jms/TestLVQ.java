@@ -36,7 +36,7 @@ public class TestLVQ extends LVQ {
     }
     
     // Test the LVQ feature
-    @Test
+    @Test(groups = { "disableInMRG-3.0.0" })
     @Override
     public void testLVQQueueInTxn() throws JMSException, NamingException {
         super.testLVQQueueInTxn();

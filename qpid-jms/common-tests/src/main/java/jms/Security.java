@@ -92,7 +92,7 @@ public class Security extends BaseTest {
     }
 
     public void testACLDeniedProducerForbiddenTopic() throws JMSException, NamingException, InterruptedException {
-        try (AutoCloseableConnection connection = this.utils.getConnectionBuilder().username(USER1_USERNAME).password(USER1_PASSWORD).build()) {
+        try (AutoCloseableConnection connection = this.utils.getConnectionBuilder().username(USER1_USERNAME).password(USER1_PASSWORD).syncPublish(true).build()) {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
