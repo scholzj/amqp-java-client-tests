@@ -64,6 +64,7 @@ public class SSL extends BaseTest {
             received.acknowledge();
             Assert.fail("Managed to connect with wrong hostname");
         } catch (JMSException expected) {
+            // "Expected" exception ... nothing to do :-o
         }
 
         // Test that hostname verification can be disabled
@@ -89,6 +90,7 @@ public class SSL extends BaseTest {
             Assert.fail("Managed to connect with wrong truststore");
         }
         catch (JMSException expected) {
+            // "Expected" exception ... nothing to do :-o
         }
     }
 
@@ -162,6 +164,7 @@ public class SSL extends BaseTest {
                 connection6.start(); connection6.createSession(false, Session.CLIENT_ACKNOWLEDGE);
                 Assert.fail("Managed to open 6th connection");
             } catch (JMSException expected) {
+                // "Expected" exception ... nothing to do :-o
             }
         } catch (JMSException e) {
             Assert.fail("Failed to open 5 connections!");

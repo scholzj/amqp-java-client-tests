@@ -6,17 +6,17 @@ import javax.jms.JMSException;
 import javax.naming.NamingException;
 
 public interface AbstractUtils {
-    public AbstractConnectionBuilder getConnectionBuilder();
+    AbstractConnectionBuilder getConnectionBuilder();
 
-    public AbstractConnectionBuilder getAdminConnectionBuilder() throws JMSException, NamingException;
+    AbstractConnectionBuilder getAdminConnectionBuilder() throws JMSException, NamingException;
 
-    public AbstractConnectionBuilder getSSLConnectionBuilder();
+    AbstractConnectionBuilder getSSLConnectionBuilder();
 
-    public Connection getConnection(String connURL) throws JMSException, NamingException;
+    Connection getConnection(String connURL) throws JMSException, NamingException;
     
-    public Destination getQueue(String queueName) throws NamingException;
+    Destination getQueue(String queueName) throws NamingException;
 
-    public Destination getTopic(String topicName, String routingKey) throws NamingException;
+    Destination getTopic(String topicName, String routingKey) throws NamingException;
     
-    public Destination getTopic(String topicName) throws NamingException;
+    Destination getTopic(String topicName) throws NamingException;
 }

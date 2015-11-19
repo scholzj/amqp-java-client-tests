@@ -313,6 +313,7 @@ public class XATxn extends BaseTest {
                 
                 Assert.fail("XA shoudl be unable to set timeout to more than 600 seconds");
             } catch (XAException | IllegalStateException expected) {
+                // "Expected" exception ... nothing to do :-o
             }
         }
     }

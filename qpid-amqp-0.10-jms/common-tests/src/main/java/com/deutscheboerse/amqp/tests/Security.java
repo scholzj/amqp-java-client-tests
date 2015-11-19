@@ -136,6 +136,7 @@ public class Security extends BaseTest {
                 Session session6 = connection6.createSession(false, Session.CLIENT_ACKNOWLEDGE);
                 Assert.fail("Managed to open 6th connection");
             } catch (JMSException expected) {
+                // "Expected" exception ... nothing to do :-o
             }
         } catch (JMSException e) {
             Assert.fail("Failed to open 5 connections!");
