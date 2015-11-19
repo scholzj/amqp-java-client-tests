@@ -9,8 +9,7 @@
         </groups>
 
         <packages>
-            <package name="jms.*" />
-            <package name="com.deutscheboerse.qpid.jms.*" />
+            <package name="com.deutscheboerse.amqp.tests.*" />
         </packages>
     </test>
 </suite>

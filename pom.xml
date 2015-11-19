@@ -87,7 +87,7 @@
           <version>${surefire.plugin.version}</version>
           <configuration>
             <suiteXmlFiles>
-              <suiteXmlFile>./mrg-3.2.0.xml</suiteXmlFile>
+              <suiteXmlFile>${session.executionRootDirectory}/mrg-3.2.0.xml</suiteXmlFile>
             </suiteXmlFiles>
           </configuration>
         </plugin>
