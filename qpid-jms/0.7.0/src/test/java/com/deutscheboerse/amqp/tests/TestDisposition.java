@@ -15,6 +15,7 @@ public class TestDisposition extends Disposition {
     @BeforeClass
     public void prepare() {
         super.prepare(new Utils());
+        System.setProperty("org.slf4j.simpleLogger.log.org.apache.qpid.jms.provider.amqp.FRAMES", "trace");
     }
 
     @Test

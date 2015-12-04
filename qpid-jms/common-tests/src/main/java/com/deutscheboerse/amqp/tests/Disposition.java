@@ -119,7 +119,7 @@ public class Disposition extends BaseTest {
     }
     
     public void testModifiedFailedDisposition() throws JMSException, NamingException, QmfException {
-        try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().build()) {
+        try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().brokerOption("amqp.traceFrames=true").build()) {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
             
@@ -152,7 +152,7 @@ public class Disposition extends BaseTest {
     }
     
     public void testModifiedUndeliverableDisposition() throws JMSException, NamingException, QmfException {
-        try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().build()) {
+        try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().brokerOption("amqp.traceFrames=true").build()) {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
             
@@ -165,7 +165,7 @@ public class Disposition extends BaseTest {
             Message received = receiver.receive(1000);
             Assert.assertNotNull(received, "Didn't received expected message");
             
-            // JMS_AMQP_ACK_TYPE=5 ... Undeliveryble
+            // JMS_AMQP_ACK_TYPE=5 ... Undeliverable
             received.setIntProperty("JMS_AMQP_ACK_TYPE", 5);
             received.acknowledge();
             
@@ -184,5 +184,4 @@ public class Disposition extends BaseTest {
             Assert.assertEquals(true, received.getJMSRedelivered(), "Modified message is not set as redelivered on a new receiver");
         }
     }
-    
 }
