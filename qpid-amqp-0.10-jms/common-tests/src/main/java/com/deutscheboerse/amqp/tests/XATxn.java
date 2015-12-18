@@ -345,7 +345,7 @@ public class XATxn extends BaseTest {
     public void testTxnTimeout() throws JMSException, NamingException, XAException, InterruptedException {
         int MESSAGE_COUNT = 10;
         int TIMEOUT = 5; // seconds
-        int WAIT_TIME = (TIMEOUT + 1) * 1000; // milliseconds
+        int WAIT_TIME = (TIMEOUT * 2) * 1000; // milliseconds
         
         try (AutoCloseableXAConnection connection = this.utils.getAdminConnectionBuilder().buildXA()) {
             connection.start();
