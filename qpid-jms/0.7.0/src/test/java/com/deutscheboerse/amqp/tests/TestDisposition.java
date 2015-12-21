@@ -47,4 +47,22 @@ public class TestDisposition extends Disposition {
     public void testModifiedUndeliverableDisposition() throws JMSException, NamingException, QmfException {
         super.testModifiedUndeliverableDisposition();
     }
+
+    @Test
+    @Override
+    public void testBlockAcceptDisposition() throws JMSException, NamingException, QmfException {
+        super.testBlockAcceptDisposition();
+    }
+
+    @Test
+    @Override
+    public void testBlockRejectDisposition() throws JMSException, NamingException, QmfException {
+        super.testBlockRejectDisposition();
+    }
+
+    @Test
+    @Override
+    public void testBlockReleaseDisposition() throws JMSException, NamingException, QmfException {
+        super.testBlockReleaseDisposition();
+    }
 }

@@ -184,4 +184,162 @@ public class Disposition extends BaseTest {
             Assert.assertEquals(true, received.getJMSRedelivered(), "Modified message is not set as redelivered on a new receiver");
         }
     }
+
+    public void testBlockAcceptDisposition() throws JMSException, NamingException, QmfException {
+        try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().build()) {
+            connection.start();
+            Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+
+            MessageProducer sender = session.createProducer(this.utils.getQueue(RTG_QUEUE));
+            Message msg = session.createMessage();
+            sender.send(msg);
+            Message msg2 = session.createMessage();
+            sender.send(msg2);
+            Message msg3 = session.createMessage();
+            sender.send(msg3);
+            Message msg4 = session.createMessage();
+            sender.send(msg4);
+            Message msg5 = session.createMessage();
+            sender.send(msg5);
+
+            // Receive the messages
+            MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
+            int messageCount = 0;
+            Message lastReceived = null;
+            Message received = receiver.receive(1000);
+
+            while (received != null)
+            {
+                // JMS_AMQP_ACK_TYPE=1 ... Accept
+                received.setIntProperty("JMS_AMQP_ACK_TYPE", 1);
+                lastReceived = received;
+                messageCount++;
+
+                received = receiver.receive(1000);
+            }
+
+            Assert.assertEquals(5, messageCount, "Didn't received expected number of message");
+
+            if (lastReceived != null)
+            {
+                lastReceived.acknowledge();
+            }
+
+            receiver.close();
+
+            // Is the queue really empty?
+            receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
+            received = receiver.receive(1000);
+            Assert.assertNull(received, "Received unexpected message");
+        }
+    }
+
+    public void testBlockRejectDisposition() throws JMSException, NamingException, QmfException {
+        try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().build()) {
+            connection.start();
+            Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+
+            MessageProducer sender = session.createProducer(this.utils.getQueue(RTG_QUEUE));
+            Message msg = session.createMessage();
+            sender.send(msg);
+            Message msg2 = session.createMessage();
+            sender.send(msg2);
+            Message msg3 = session.createMessage();
+            sender.send(msg3);
+            Message msg4 = session.createMessage();
+            sender.send(msg4);
+            Message msg5 = session.createMessage();
+            sender.send(msg5);
+
+            // Receive the messages
+            MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
+            int messageCount = 0;
+            Message lastReceived = null;
+            Message received = receiver.receive(1000);
+
+            while (received != null)
+            {
+                // JMS_AMQP_ACK_TYPE=2 ... Reject
+                received.setIntProperty("JMS_AMQP_ACK_TYPE", 2);
+                lastReceived = received;
+                messageCount++;
+
+                received = receiver.receive(1000);
+            }
+
+            Assert.assertEquals(5, messageCount, "Didn't received expected number of message");
+
+            if (lastReceived != null)
+            {
+                lastReceived.acknowledge();
+            }
+
+            receiver.close();
+
+            // Is the queue really empty?
+            receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
+            received = receiver.receive(1000);
+            Assert.assertNull(received, "Received unexpected message");
+        }
+    }
+
+    public void testBlockReleaseDisposition() throws JMSException, NamingException, QmfException {
+        try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().build()) {
+            connection.start();
+            Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+
+            MessageProducer sender = session.createProducer(this.utils.getQueue(RTG_QUEUE));
+            Message msg = session.createMessage();
+            sender.send(msg);
+            Message msg2 = session.createMessage();
+            sender.send(msg2);
+            Message msg3 = session.createMessage();
+            sender.send(msg3);
+            Message msg4 = session.createMessage();
+            sender.send(msg4);
+            Message msg5 = session.createMessage();
+            sender.send(msg5);
+
+            // Receive the messages
+            MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
+            int messageCount = 0;
+            Message lastReceived = null;
+            Message received = receiver.receive(1000);
+
+            while (received != null)
+            {
+                // JMS_AMQP_ACK_TYPE=3 ... Released
+                received.setIntProperty("JMS_AMQP_ACK_TYPE", 3);
+                lastReceived = received;
+                messageCount++;
+
+                received = receiver.receive(1000);
+            }
+
+            Assert.assertEquals(5, messageCount, "Didn't received expected number of message");
+
+            if (lastReceived != null)
+            {
+                lastReceived.acknowledge();
+            }
+
+            receiver.close();
+
+            // Are the messages still inthe queue?
+            receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
+            messageCount = 0;
+            received = receiver.receive(1000);
+
+            while (received != null)
+            {
+                Assert.assertEquals(received.getJMSRedelivered(), true, "Released message number " + messageCount + " is set as redelivered on a new receiver");
+                messageCount++;
+                received.acknowledge();
+
+                received = receiver.receive(1000);
+            }
+
+            Assert.assertEquals(5, messageCount, "Didn't received expected number of peviously released message");
+        }
+    }
 }
