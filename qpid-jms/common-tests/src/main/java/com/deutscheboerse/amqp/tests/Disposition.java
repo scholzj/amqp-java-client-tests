@@ -105,7 +105,6 @@ public class Disposition extends BaseTest {
             // Was the release messages passed again to the same receiver?
             received = receiver.receive(1000);
             Assert.assertNotNull(received, "Didn't received released message again");
-            // Not sure why does Qpid not set is as redelivered when the message is passed to the original receiver. Maybe it makes some sense
             Assert.assertEquals(received.getJMSRedelivered(), false, "Released message is set as redelivered on the same receiver");
 
             receiver.close();
@@ -325,14 +324,13 @@ public class Disposition extends BaseTest {
 
             receiver.close();
 
-            // Are the messages still inthe queue?
+            // Are the messages still in the queue?
             receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             messageCount = 0;
             received = receiver.receive(1000);
 
             while (received != null)
             {
-                Assert.assertEquals(received.getJMSRedelivered(), true, "Released message number " + messageCount + " is set as redelivered on a new receiver");
                 messageCount++;
                 received.acknowledge();
 
