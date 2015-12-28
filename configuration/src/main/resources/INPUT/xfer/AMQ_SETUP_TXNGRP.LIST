@@ -1,0 +1,16 @@
+###
+# The fields have following meaning:
+#
+# Transaction group ID
+# Transaction group type
+# Purge flag (Y/N)
+# Queue count
+# Queue size
+# Number of pages held in memory
+# Page factor / size
+# Stop size in %
+# Resume size in %
+# Stop count in %
+# Resume count in %
+#
+ReqResp,regular,True,1000,1024000,0,0,0,0,0,0

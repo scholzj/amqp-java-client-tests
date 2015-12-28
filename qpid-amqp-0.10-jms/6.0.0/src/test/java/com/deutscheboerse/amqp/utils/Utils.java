@@ -73,4 +73,14 @@ public class Utils implements AbstractUtils {
         return (Destination)ctx.lookup("topic");
     }
 
+    @Override
+    public Destination getDestinationFromAddress(String address) throws NamingException {
+        Properties props = new Properties();
+        props.setProperty("java.naming.factory.initial", "org.apache.qpid.jndi.PropertiesFileInitialContextFactory");
+        props.setProperty("destination.address", address);
+
+        InitialContext ctx = new InitialContext(props);
+
+        return (Destination)ctx.lookup("address");
+    }
 }

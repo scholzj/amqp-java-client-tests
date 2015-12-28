@@ -41,6 +41,8 @@ public class GlobalUtils {
         queuesToBeDeleted.add(Settings.get("routing.forbidden_routing_key"));
         queuesToBeDeleted.add(Settings.get("routing.read_only_queue"));
         queuesToBeDeleted.add(Settings.get("routing.rtg_queue"));
+        queuesToBeDeleted.add(Settings.get("routing.response_fixed_queue"));
+        queuesToBeDeleted.add(Settings.get("routing.request_queue"));
         
         
         try {

@@ -168,7 +168,7 @@ public class Disposition extends BaseTest {
             received.setIntProperty("JMS_AMQP_ACK_TYPE", 5);
             received.acknowledge();
             
-            // TODO: I don't think the message should be delivered again
+            // TODO: I don't think the message should be delivered again - to be fixed in MRG-M 3.3
             // Was the modified messages passed again to the same receiver?
             received = receiver.receive(1000);
             Assert.assertNotNull(received, "Didn't received modified message again");

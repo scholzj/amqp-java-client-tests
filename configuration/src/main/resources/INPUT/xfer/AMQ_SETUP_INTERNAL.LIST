@@ -1,2 +1,2 @@
-user1,true,true,lvqQueue|txnQueue|ttlQueue|dlqQueue|rtgQueue|smallQueue|ringQueue|readOnlyQueue,lvqQueue|txnQueue|ttlQueue|dlqQueue|rtgQueue|smallQueue|ringQueue|readOnlyQueue,,
+user1,true,true,lvqQueue|txnQueue|ttlQueue|dlqQueue|rtgQueue|smallQueue|ringQueue|readOnlyQueue,lvqQueue|txnQueue|ttlQueue|dlqQueue|rtgQueue|smallQueue|ringQueue|readOnlyQueue,ReqResp,ReqResp
 user2,true,true,forbiddenQueue,forbiddenQueue,,

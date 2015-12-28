@@ -1,14 +1,16 @@
 package com.deutscheboerse.amqp.tests;
 
 import com.deutscheboerse.amqp.utils.GlobalUtils;
-import javax.jms.JMSException;
-import javax.naming.NamingException;
+import com.deutscheboerse.amqp.utils.Utils;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import com.deutscheboerse.amqp.utils.Utils;
 
-public class TestExpiration extends Expiration {
+import javax.jms.JMSException;
+import javax.jms.JMSSecurityException;
+import javax.naming.NamingException;
+
+public class TestRequestResponse extends RequestResponse {
     
     @BeforeClass
     public void prepare() {
@@ -22,7 +24,7 @@ public class TestExpiration extends Expiration {
     
     @Test
     @Override
-    public void testMessageExpiration() throws JMSException, NamingException, InterruptedException {
-        super.testMessageExpiration();
+    public void testResponseQueue() throws JMSException, NamingException, InterruptedException {
+        super.testResponseQueue();
     }
 }

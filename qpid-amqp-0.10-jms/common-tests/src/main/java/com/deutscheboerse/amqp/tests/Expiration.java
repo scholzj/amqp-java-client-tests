@@ -16,7 +16,6 @@ public class Expiration extends BaseTest {
     private static final int EXPIRATION_TIME = 500; // milliseconds
     private static final String TTL_QUEUE = Settings.get("routing.ttl_queue");
 
-    // Test the sender rollback feature
     public void testMessageExpiration() throws JMSException, NamingException, InterruptedException {
         try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().build()) {
             connection.start();

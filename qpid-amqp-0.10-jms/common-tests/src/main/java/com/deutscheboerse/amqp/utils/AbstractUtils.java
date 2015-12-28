@@ -19,4 +19,6 @@ public interface AbstractUtils {
     Destination getTopic(String topicName, String routingKey) throws NamingException;
     
     Destination getTopic(String topicName) throws NamingException;
+
+    Destination getDestinationFromAddress(String address) throws NamingException;
 }
