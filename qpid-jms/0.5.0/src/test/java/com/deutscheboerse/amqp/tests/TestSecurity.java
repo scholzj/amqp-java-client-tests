@@ -62,13 +62,7 @@ public class TestSecurity extends Security {
     public void testACLDeniedConsumer() throws JMSException, NamingException, InterruptedException {
         super.testACLDeniedConsumer();
     }
-    
-    @Test(expectedExceptions = JMSException.class, timeOut = 10000, groups = { "disableInMRG-3.0.0" })
-    @Override
-    public void testACLDeniedProducerForbiddenTopic() throws JMSException, NamingException, InterruptedException {
-        super.testACLDeniedProducerForbiddenTopic();
-    }
-    
+
     @Test
     @Override
     public void testMaximumAllowedConnections() throws JMSException, NamingException, InterruptedException {
