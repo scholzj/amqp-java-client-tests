@@ -75,7 +75,7 @@ public class SSL extends BaseTest {
             receiver.receive(1000);
         }
         catch (JMSException expected) {
-            Assert.fail("Didn't manage to connect with disabled hostname verification!");
+            Assert.fail("Didn't manage to connect with disabled hostname verification!", expected);
         }
     }
 

@@ -134,7 +134,7 @@ public class SSL extends BaseTest {
             receiver.receive(1000);
         }
     }
-    
+
     public void testCipherSuite3DES() throws JMSException, NamingException, InterruptedException {
         try (AutoCloseableConnection connection = this.utils.getSSLConnectionBuilder().keystore(USER1_KEYSTORE).keystorePassword(USER1_KEYSTORE_PASSWORD).keystoreAlias(USER1_KEYSTORE_ALIAS).brokerOption("transport.enabledCipherSuites=SSL_RSA_WITH_3DES_EDE_CBC_SHA").build()) {
             connection.start();
