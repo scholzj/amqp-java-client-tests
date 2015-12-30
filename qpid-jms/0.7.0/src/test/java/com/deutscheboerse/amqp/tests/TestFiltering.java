@@ -44,5 +44,88 @@ public class TestFiltering extends Filtering {
     public void testPropertiesFilteringWithoutPeriod() throws JMSException, NamingException, InterruptedException {
         super.testPropertiesFilteringWithoutPeriod();
     }
-    
+
+    @Test
+    @Override
+    public void testPropertiesFilteringIn() throws JMSException, NamingException, InterruptedException {
+        super.testPropertiesFilteringIn();
+    }
+
+    @Test
+    @Override
+    public void testPropertiesFilteringBetween() throws JMSException, NamingException, InterruptedException {
+        super.testPropertiesFilteringBetween();
+    }
+
+    @Test
+    @Override
+    public void testPropertiesFilteringLike() throws JMSException, NamingException, InterruptedException {
+        super.testPropertiesFilteringLike();
+    }
+
+    @Test
+    @Override
+    public void testPropertiesFilteringAnd() throws JMSException, NamingException, InterruptedException {
+        super.testPropertiesFilteringAnd();
+    }
+
+    @Test
+    @Override
+    public void testPropertiesFilteringOr() throws JMSException, NamingException, InterruptedException {
+        super.testPropertiesFilteringOr();
+    }
+
+    @Test(groups = { "disableInMRG-3.0.0" })
+    @Override
+    public void testMessageIDFilteringAMQPStyle() throws JMSException, NamingException, InterruptedException {
+        super.testMessageIDFilteringAMQPStyle();
+    }
+
+    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0" })
+    @Override
+    public void testMessageIDFilteringJMSStyle() throws JMSException, NamingException, InterruptedException {
+        super.testMessageIDFilteringJMSStyle();
+    }
+
+    @Test(groups = { "disableInMRG-3.0.0" })
+    @Override
+    public void testPriorityFilteringAMQPStyle() throws JMSException, NamingException, InterruptedException {
+        super.testPriorityFilteringAMQPStyle();
+    }
+
+    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0" })
+    @Override
+    public void testPriorityFilteringJMSStyle() throws JMSException, NamingException, InterruptedException {
+        super.testPriorityFilteringJMSStyle();
+    }
+
+    @Test(groups = { "disableInMRG-3.0.0" })
+    @Override
+    public void testSubjectFilteringAMQPStyle() throws JMSException, NamingException, InterruptedException {
+        super.testSubjectFilteringAMQPStyle();
+    }
+
+    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0" })
+    @Override
+    public void testSubjectFilteringJMSStyle() throws JMSException, NamingException, InterruptedException {
+        super.testSubjectFilteringJMSStyle();
+    }
+
+    /*
+    Message timestamps don't work properly on AMQP 1.0 so far
+     */
+    @Test(groups = { "disableInMRG-3.0.0", "disableInQpid0.34", "disableInMRG-3.2.0" })
+    @Override
+    public void testTimestampFilteringAMQPStyle() throws JMSException, NamingException, InterruptedException {
+        super.testTimestampFilteringAMQPStyle();
+    }
+
+    /*
+    Message timestamps don't work properly on AMQP 1.0 so far
+     */
+    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0", "disableInMRG-3.2.0"})
+    @Override
+    public void testTimestampFilteringJMSStyle() throws JMSException, NamingException, InterruptedException {
+        super.testTimestampFilteringJMSStyle();
+    }
 }
