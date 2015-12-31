@@ -37,4 +37,65 @@ public class TestFiltering extends Filtering {
     public void testPropertiesFilteringWithoutPeriod() throws JMSException, NamingException, InterruptedException {
         super.testPropertiesFilteringWithoutPeriod();
     }
+
+    @Test
+    @Override
+    public void testPropertiesFilteringIn() throws JMSException, NamingException, InterruptedException {
+        super.testPropertiesFilteringIn();
+    }
+
+    @Test
+    @Override
+    public void testPropertiesFilteringBetween() throws JMSException, NamingException, InterruptedException {
+        super.testPropertiesFilteringBetween();
+    }
+
+    @Test
+    @Override
+    public void testPropertiesFilteringLike() throws JMSException, NamingException, InterruptedException {
+        super.testPropertiesFilteringLike();
+    }
+
+    @Test
+    @Override
+    public void testPropertiesFilteringAnd() throws JMSException, NamingException, InterruptedException {
+        super.testPropertiesFilteringAnd();
+    }
+
+    @Test
+    @Override
+    public void testPropertiesFilteringOr() throws JMSException, NamingException, InterruptedException {
+        super.testPropertiesFilteringOr();
+    }
+
+    @Test
+    @Override
+    public void testMessageIDFilteringJMSStyle() throws JMSException, NamingException, InterruptedException {
+        super.testMessageIDFilteringJMSStyle();
+    }
+
+    @Test
+    @Override
+    public void testPriorityFilteringJMSStyle() throws JMSException, NamingException, InterruptedException {
+        super.testPriorityFilteringJMSStyle();
+    }
+
+    @Test
+    @Override
+    public void testJMSTypeFilteringJMSStyle() throws JMSException, NamingException, InterruptedException {
+        super.testJMSTypeFilteringJMSStyle();
+    }
+
+    @Test
+    @Override
+    public void testRoutingKeyFilteringJMSStyle() throws JMSException, NamingException, InterruptedException {
+        super.testRoutingKeyFilteringJMSStyle();
+    }
+
+    // TODO: Enable once we support --enable-timestamps option in broker
+    /*@Test
+    @Override
+    public void testTimestampFilteringJMSStyle() throws JMSException, NamingException, InterruptedException {
+        super.testTimestampFilteringJMSStyle();
+    }*/
 }

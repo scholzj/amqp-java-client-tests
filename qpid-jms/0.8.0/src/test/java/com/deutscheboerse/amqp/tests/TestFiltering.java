@@ -75,7 +75,7 @@ public class TestFiltering extends Filtering {
         super.testPropertiesFilteringOr();
     }
 
-    @Test(groups = { "disableInMRG-3.0.0" })
+    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0" })
     @Override
     public void testMessageIDFilteringAMQPStyle() throws JMSException, NamingException, InterruptedException {
         super.testMessageIDFilteringAMQPStyle();
@@ -87,7 +87,7 @@ public class TestFiltering extends Filtering {
         super.testMessageIDFilteringJMSStyle();
     }
 
-    @Test(groups = { "disableInMRG-3.0.0" })
+    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0" })
     @Override
     public void testPriorityFilteringAMQPStyle() throws JMSException, NamingException, InterruptedException {
         super.testPriorityFilteringAMQPStyle();
@@ -99,7 +99,7 @@ public class TestFiltering extends Filtering {
         super.testPriorityFilteringJMSStyle();
     }
 
-    @Test(groups = { "disableInMRG-3.0.0" })
+    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0" })
     @Override
     public void testSubjectFilteringAMQPStyle() throws JMSException, NamingException, InterruptedException {
         super.testSubjectFilteringAMQPStyle();
@@ -111,19 +111,13 @@ public class TestFiltering extends Filtering {
         super.testSubjectFilteringJMSStyle();
     }
 
-    /*
-    Message timestamps don't work properly on AMQP 1.0 so far
-     */
-    @Test(groups = { "disableInMRG-3.0.0", "disableInQpid0.34", "disableInMRG-3.2.0" })
+    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0" })
     @Override
     public void testTimestampFilteringAMQPStyle() throws JMSException, NamingException, InterruptedException {
         super.testTimestampFilteringAMQPStyle();
     }
 
-    /*
-    Message timestamps don't work properly on AMQP 1.0 so far
-     */
-    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0", "disableInMRG-3.2.0"})
+    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0"})
     @Override
     public void testTimestampFilteringJMSStyle() throws JMSException, NamingException, InterruptedException {
         super.testTimestampFilteringJMSStyle();

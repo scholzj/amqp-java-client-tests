@@ -4,6 +4,7 @@ import com.deutscheboerse.amqp.configuration.Settings;
 
 import javax.jms.*;
 import javax.naming.NamingException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 import org.testng.Assert;
@@ -277,7 +278,7 @@ public class Filtering extends BaseTest {
             Message rcvMsg = receiver2.receive(1000);
             receiver2.close();
 
-            Assert.assertNotNull(rcvMsg, "Received unexpected message - blue & blue");
+            Assert.assertNotNull(rcvMsg, "Didn't receive expected message - blue & blue");
             Assert.assertEquals(key1, rcvMsg.getStringProperty("filterTest1"), "Key1 is wrong");
             Assert.assertEquals(key2, rcvMsg.getStringProperty("filterTest2"), "Key2 is wrong");
 
@@ -285,14 +286,14 @@ public class Filtering extends BaseTest {
             rcvMsg = receiver2.receive(1000);
             receiver2.close();
 
-            Assert.assertNotNull(rcvMsg, "Received unexpected message - red & red");
+            Assert.assertNotNull(rcvMsg, "Didn't receive expected message - red & red");
             Assert.assertEquals(key1, rcvMsg.getStringProperty("filterTest1"), "Key1 is wrong");
             Assert.assertEquals(key2, rcvMsg.getStringProperty("filterTest2"), "Key2 is wrong");
 
             receiver2 = session.createConsumer(this.utils.getQueue(RTG_QUEUE), "filterTest1 = 'blue' or filterTest2 = 'red'");
             rcvMsg = receiver2.receive(1000);
 
-            Assert.assertNotNull(rcvMsg, "Didn't receive expected message");
+            Assert.assertNotNull(rcvMsg, "Didn't receive expected message - blue & red");
             Assert.assertEquals(key1, rcvMsg.getStringProperty("filterTest1"), "Key1 is wrong");
             Assert.assertEquals(key2, rcvMsg.getStringProperty("filterTest2"), "Key2 is wrong");
 
@@ -457,21 +458,24 @@ public class Filtering extends BaseTest {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
-            Date before = new Date();
+            Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.YEAR, -1);
+            Date yesterday = cal.getTime();
 
             MessageProducer sender = session.createProducer(this.utils.getQueue(RTG_QUEUE));
             Message msg = session.createMessage();
             sender.send(msg);
 
-            Date after = new Date();
+            cal = Calendar.getInstance();
+            cal.add(Calendar.YEAR, 1);
+            Date tomorrow = cal.getTime();
 
-            MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE), "\"amqp.creation_time\" > " + after.getTime());
+            MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE), "\"amqp.creation_time\" > " + tomorrow.getTime());
             Message notRcvMsg = receiver.receive(1000);
 
             assertNull(notRcvMsg, "Received unexpected message");
 
-            //MessageConsumer receiver2 = session.createConsumer(this.utils.getQueue(RTG_QUEUE), "\"amqp.creation_time\" >= " + before.getTime());
-            MessageConsumer receiver2 = session.createConsumer(this.utils.getQueue(RTG_QUEUE), "\"amqp.creation_time\" between " + before.getTime() + " and 1551481274580");
+            MessageConsumer receiver2 = session.createConsumer(this.utils.getQueue(RTG_QUEUE), "\"amqp.creation_time\" >= " + yesterday.getTime());
             Message rcvMsg = receiver2.receive(1000);
 
             assertNotNull(rcvMsg, "Didn't receive expected message");
@@ -485,20 +489,24 @@ public class Filtering extends BaseTest {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
-            Date before = new Date();
+            Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.YEAR, -1);
+            Date yesterday = cal.getTime();
 
             MessageProducer sender = session.createProducer(this.utils.getQueue(RTG_QUEUE));
             Message msg = session.createMessage();
             sender.send(msg);
 
-            Date after = new Date();
+            cal = Calendar.getInstance();
+            cal.add(Calendar.YEAR, 1);
+            Date tomorrow = cal.getTime();
 
-            MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE), "JMSTimestamp > " + after.getTime());
+            MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE), "JMSTimestamp > " + tomorrow.getTime());
             Message notRcvMsg = receiver.receive(1000);
 
             assertNull(notRcvMsg, "Received unexpected message");
 
-            MessageConsumer receiver2 = session.createConsumer(this.utils.getQueue(RTG_QUEUE), "JMSTimestamp >= " + before.getTime());
+            MessageConsumer receiver2 = session.createConsumer(this.utils.getQueue(RTG_QUEUE), "JMSTimestamp > " + yesterday.getTime());
             Message rcvMsg = receiver2.receive(1000);
 
             assertNotNull(rcvMsg, "Didn't receive expected message");
