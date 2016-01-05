@@ -21,9 +21,9 @@ public class TestRequestResponse extends RequestResponse {
         GlobalUtils.getInstance().purgeAllQueues();
     }
 
-    /*@Test
+    @Test
     @Override
     public void testResponseQueue() throws JMSException, NamingException, InterruptedException {
         super.testResponseQueue();
-    }*/
+    }
 }

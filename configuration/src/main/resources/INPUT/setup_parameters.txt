@@ -1,1 +1,1 @@
---bus-day-id=setup --setup --no-gen-pass --gen-node-conf
+--bus-day-id=setup --setup --no-gen-pass --gen-node-conf --fixed-response-queues
