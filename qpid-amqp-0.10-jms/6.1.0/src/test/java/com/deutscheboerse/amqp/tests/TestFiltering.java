@@ -92,10 +92,9 @@ public class TestFiltering extends Filtering {
         super.testRoutingKeyFilteringJMSStyle();
     }
 
-    // TODO: Enable once we support --enable-timestamps option in broker
-    /*@Test
+    @Test
     @Override
     public void testTimestampFilteringJMSStyle() throws JMSException, NamingException, InterruptedException {
         super.testTimestampFilteringJMSStyle();
-    }*/
+    }
 }
