@@ -62,7 +62,19 @@ public class TestSSL extends SSL {
     public void testTLSv1() throws JMSException, NamingException, InterruptedException {
         super.testTLSv1();
     }
-    
+
+    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0", "disableInMRG-3.2.0" })
+    @Override
+    public void testTLSv11() throws JMSException, NamingException, InterruptedException {
+        super.testTLSv11();
+    }
+
+    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0", "disableInMRG-3.2.0" })
+    @Override
+    public void testTLSv12() throws JMSException, NamingException, InterruptedException {
+        super.testTLSv12();
+    }
+
     @Test
     @Override
     public void testCipherSuite3DES() throws JMSException, NamingException, InterruptedException {

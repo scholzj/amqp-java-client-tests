@@ -135,6 +135,26 @@ public class SSL extends BaseTest {
         }
     }
 
+    public void testTLSv11() throws JMSException, NamingException, InterruptedException {
+        try (AutoCloseableConnection connection = this.utils.getSSLConnectionBuilder().keystore(USER1_KEYSTORE).keystorePassword(USER1_KEYSTORE_PASSWORD).keystoreAlias(USER1_KEYSTORE_ALIAS).brokerOption("transport.enabledProtocols=TLSv1.1").build()) {
+            connection.start();
+            Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+
+            MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
+            receiver.receive(1000);
+        }
+    }
+
+    public void testTLSv12() throws JMSException, NamingException, InterruptedException {
+        try (AutoCloseableConnection connection = this.utils.getSSLConnectionBuilder().keystore(USER1_KEYSTORE).keystorePassword(USER1_KEYSTORE_PASSWORD).keystoreAlias(USER1_KEYSTORE_ALIAS).brokerOption("transport.enabledProtocols=TLSv1.2").build()) {
+            connection.start();
+            Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+
+            MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
+            receiver.receive(1000);
+        }
+    }
+
     public void testCipherSuite3DES() throws JMSException, NamingException, InterruptedException {
         try (AutoCloseableConnection connection = this.utils.getSSLConnectionBuilder().keystore(USER1_KEYSTORE).keystorePassword(USER1_KEYSTORE_PASSWORD).keystoreAlias(USER1_KEYSTORE_ALIAS).brokerOption("transport.enabledCipherSuites=SSL_RSA_WITH_3DES_EDE_CBC_SHA").build()) {
             connection.start();
