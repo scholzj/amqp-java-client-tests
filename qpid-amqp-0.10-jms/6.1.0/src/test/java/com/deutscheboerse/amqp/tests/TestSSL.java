@@ -23,22 +23,26 @@ public class TestSSL extends SSL {
     }
 
     /*
-    From version 6.1.0, TLSv1 is disabled by default. It has to be enabled, otherwise we will be unable to connect.
-    This method enables it before every method by setting a system property
+    From version 6.1.0, TLSv1 is disabled by default. On older brokers it has to be enabled, otherwise we will be unable
+    to connect (they support only TLSv1, not 1.1 or 1.2). This method enables it before every method by setting a
+    system property
+
+    This method should disabled for newer broker releases with TLSv1.1 and 1.2
      */
-    // TODO: Fix this once TLSv1.1 and 1.2 is supported
-    @BeforeMethod
+    @BeforeMethod(groups = { "disableInQpid0.36"})
     public void enabledTLSv1()
     {
         System.setProperty("qpid.disabled_ssl_protocols", "SSLv3");
     }
 
     /*
-    From version 6.1.0, TLSv1 is disabled by default. It has to be enabled, otherwise we will be unable to connect.
-    This method removes the property which enabled TLSv1, so that it doesn't interfere with other tests.
+    From version 6.1.0, TLSv1 is disabled by default. On older brokers it has to be enabled, otherwise we will be unable
+    to connect (they support only TLSv1, not 1.1 or 1.2). This method removes the property which enabled TLSv1, so that
+    it doesn't interfere with other tests.
+
+    This method should disabled for newer broker releases with TLSv1.1 and 1.2
      */
-    // TODO: Fix this once TLSv1.1 and 1.2 is supported
-    @AfterMethod
+    @AfterMethod(groups = { "disableInQpid0.36"})
     public void disableTLSv1()
     {
         System.clearProperty("qpid.disabled_ssl_protocols");

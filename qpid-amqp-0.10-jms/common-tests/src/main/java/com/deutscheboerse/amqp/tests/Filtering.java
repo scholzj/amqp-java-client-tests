@@ -389,7 +389,7 @@ public class Filtering extends BaseTest {
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
             Calendar cal = Calendar.getInstance();
-            cal.add(Calendar.YEAR, -1);
+            cal.add(Calendar.DAY_OF_YEAR, -1);
             Date yesterday = cal.getTime();
 
             MessageProducer sender = session.createProducer(this.utils.getQueue(RTG_QUEUE));
@@ -403,7 +403,7 @@ public class Filtering extends BaseTest {
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE), "JMSTimestamp > " + tomorrow.getTime()/1000);
             Message notRcvMsg = receiver.receive(1000);
 
-            assertNull(notRcvMsg, "Received unexpected message");
+            assertNull(notRcvMsg, "Received unexpected message for time " + tomorrow.getTime()/1000);
 
             MessageConsumer receiver2 = session.createConsumer(this.utils.getQueue(RTG_QUEUE), "JMSTimestamp > " + yesterday.getTime()/1000);
             Message rcvMsg = receiver2.receive(1000);

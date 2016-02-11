@@ -168,7 +168,7 @@ public class Disposition extends BaseTest {
             received.setIntProperty("JMS_AMQP_ACK_TYPE", 5);
             received.acknowledge();
             
-            // TODO: I don't think the message should be delivered again - to be fixed in MRG-M 3.3
+            // I don't think the message should be delivered again - to be fixed in MRG-M 3.3 / Qpid 0.36
             // Was the modified messages passed again to the same receiver?
             received = receiver.receive(1000);
             Assert.assertNotNull(received, "Didn't received modified message again");
@@ -181,6 +181,40 @@ public class Disposition extends BaseTest {
             received = receiver.receive(1000);
             Assert.assertNotNull(received, "Didn't received released message");
             Assert.assertEquals(true, received.getJMSRedelivered(), "Modified message is not set as redelivered on a new receiver");
+        }
+    }
+
+    /*
+    This is the updated version of the previous test case, which reflects the fix in MRG-M 3.3 / Qpid 0.36
+     */
+    public void testModifiedUndeliverableDispositionFixed() throws JMSException, NamingException, QmfException {
+        try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().brokerOption("amqp.traceFrames=true").build()) {
+            connection.start();
+            Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+
+            MessageProducer sender = session.createProducer(this.utils.getQueue(RTG_QUEUE));
+            Message msg = session.createMessage();
+            sender.send(msg);
+
+            // Acknowledge the message
+            MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
+            Message received = receiver.receive(1000);
+            Assert.assertNotNull(received, "Didn't received expected message");
+
+            // JMS_AMQP_ACK_TYPE=5 ... Undeliverable
+            received.setIntProperty("JMS_AMQP_ACK_TYPE", 5);
+            received.acknowledge();
+
+            // Was the modified messages passed again to the same receiver?
+            received = receiver.receive(1000);
+            Assert.assertNull(received, "Received modified message again");
+
+            receiver.close();
+
+            // Is the modified message still there
+            receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
+            received = receiver.receive(1000);
+            Assert.assertNull(received, "Received released message");
         }
     }
 
