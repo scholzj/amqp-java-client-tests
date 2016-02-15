@@ -32,7 +32,7 @@ public class TestSSL extends SSL {
     @BeforeMethod(groups = { "disableInQpid0.36"})
     public void enabledTLSv1()
     {
-        System.setProperty("qpid.disabled_ssl_protocols", "SSLv3");
+        System.setProperty("qpid.security.tls.protocolWhiteList", "TLSv1, TLSv1.1, TLSv1.2");
     }
 
     /*
@@ -45,7 +45,7 @@ public class TestSSL extends SSL {
     @AfterMethod(groups = { "disableInQpid0.36"})
     public void disableTLSv1()
     {
-        System.clearProperty("qpid.disabled_ssl_protocols");
+        System.clearProperty("qpid.security.tls.protocolWhiteList");
     }
 
     @Test
