@@ -1,7 +1,9 @@
 #!/bin/bash
 
-DOCKER_NETWORK=java_tests_network
-QPIDD_HOST=amqp-host
+DOCKER_NETWORK=java_tests_network-$$
+AMQP_HOST=amqp-host
+AMQP_CONTAINER_NAME=amqp-host-$$
+JAVA_CONTAINER_NAME=java-tests-host-$$
 JAVA_HOST=java-tests-host
 TMP_DIR=
 SUDO=
@@ -56,13 +58,13 @@ function create_network() {
 
 # param: $1 - image version
 function start_qpidd_container() {
-    ${SUDO} docker run -d --net=${DOCKER_NETWORK} --name=${QPIDD_HOST} scholzj/java-client-tests:$1
+    ${SUDO} docker run -d --net=${DOCKER_NETWORK} --name=${AMQP_CONTAINER_NAME} --hostname=${AMQP_HOST} scholzj/java-client-tests:$1
     RESULTS_MSG+="MRG: $1, "
 }
 
 # param: $1 - image version
 function start_tests_container() {
-    ${SUDO} docker run -d -it --net=${DOCKER_NETWORK} --name=${JAVA_HOST} maven:$1 bash
+    ${SUDO} docker run -d -it --net=${DOCKER_NETWORK} --name=${JAVA_CONTAINER_NAME} --hostname=${JAVA_HOST} maven:$1 bash
     RESULTS_MSG+="MAVEN IMAGE: $1, "
 }
 
@@ -84,36 +86,35 @@ function prepare_maven_on_container() {
   </proxies>
 </settings>
 EOF
-    ${SUDO} docker cp ${TMP_DIR}/settings.xml ${JAVA_HOST}:/root/.m2/
+    ${SUDO} docker cp ${TMP_DIR}/settings.xml ${JAVA_CONTAINER_NAME}:/root/.m2/
 }
 
 # get source code into the docker container
 function prepare_sources_on_container() {
-    ${SUDO} docker exec ${JAVA_HOST} bash -c "cd && svn export --username tacsvn --password 'makEsTa2u\$7U!#' --non-interactive https://tacsvn.xeop.de/svn/CM/ad/tools/java-client-tests java-client-tests"
+    ${SUDO} docker exec ${JAVA_CONTAINER_NAME} bash -c "cd && svn export --username tacsvn --password 'makEsTa2u\$7U!#' --non-interactive https://tacsvn.xeop.de/svn/CM/ad/tools/java-client-tests java-client-tests"
 }
 
 # copy broker's truststore from one container into another
 function prepare_truststore_on_container() {
-    ${SUDO} docker cp ${QPIDD_HOST}:/var/lib/qpidd/ssl/truststore ${TMP_DIR}/truststore.$$
-    ${SUDO} docker cp ${TMP_DIR}/truststore.$$ ${JAVA_HOST}:/root/java-client-tests/configuration/src/main/resources/${QPIDD_HOST}.truststore
+    ${SUDO} docker cp ${AMQP_CONTAINER_NAME}:/var/lib/qpidd/ssl/truststore ${TMP_DIR}/truststore.$$
+    ${SUDO} docker cp ${TMP_DIR}/truststore.$$ ${JAVA_CONTAINER_NAME}:/root/java-client-tests/configuration/src/main/resources/${AMQP_HOST}.truststore
 }
 
 # modify configuration file used by tests
 function prepare_configuration_for_tests() {
-    local QPIDD_HOST_IP_ADDRESS=$(${SUDO} docker inspect --format "{{ .NetworkSettings.Networks.${DOCKER_NETWORK}.IPAddress }}" ${QPIDD_HOST})
+    local AMQP_CONTAINER_NAME_IP_ADDRESS=$(${SUDO} docker inspect --format "{{ .NetworkSettings.Networks.${DOCKER_NETWORK}.IPAddress }}" ${AMQP_CONTAINER_NAME})
 
-    ${SUDO} docker exec ${JAVA_HOST} bash -c "sed -i \"s/^broker.hostname = .*$/broker.hostname = ${QPIDD_HOST}/g\" /root/java-client-tests/configuration/src/main/resources/settings.properties"
-    ${SUDO} docker exec ${JAVA_HOST} bash -c "sed -i \"s/^broker.ip_address = .*$/broker.ip_address = ${QPIDD_HOST_IP_ADDRESS}/g\" /root/java-client-tests/configuration/src/main/resources/settings.properties"
-    ${SUDO} docker exec ${JAVA_HOST} bash -c "sed -i \"s/^broker.tcp_port = .*$/broker.tcp_port = 5672/g\" /root/java-client-tests/configuration/src/main/resources/settings.properties"
-    ${SUDO} docker exec ${JAVA_HOST} bash -c "sed -i \"s/^broker.ssl_port = .*$/broker.ssl_port = 5671/g\" /root/java-client-tests/configuration/src/main/resources/settings.properties"
-    ${SUDO} docker exec ${JAVA_HOST} bash -c "sed -i \"s/^broker.truststore = .*$/broker.truststore = ${QPIDD_HOST}.truststore/g\" /root/java-client-tests/configuration/src/main/resources/settings.properties"
+    ${SUDO} docker exec ${JAVA_CONTAINER_NAME} bash -c "sed -i \"s/^broker.hostname = .*$/broker.hostname = ${AMQP_HOST}/g\" /root/java-client-tests/configuration/src/main/resources/settings.properties"
+    ${SUDO} docker exec ${JAVA_CONTAINER_NAME} bash -c "sed -i \"s/^broker.ip_address = .*$/broker.ip_address = ${AMQP_CONTAINER_NAME_IP_ADDRESS}/g\" /root/java-client-tests/configuration/src/main/resources/settings.properties"
+    ${SUDO} docker exec ${JAVA_CONTAINER_NAME} bash -c "sed -i \"s/^broker.tcp_port = .*$/broker.tcp_port = 5672/g\" /root/java-client-tests/configuration/src/main/resources/settings.properties"
+    ${SUDO} docker exec ${JAVA_CONTAINER_NAME} bash -c "sed -i \"s/^broker.ssl_port = .*$/broker.ssl_port = 5671/g\" /root/java-client-tests/configuration/src/main/resources/settings.properties"
+    ${SUDO} docker exec ${JAVA_CONTAINER_NAME} bash -c "sed -i \"s/^broker.truststore = .*$/broker.truststore = ${AMQP_HOST}.truststore/g\" /root/java-client-tests/configuration/src/main/resources/settings.properties"
 }
 
 # param: $1 - maven pom xml name
 function execute_tests() {
-    ${SUDO} docker exec ${JAVA_HOST} bash -c "cd && cd java-client-tests && mvn test -B -Dsurefire.suiteXmlFiles=/root/java-client-tests/$1"
+    ${SUDO} docker exec ${JAVA_CONTAINER_NAME} bash -c "cd && cd java-client-tests && mvn test -B -Dsurefire.suiteXmlFiles=/root/java-client-tests/$1"
     local RETURN_CODE=$?
-    #${SUDO} docker attach ${JAVA_HOST}
     RESULTS_MSG+="POM.XML: $1," 
     if [ ${RETURN_CODE} -eq 0 ] ; then
         RESULTS_MSG+=" RESULT: SUCCESS\n"
@@ -124,10 +125,10 @@ function execute_tests() {
 
 function cleanup() {
     rm -rf ${TMP_DIR}
-    ${SUDO} docker stop ${QPIDD_HOST}
-    ${SUDO} docker rm ${QPIDD_HOST}
-    ${SUDO} docker stop ${JAVA_HOST}
-    ${SUDO} docker rm ${JAVA_HOST}
+    ${SUDO} docker stop ${AMQP_CONTAINER_NAME}
+    ${SUDO} docker rm ${AMQP_CONTAINER_NAME}
+    ${SUDO} docker stop ${JAVA_CONTAINER_NAME}
+    ${SUDO} docker rm ${JAVA_CONTAINER_NAME}
     ${SUDO} docker network rm ${DOCKER_NETWORK}
 }
 
