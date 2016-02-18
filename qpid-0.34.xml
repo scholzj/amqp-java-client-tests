@@ -1,7 +1,7 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
 <suite name="qpid-0.34" verbose="1" >
-    <test name="amqp">
+    <test name="qpid-0.34">
         <groups>
             <run>
                 <exclude name="disableInQpid0.34"  />
