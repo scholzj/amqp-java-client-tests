@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DOCKER_NETWORK=java_tests_network-$$
+DOCKER_NETWORK=java_tests_network_$$
 AMQP_HOST=amqp-host
 AMQP_CONTAINER_NAME=amqp-host-$$
 JAVA_CONTAINER_NAME=java-tests-host-$$
@@ -10,6 +10,23 @@ SUDO=
 MRG_VERSIONS="3.2.0 3.0.0 0.34 0.36"
 MVN_IMAGE_VERSIONS="3-jdk-7 3-jdk-8"
 RESULTS_MSG="RESULTS:\n"
+
+trap "stop_and_remove_left_containers && exit 1" SIGINT SIGTERM
+
+function stop_and_remove_left_containers() {
+    for container in $(${SUDO} docker ps -a --filter "status=running" --format "{{.Names}}") ; do
+        if [ ${container} == ${AMQP_CONTAINER_NAME} ] || [ ${container} == ${JAVA_CONTAINER_NAME} ] ; then
+            echo "Stopping container: ${container}"
+            ${SUDO} docker stop ${container}
+        fi
+    done
+    for container in $(${SUDO} docker ps -a --filter "status=exited" --format "{{.Names}}") ; do
+        if [ ${container} == ${AMQP_CONTAINER_NAME} ] || [ ${container} == ${JAVA_CONTAINER_NAME} ] ; then
+            echo "Removing container: ${container}"
+            ${SUDO} docker rm ${container}
+        fi
+    done
+}
 
 function print_help() {
     local MY_NAME="$(basename $0 .sh)"
@@ -64,7 +81,8 @@ function start_qpidd_container() {
 
 # param: $1 - image version
 function start_tests_container() {
-    ${SUDO} docker run -d -it --net=${DOCKER_NETWORK} --name=${JAVA_CONTAINER_NAME} --hostname=${JAVA_HOST} maven:$1 bash
+    local AMQP_CONTAINER_NAME_IP_ADDRESS=$(${SUDO} docker inspect --format "{{ .NetworkSettings.Networks.${DOCKER_NETWORK}.IPAddress }}" ${AMQP_CONTAINER_NAME})
+    ${SUDO} docker run -d -it --net=${DOCKER_NETWORK} --add-host ${AMQP_HOST}:${AMQP_CONTAINER_NAME_IP_ADDRESS} --name=${JAVA_CONTAINER_NAME} --hostname=${JAVA_HOST} maven:$1 bash
     RESULTS_MSG+="MAVEN IMAGE: $1, "
 }
 
@@ -152,7 +170,7 @@ function execute_single_run() {
 function execute_all_runs() {
     for mvn_version in ${MVN_IMAGE_VERSIONS} ; do
         for mrg_version in ${MRG_VERSIONS} ; do
-            case ${MRG_VERSIONS} in
+            case ${mrg_version} in
               3.*)  execute_single_run ${mrg_version} ${mvn_version} mrg-${mrg_version}.xml ;;
               *) execute_single_run ${mrg_version} ${mvn_version} qpid-${mrg_version}.xml ;;
             esac
