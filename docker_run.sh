@@ -26,6 +26,7 @@ function stop_and_remove_left_containers() {
             ${SUDO} docker rm ${container}
         fi
     done
+    ${SUDO} docker network rm ${DOCKER_NETWORK}
 }
 
 function print_help() {
@@ -70,7 +71,7 @@ function startup() {
 }
 
 function create_network() {
-    ${SUDO} docker network create --driver bridge ${DOCKER_NETWORK}
+    ${SUDO} docker network create --subnet=192.168.0.0/16 --driver bridge ${DOCKER_NETWORK}
 }
 
 # param: $1 - image version
