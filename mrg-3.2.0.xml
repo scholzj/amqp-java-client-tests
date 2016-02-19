@@ -9,7 +9,7 @@
         </groups>
 
         <packages>
-            <package name="com.deutscheboerse.amqp.tests.*" />
+            <package name="com.deutscheboerse.amqp.*" />
         </packages>
     </test>
 </suite>
