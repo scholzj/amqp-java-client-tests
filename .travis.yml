@@ -9,7 +9,11 @@ sudo: required
 
 services:
   - docker
-  
+
+cache:
+  directories:
+  - $HOME/.m2  
+
 addons:
   hosts:
     - amqp-host
