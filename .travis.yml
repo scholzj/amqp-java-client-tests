@@ -1,0 +1,26 @@
+language: java
+
+jdk:
+  - oraclejdk8
+  #- oraclejdk7
+  #- openjdk7
+  
+sudo: required
+
+services:
+  - docker
+
+env:
+  - MAVEN_TEST_SUITE=qpid-0.34.xml BROKER_DOCKER_IMAGE=scholzj/java-client-tests:0.34
+  #- MAVEN_TEST_SUITE=qpid-0.36.xml BROKER_DOCKER_IMAGE=scholzj/java-client-tests:0.36
+  #- MAVEN_TEST_SUITE=mrg-3.0.0.xml BROKER_DOCKER_IMAGE=scholzj/java-client-tests:3.0.0
+  #- MAVEN_TEST_SUITE=mrg-3.2.0.xml BROKER_DOCKER_IMAGE=scholzj/java-client-tests:3.2.0
+
+before_install:
+  - docker pull $BROKER_DOCKER_IMAGE
+
+install:
+  - docker run -d -p 35672:5672 -p 35671:5671 $BROKER_DOCKER_IMAGE
+
+script:
+   - mvn test -Dsurefire.suiteXmlFiles=$(pwd)/$MAVEN_TEST_SUITE
