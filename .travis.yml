@@ -9,6 +9,10 @@ sudo: required
 
 services:
   - docker
+  
+addons:
+  hosts:
+    - amqp-host
 
 env:
   - MAVEN_TEST_SUITE=qpid-0.34.xml BROKER_DOCKER_IMAGE=scholzj/java-client-tests:0.34
