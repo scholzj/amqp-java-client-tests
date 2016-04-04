@@ -142,4 +142,56 @@ public class Security extends BaseTest {
             Assert.fail("Failed to open 5 connections!");
         }
     }
+
+    public void testUserID() throws JMSException, NamingException, InterruptedException {
+        System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "trace");
+        System.setProperty("org.slf4j.simpleLogger.showDateTime", "true");
+        System.setProperty("org.slf4j.simpleLogger.dateTimeFormat", "yyyy-MM-dd HH:mm:ss Z");
+        System.setProperty("org.slf4j.simpleLogger.showThreadName", "false");
+
+        try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().connectionOption("sync_publish='all'").build()) {
+            connection.start();
+            Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+
+            MessageProducer sender = session.createProducer(this.utils.getTopic(RTG_TOPIC, RTG_ROUTING_KEY));
+            Message msg = session.createMessage();
+            sender.send(msg);
+
+            MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
+            Message received = receiver.receive(5000);
+            received.acknowledge();
+            Assert.assertNotNull(received, "Didn't receive expected message");
+            Assert.assertEquals(received.getStringProperty("JMSXUserID"), "admin", "Received unexpected user ID");
+        }
+
+        try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().connectionOption("sync_publish='all'").connectionOption("populateJMSXUserID='true'").build()) {
+            connection.start();
+            Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+
+            MessageProducer sender = session.createProducer(this.utils.getTopic(RTG_TOPIC, RTG_ROUTING_KEY));
+            Message msg = session.createMessage();
+            sender.send(msg);
+
+            MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
+            Message received = receiver.receive(5000);
+            Assert.assertNotNull(received, "Didn't receive expected message with jms.populateJMSXUserID=true");
+            received.acknowledge();
+            Assert.assertEquals(received.getStringProperty("JMSXUserID"), "admin", "Received unexpected user ID with jms.populateJMSXUserID=true");
+        }
+
+        try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().connectionOption("sync_publish='all'").connectionOption("populateJMSXUserID='false'").build()) {
+            connection.start();
+            Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+
+            MessageProducer sender = session.createProducer(this.utils.getTopic(RTG_TOPIC, RTG_ROUTING_KEY));
+            Message msg = session.createMessage();
+            sender.send(msg);
+
+            MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
+            Message received = receiver.receive(5000);
+            received.acknowledge();
+            Assert.assertNotNull(received, "Didn't receive expected message with jms.populateJMSXUserID=false");
+            Assert.assertNotEquals(received.getStringProperty("JMSXUserID"), "admin", "Received unexpected user ID with jms.populateJMSXUserID=false");
+        }
+    }
 }
