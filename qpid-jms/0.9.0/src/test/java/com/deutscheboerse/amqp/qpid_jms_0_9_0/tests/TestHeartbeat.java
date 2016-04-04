@@ -1,16 +1,17 @@
-package com.deutscheboerse.amqp.qpid_jms_0_8_0.tests;
+package com.deutscheboerse.amqp.qpid_jms_0_9_0.tests;
 
-import com.deutscheboerse.amqp.tests.Expiration;
+import com.deutscheboerse.amqp.tests.Heartbeat;
 import com.deutscheboerse.amqp.utils.GlobalUtils;
-import com.deutscheboerse.amqp.qpid_jms_0_8_0.utils.Utils;
+import com.deutscheboerse.amqp.qpid_jms_0_9_0.utils.Utils;
 
-import javax.jms.*;
+import javax.jms.JMSException;
 import javax.naming.NamingException;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-public class TestExpiration extends Expiration {
+@Test(groups = { "disableInMRG-3.0.0" })
+public class TestHeartbeat extends Heartbeat {
     
     @BeforeClass
     public void prepare() {
@@ -22,10 +23,11 @@ public class TestExpiration extends Expiration {
         GlobalUtils.getInstance().purgeAllQueues();
     }
     
-    // Test the sender rollback feature
+    // Test the idle timeout
     @Test
     @Override
-    public void testMessageExpiration() throws JMSException, NamingException, InterruptedException {
-        super.testMessageExpiration();
+    public void testHeartbeat() throws JMSException, NamingException, InterruptedException {
+        super.testHeartbeat();
     }
+    
 }

@@ -1,4 +1,4 @@
-package com.deutscheboerse.amqp.qpid_jms_0_8_0.tests;
+package com.deutscheboerse.amqp.qpid_jms_0_9_0.tests;
 
 import com.deutscheboerse.amqp.tests.Txn;
 import com.deutscheboerse.amqp.utils.GlobalUtils;
@@ -7,7 +7,7 @@ import javax.naming.NamingException;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import com.deutscheboerse.amqp.qpid_jms_0_8_0.utils.Utils;
+import com.deutscheboerse.amqp.qpid_jms_0_9_0.utils.Utils;
 
 @Test(groups = { "disableInMRG-3.0.0" })
 public class TestTxn extends Txn {

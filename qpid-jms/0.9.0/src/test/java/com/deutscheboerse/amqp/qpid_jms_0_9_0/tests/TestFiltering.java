@@ -1,8 +1,8 @@
-package com.deutscheboerse.amqp.qpid_jms_0_8_0.tests;
+package com.deutscheboerse.amqp.qpid_jms_0_9_0.tests;
 
 import com.deutscheboerse.amqp.tests.Filtering;
 import com.deutscheboerse.amqp.utils.GlobalUtils;
-import com.deutscheboerse.amqp.qpid_jms_0_8_0.utils.Utils;
+import com.deutscheboerse.amqp.qpid_jms_0_9_0.utils.Utils;
 
 import javax.jms.*;
 import javax.naming.NamingException;

@@ -1,4 +1,4 @@
-package com.deutscheboerse.amqp.qpid_jms_0_8_0.tests;
+package com.deutscheboerse.amqp.qpid_jms_0_9_0.tests;
 
 import com.deutscheboerse.amqp.tests.Queueing;
 import com.deutscheboerse.amqp.utils.GlobalUtils;
@@ -8,7 +8,7 @@ import org.apache.qpid.qmf2.common.QmfException;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import com.deutscheboerse.amqp.qpid_jms_0_8_0.utils.Utils;
+import com.deutscheboerse.amqp.qpid_jms_0_9_0.utils.Utils;
 
 public class TestQueueing extends Queueing {
     
