@@ -81,4 +81,10 @@ public class TestSecurity extends Security {
     public void testMaximumAllowedConnections() throws JMSException, NamingException, InterruptedException {
         super.testMaximumAllowedConnections();
     }
+
+    @Test
+    @Override
+    public void testUserID() throws JMSException, NamingException, InterruptedException {
+        super.testUserID();
+    }
 }
