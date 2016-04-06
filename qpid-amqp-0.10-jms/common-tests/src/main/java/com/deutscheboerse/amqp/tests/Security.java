@@ -144,12 +144,7 @@ public class Security extends BaseTest {
     }
 
     public void testUserID() throws JMSException, NamingException, InterruptedException {
-        System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "trace");
-        System.setProperty("org.slf4j.simpleLogger.showDateTime", "true");
-        System.setProperty("org.slf4j.simpleLogger.dateTimeFormat", "yyyy-MM-dd HH:mm:ss Z");
-        System.setProperty("org.slf4j.simpleLogger.showThreadName", "false");
-
-        try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().connectionOption("sync_publish='all'").build()) {
+      try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().connectionOption("sync_publish='all'").build()) {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
@@ -174,7 +169,7 @@ public class Security extends BaseTest {
 
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             Message received = receiver.receive(5000);
-            Assert.assertNotNull(received, "Didn't receive expected message with jms.populateJMSXUserID=true");
+            Assert.assertNotNull(received, "Didn't receive expected message with populateJMSXUserID=true");
             received.acknowledge();
             Assert.assertEquals(received.getStringProperty("JMSXUserID"), "admin", "Received unexpected user ID with jms.populateJMSXUserID=true");
         }
@@ -190,7 +185,7 @@ public class Security extends BaseTest {
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             Message received = receiver.receive(5000);
             received.acknowledge();
-            Assert.assertNotNull(received, "Didn't receive expected message with jms.populateJMSXUserID=false");
+            Assert.assertNotNull(received, "Didn't receive expected message with populateJMSXUserID=false");
             Assert.assertNotEquals(received.getStringProperty("JMSXUserID"), "admin", "Received unexpected user ID with jms.populateJMSXUserID=false");
         }
     }
