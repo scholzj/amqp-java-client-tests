@@ -16,10 +16,10 @@
             <id>apache-snapshots</id>
             <url>https://repository.apache.org/content/repositories/snapshots</url>
         </repository>-->
-        <repository>
+        <!--<repository>
             <id>apache-rcs</id>
             <url>https://repository.apache.org/content/repositories/orgapacheqpid-1069</url>
-        </repository>
+        </repository>-->
         <!--<repository>
             <id>apache-rcs</id>
             <url>https://repository.apache.org/content/repositories/orgapacheqpid-1064/</url>
@@ -34,21 +34,20 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-
-      <groupId>org.testng</groupId>
-      <artifactId>testng</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.deutscheboerse.java-client-tests</groupId>
-      <artifactId>qpid-amqp-jms-common-tests</artifactId>
-      <version>${project.version}</version>
-      <scope>test</scope>
-    </dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.deutscheboerse.java-client-tests</groupId>
+            <artifactId>qpid-amqp-jms-common-tests</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>
