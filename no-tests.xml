@@ -1,7 +1,7 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
-<suite name="mrg-3.0.0" verbose="1" >
-    <test name="mrg-3.0.0">
+<suite name="no-tests" verbose="1" >
+    <test name="no-tests">
         <groups>
             <run>
                 <exclude name="disableInMRG-3.0.0"  />
@@ -9,7 +9,7 @@
         </groups>
 
         <packages>
-            <package name="com.deutscheboerse.noamqp.*" />
+            <package name="com.deutscheboerse.no-tests.*" />
         </packages>
     </test>
 </suite>
