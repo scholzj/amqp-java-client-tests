@@ -24,12 +24,12 @@ public class Disposition extends BaseTest {
         super.prepare(utils);
     }
 
-    @BeforeMethod(groups = { "disableInQpidMRG" })
+    @BeforeMethod(groups = { "disableInMRG" })
     public void deleteAllQueues() {
         CppBrokerUtils.getInstance().purgeAllQueues();
     }
 
-    @BeforeMethod(groups = { "disableInQpidMRG" })
+    @BeforeMethod(groups = { "disableInMRG" })
     public void clearAllQueues() throws IllegalAccessException {
         JavaBrokerUtils.getInstance().clearAllQueues();
     }

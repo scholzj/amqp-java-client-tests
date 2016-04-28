@@ -23,7 +23,7 @@ public class TestSSL extends SSL {
         CppBrokerUtils.getInstance().purgeAllQueues();
     }
 
-    @BeforeMethod(groups = { "disableInQpidMRG" })
+    @BeforeMethod(groups = { "disableInMRG" })
     public void clearAllQueues() throws IllegalAccessException {
         JavaBrokerUtils.getInstance().clearAllQueues();
     }
