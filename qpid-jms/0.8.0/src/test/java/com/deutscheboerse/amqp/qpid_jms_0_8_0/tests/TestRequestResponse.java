@@ -10,13 +10,14 @@ import org.testng.annotations.Test;
 import javax.jms.JMSException;
 import javax.naming.NamingException;
 
+@Test(groups = { "enableInQpidJava-6.2" })
 public class TestRequestResponse extends RequestResponse {
-    
+
     @BeforeClass
     public void prepare() {
         super.prepare(new Utils());
     }
-    
+
     @BeforeMethod(groups = { "disableInQpidJava" })
     public void deleteAllQueues() {
         CppBrokerUtils.getInstance().purgeAllQueues();

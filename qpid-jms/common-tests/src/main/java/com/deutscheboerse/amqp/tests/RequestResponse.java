@@ -2,14 +2,13 @@ package com.deutscheboerse.amqp.tests;
 
 import com.deutscheboerse.amqp.configuration.Settings;
 import com.deutscheboerse.amqp.utils.AutoCloseableConnection;
+import com.deutscheboerse.amqp.utils.CppBrokerUtils;
+import com.deutscheboerse.amqp.utils.JavaBrokerUtils;
 
 import javax.jms.*;
 import javax.naming.NamingException;
-
-import java.util.UUID;
-
-import static org.testng.AssertJUnit.assertNotNull;
-import static org.testng.AssertJUnit.assertNull;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 
 public class RequestResponse extends BaseTest {
     private static final String USER1_USERNAME = Settings.get("user1.username");
@@ -21,6 +20,16 @@ public class RequestResponse extends BaseTest {
 
     private static final String RESPONSE_TOPIC = Settings.get("routing.response_topic");
     private static final String RESPONSE_FIXED_QUEUE = Settings.get("routing.response_fixed_queue");
+
+    @BeforeMethod(groups = { "disableInQpidJava" })
+    public void deleteAllQueues() {
+        CppBrokerUtils.getInstance().purgeAllQueues();
+    }
+
+    @BeforeMethod(groups = { "disableInMRG" })
+    public void clearAllQueues() throws IllegalAccessException {
+        JavaBrokerUtils.getInstance().clearAllQueues();
+    }
 
     public void testResponseQueue() throws JMSException, NamingException, InterruptedException {
         try (AutoCloseableConnection connection = this.utils.getConnectionBuilder().username(USER1_USERNAME).password(USER1_PASSWORD).build()) {
@@ -41,7 +50,7 @@ public class RequestResponse extends BaseTest {
             Session serverSession = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
             MessageConsumer requestReceiver = serverSession.createConsumer(this.utils.getQueue(REQUEST_QUEUE));
             Message serverMessage = requestReceiver.receive(1000);
-            assertNotNull("Server didn't received request message", serverMessage);
+            Assert.assertNotNull(serverMessage, "Server didn't received request message");
             MessageProducer serverProducer = serverSession.createProducer(serverMessage.getJMSReplyTo());
             Message serverResponse = serverSession.createMessage();
             serverResponse.setJMSType(RESPONSE_FIXED_QUEUE);
@@ -49,7 +58,7 @@ public class RequestResponse extends BaseTest {
 
             // Receive the response
             Message responseMessage = responseReceiver.receive(1000);
-            assertNotNull("Didn't received response message", responseMessage);
+            Assert.assertNotNull(responseMessage, "Didn't received response message");
         }
     }
 }

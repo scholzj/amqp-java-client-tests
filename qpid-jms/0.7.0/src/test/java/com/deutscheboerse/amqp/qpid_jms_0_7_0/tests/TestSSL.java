@@ -2,13 +2,10 @@ package com.deutscheboerse.amqp.qpid_jms_0_7_0.tests;
 
 import com.deutscheboerse.amqp.qpid_jms_0_7_0.utils.Utils;
 import com.deutscheboerse.amqp.tests.SSL;
-import com.deutscheboerse.amqp.utils.CppBrokerUtils;
-import com.deutscheboerse.amqp.utils.JavaBrokerUtils;
 import javax.jms.JMSException;
 import javax.jms.JMSSecurityException;
 import javax.naming.NamingException;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 @Test(groups = { "enableInQpidJava-6.2" })
@@ -17,16 +14,6 @@ public class TestSSL extends SSL {
     @BeforeClass
     public void prepare() {
         super.prepare(new Utils());
-    }
-
-    @BeforeMethod(groups = { "disableInQpidJava" })
-    public void deleteAllQueues() {
-        CppBrokerUtils.getInstance().purgeAllQueues();
-    }
-
-    @BeforeMethod(groups = { "disableInMRG" })
-    public void clearAllQueues() throws IllegalAccessException {
-        JavaBrokerUtils.getInstance().clearAllQueues();
     }
 
     @Test

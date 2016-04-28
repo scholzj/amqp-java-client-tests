@@ -7,6 +7,9 @@ import javax.naming.NamingException;
 import org.testng.Assert;
 import com.deutscheboerse.amqp.utils.AbstractConnectionBuilder;
 import com.deutscheboerse.amqp.utils.AutoCloseableConnection;
+import com.deutscheboerse.amqp.utils.CppBrokerUtils;
+import com.deutscheboerse.amqp.utils.JavaBrokerUtils;
+import org.testng.annotations.BeforeMethod;
 
 public class SSL extends BaseTest {
     private static final String USER1_KEYSTORE = Settings.getPath("user1.keystore");
@@ -35,6 +38,16 @@ public class SSL extends BaseTest {
     private static final String INVALID_TRUSTSTORE_PASSWORD = Settings.get("broker.invalid_truststore_password");
 
     private static final String RTG_QUEUE = Settings.get("routing.rtg_queue");
+
+    @BeforeMethod(groups = { "disableInQpidJava" })
+    public void deleteAllQueues() {
+        CppBrokerUtils.getInstance().purgeAllQueues();
+    }
+
+    @BeforeMethod(groups = { "disableInMRG" })
+    public void clearAllQueues() throws IllegalAccessException {
+        JavaBrokerUtils.getInstance().clearAllQueues();
+    }
 
     public void testSuccessfullClientAuthentication() throws JMSException, NamingException {
         try (AutoCloseableConnection connection = this.utils.getSSLConnectionBuilder().keystore(USER1_KEYSTORE).keystorePassword(USER1_KEYSTORE_PASSWORD).keystoreAlias(USER1_KEYSTORE_ALIAS).build()) {
@@ -131,7 +144,7 @@ public class SSL extends BaseTest {
     public void testSSLConnectionToNonSSLPort() throws JMSException, NamingException, InterruptedException {
         // Default timeout of 60 seconds would slow down the test too much
         System.setProperty("qpid.ssl_timeout", "5000");
-        
+
         try (AutoCloseableConnection connection = this.utils.getSSLConnectionBuilder().keystore(USER1_KEYSTORE).keystorePassword(USER1_KEYSTORE_PASSWORD).keystoreAlias(USER1_KEYSTORE_ALIAS).port(TCP_PORT).build()) {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
@@ -147,7 +160,7 @@ public class SSL extends BaseTest {
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
         }
     }
-    
+
     public void testMaximumAllowedConnectionsOverSSL() throws JMSException, NamingException, InterruptedException {
         AbstractConnectionBuilder connectionBuilder = this.utils.getSSLConnectionBuilder().keystore(USER2_KEYSTORE).keystorePassword(USER2_KEYSTORE_PASSWORD).keystoreAlias(USER2_KEYSTORE_ALIAS);
         try (AutoCloseableConnection connection1 = connectionBuilder.build();

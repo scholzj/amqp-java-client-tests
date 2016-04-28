@@ -9,8 +9,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import com.deutscheboerse.amqp.qpid_amqp_0_10_jms_6_1_0.utils.Utils;
-import com.deutscheboerse.amqp.utils.CppBrokerUtils;
-import com.deutscheboerse.amqp.utils.JavaBrokerUtils;
 
 @Test(groups = { "enableInQpidJava-6.2" })
 public class TestSSL extends SSL {
@@ -18,16 +16,6 @@ public class TestSSL extends SSL {
     @BeforeClass
     public void prepare() {
         super.prepare(new Utils());
-    }
-
-    @BeforeMethod(groups = { "disableInQpidJava" })
-    public void deleteAllQueues() {
-        CppBrokerUtils.getInstance().purgeAllQueues();
-    }
-
-    @BeforeMethod(groups = { "disableInMRG" })
-    public void clearAllQueues() throws IllegalAccessException {
-        JavaBrokerUtils.getInstance().clearAllQueues();
     }
 
     /*
