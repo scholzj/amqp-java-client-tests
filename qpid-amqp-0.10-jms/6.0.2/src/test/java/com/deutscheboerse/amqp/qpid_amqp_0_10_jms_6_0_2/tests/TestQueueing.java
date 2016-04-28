@@ -1,7 +1,7 @@
 package com.deutscheboerse.amqp.qpid_amqp_0_10_jms_6_0_2.tests;
 
 import com.deutscheboerse.amqp.tests.Queueing;
-import com.deutscheboerse.amqp.utils.GlobalUtils;
+import com.deutscheboerse.amqp.utils.CppBrokerUtils;
 import javax.jms.JMSException;
 import javax.naming.NamingException;
 import org.apache.qpid.qmf2.common.QmfException;
@@ -18,9 +18,9 @@ public class TestQueueing extends Queueing {
         super.prepare(new Utils());
     }
     
-    @BeforeMethod
+    @BeforeMethod(groups = { "disableInQpidJava" })
     public void deleteAllQueues() {
-        GlobalUtils.getInstance().purgeAllQueues();
+        CppBrokerUtils.getInstance().purgeAllQueues();
     }
     
     @Test

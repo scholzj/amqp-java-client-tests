@@ -1,7 +1,6 @@
 package com.deutscheboerse.amqp.qpid_amqp_0_10_jms_6_1_0.tests;
 
 import com.deutscheboerse.amqp.tests.SSL;
-import com.deutscheboerse.amqp.utils.GlobalUtils;
 import javax.jms.*;
 import javax.naming.NamingException;
 
@@ -10,17 +9,25 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import com.deutscheboerse.amqp.qpid_amqp_0_10_jms_6_1_0.utils.Utils;
+import com.deutscheboerse.amqp.utils.CppBrokerUtils;
+import com.deutscheboerse.amqp.utils.JavaBrokerUtils;
 
+@Test(groups = { "enableInQpidJava-6.2" })
 public class TestSSL extends SSL {
-    
+
     @BeforeClass
     public void prepare() {
         super.prepare(new Utils());
     }
-    
-    @BeforeMethod
+
+    @BeforeMethod(groups = { "disableInQpidJava" })
     public void deleteAllQueues() {
-        GlobalUtils.getInstance().purgeAllQueues();
+        CppBrokerUtils.getInstance().purgeAllQueues();
+    }
+
+    @BeforeMethod(groups = { "disableInQpidMRG" })
+    public void clearAllQueues() throws IllegalAccessException {
+        JavaBrokerUtils.getInstance().clearAllQueues();
     }
 
     /*
@@ -54,61 +61,61 @@ public class TestSSL extends SSL {
     public void testSuccessfullClientAuthentication() throws JMSException, NamingException {
         super.testSuccessfullClientAuthentication();
     }
-    
+
     @Test(expectedExceptions = JMSException.class, timeOut = 10000)
     @Override
     public void testUnsuccessfullClientAuthentication() throws JMSException, NamingException, InterruptedException {
         super.testUnsuccessfullClientAuthentication();
     }
-    
+
     @Test
     @Override
     public void testHostnameVerification() throws JMSException, NamingException, InterruptedException {
         super.testHostnameVerification();
     }
-    
+
     @Test
     @Override
     public void testWrongServerCertificate() throws JMSException, NamingException, InterruptedException {
         super.testWrongServerCertificate();
     }
-    
+
     @Test(expectedExceptions = JMSException.class)
     @Override
     public void testPlainOverSSLWithClientAuth() throws JMSException, NamingException, InterruptedException {
         super.testPlainOverSSLWithClientAuth();
     }
-    
+
     @Test(expectedExceptions = JMSException.class)
     @Override
     public void testPlainOverSSL() throws JMSException, NamingException, InterruptedException {
         super.testPlainOverSSL();
     }
-    
+
     @Test(expectedExceptions = JMSException.class)
     @Override
     public void testAnonymousOverSSLWithClientAuth() throws JMSException, NamingException, InterruptedException {
         super.testAnonymousOverSSLWithClientAuth();
     }
-    
+
     @Test(expectedExceptions = JMSException.class, timeOut = 10000)
     @Override
     public void testSignedByCannotLogin() throws JMSException, NamingException, InterruptedException {
         super.testSignedByCannotLogin();
     }
-    
+
     @Test(expectedExceptions = JMSException.class)
     @Override
     public void testSSLConnectionToNonSSLPort() throws JMSException, NamingException, InterruptedException {
         super.testSSLConnectionToNonSSLPort();
     }
-    
+
     @Test(expectedExceptions = JMSException.class)
     @Override
     public void testNonSSLConnectionToSSLPort() throws JMSException, NamingException, InterruptedException {
         super.testNonSSLConnectionToSSLPort();
     }
-    
+
     @Test
     @Override
     public void testMaximumAllowedConnectionsOverSSL() throws JMSException, NamingException, InterruptedException {

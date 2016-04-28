@@ -1,7 +1,7 @@
 package com.deutscheboerse.amqp.qpid_jms_0_9_0.tests;
 
 import com.deutscheboerse.amqp.tests.Failover;
-import com.deutscheboerse.amqp.utils.GlobalUtils;
+import com.deutscheboerse.amqp.utils.CppBrokerUtils;
 import com.deutscheboerse.amqp.qpid_jms_0_9_0.utils.Utils;
 
 import javax.jms.JMSException;
@@ -17,9 +17,9 @@ public class TestFailover extends Failover {
         super.prepare(new Utils());
     }
     
-    @BeforeMethod
+    @BeforeMethod(groups = { "disableInQpidJava" })
     public void deleteAllQueues() {
-        GlobalUtils.getInstance().purgeAllQueues();
+        CppBrokerUtils.getInstance().purgeAllQueues();
     }
     
     // This doesn't test the actual failover - just connecting using the failover URI

@@ -1,8 +1,7 @@
 package com.deutscheboerse.amqp.configuration;
 
+import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Paths;
 import java.util.Properties;
 
 /**
@@ -16,15 +15,12 @@ public class Settings {
         try
         {
             settings.load(Settings.class.getResourceAsStream("/settings.properties"));
-            resourceDirectory = Paths.get(Settings.class.getResource("/settings.properties").toURI()).toFile().getParentFile().getAbsolutePath().replace("\\", "/");
+            resourceDirectory = new File(Settings.class.getResource("/settings.properties").getFile()).getParent();
+//            resourceDirectory = Paths.get(Settings.class.getResource("/settings.properties").toURI()).toFile().getParentFile().getAbsolutePath().replace("\\", "/");
         }
         catch (IOException e)
         {
             System.err.println("Could not load property file 'settings.properties'");
-        }
-        catch (URISyntaxException e)
-        {
-            System.err.println("Could not get absolute path to resources directory");
         }
     }
 

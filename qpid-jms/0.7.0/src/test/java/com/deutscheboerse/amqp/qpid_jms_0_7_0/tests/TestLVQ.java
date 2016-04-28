@@ -1,7 +1,7 @@
 package com.deutscheboerse.amqp.qpid_jms_0_7_0.tests;
 
 import com.deutscheboerse.amqp.tests.LVQ;
-import com.deutscheboerse.amqp.utils.GlobalUtils;
+import com.deutscheboerse.amqp.utils.CppBrokerUtils;
 import javax.jms.*;
 import javax.naming.NamingException;
 import org.testng.annotations.BeforeClass;
@@ -16,9 +16,9 @@ public class TestLVQ extends LVQ {
         super.prepare(new Utils());
     }
     
-    @BeforeMethod
+    @BeforeMethod(groups = { "disableInQpidJava" })
     public void deleteAllQueues() {
-        GlobalUtils.getInstance().purgeAllQueues();
+        CppBrokerUtils.getInstance().purgeAllQueues();
     }
     
     

@@ -1,7 +1,7 @@
 package com.deutscheboerse.amqp.qpid_amqp_0_10_jms_6_1_0.tests;
 
 import com.deutscheboerse.amqp.tests.Heartbeat;
-import com.deutscheboerse.amqp.utils.GlobalUtils;
+import com.deutscheboerse.amqp.utils.CppBrokerUtils;
 import javax.jms.JMSException;
 import javax.naming.NamingException;
 import org.testng.annotations.BeforeClass;
@@ -16,9 +16,9 @@ public class TestHeartbeat extends Heartbeat {
         super.prepare(new Utils());
     }
     
-    @BeforeMethod
+    @BeforeMethod(groups = { "disableInQpidJava" })
     public void deleteAllQueues() {
-        GlobalUtils.getInstance().purgeAllQueues();
+        CppBrokerUtils.getInstance().purgeAllQueues();
     }
     
     // Test the idle timeout

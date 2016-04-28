@@ -1,11 +1,11 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
-<suite name="qpid-0.34" verbose="1" >
-  <test name="qpid-0.34">
+<suite name="qpid-java-6.2" verbose="1" >
+  <test name="qpid-java-6.2">
     <groups>
       <run>
-        <exclude name="disableInMRG"  />
-        <exclude name="disableInQpid0.34"  />
+        <exclude name="disableInQpidJava" />
+        <include name="enableInQpidJava-6.2"  />
       </run>
     </groups>
 

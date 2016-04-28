@@ -1,7 +1,7 @@
 package com.deutscheboerse.amqp.qpid_jms_0_5_0.tests;
 
 import com.deutscheboerse.amqp.tests.Filtering;
-import com.deutscheboerse.amqp.utils.GlobalUtils;
+import com.deutscheboerse.amqp.utils.CppBrokerUtils;
 import com.deutscheboerse.amqp.qpid_jms_0_5_0.utils.Utils;
 
 import javax.jms.*;
@@ -18,9 +18,9 @@ public class TestFiltering extends Filtering {
         super.prepare(new Utils());
     }
     
-    @BeforeMethod
+    @BeforeMethod(groups = { "disableInQpidJava" })
     public void deleteAllQueues() {
-        GlobalUtils.getInstance().purgeAllQueues();
+        CppBrokerUtils.getInstance().purgeAllQueues();
     }
 
     @Test(groups = { "disableInMRG-3.0.0" })

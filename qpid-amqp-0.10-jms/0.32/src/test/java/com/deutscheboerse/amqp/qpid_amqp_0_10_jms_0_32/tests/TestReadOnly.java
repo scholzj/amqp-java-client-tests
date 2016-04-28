@@ -1,7 +1,7 @@
 package com.deutscheboerse.amqp.qpid_amqp_0_10_jms_0_32.tests;
 
 import com.deutscheboerse.amqp.tests.ReadOnly;
-import com.deutscheboerse.amqp.utils.GlobalUtils;
+import com.deutscheboerse.amqp.utils.CppBrokerUtils;
 import org.apache.qpid.qmf2.common.QmfException;
 
 import javax.jms.*;
@@ -18,9 +18,9 @@ public class TestReadOnly extends ReadOnly {
         super.prepare(new Utils());
     }
     
-    @BeforeMethod
+    @BeforeMethod(groups = { "disableInQpidJava" })
     public void deleteAllQueues() {
-        GlobalUtils.getInstance().purgeAllQueues();
+        CppBrokerUtils.getInstance().purgeAllQueues();
     }
     
     // Test the read only queue feature

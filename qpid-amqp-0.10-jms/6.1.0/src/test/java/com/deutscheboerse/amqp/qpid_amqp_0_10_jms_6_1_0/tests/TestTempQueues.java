@@ -1,7 +1,7 @@
 package com.deutscheboerse.amqp.qpid_amqp_0_10_jms_6_1_0.tests;
 
 import com.deutscheboerse.amqp.tests.TempQueues;
-import com.deutscheboerse.amqp.utils.GlobalUtils;
+import com.deutscheboerse.amqp.utils.CppBrokerUtils;
 import com.deutscheboerse.amqp.qpid_amqp_0_10_jms_6_1_0.utils.Utils;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
@@ -18,9 +18,9 @@ public class TestTempQueues extends TempQueues {
         super.prepare(new Utils());
     }
     
-    @BeforeMethod
+    @BeforeMethod(groups = { "disableInQpidJava" })
     public void deleteAllQueues() {
-        GlobalUtils.getInstance().purgeAllQueues();
+        CppBrokerUtils.getInstance().purgeAllQueues();
     }
     
     @Test

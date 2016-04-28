@@ -1,7 +1,7 @@
 package com.deutscheboerse.amqp.qpid_amqp_0_10_jms_6_0_0.tests;
 
 import com.deutscheboerse.amqp.tests.XATxn;
-import com.deutscheboerse.amqp.utils.GlobalUtils;
+import com.deutscheboerse.amqp.utils.CppBrokerUtils;
 import javax.jms.JMSException;
 import javax.naming.NamingException;
 import javax.transaction.xa.XAException;
@@ -17,9 +17,9 @@ public class TestXATxn extends XATxn {
         super.prepare(new Utils());
     }
     
-    @BeforeMethod
+    @BeforeMethod(groups = { "disableInQpidJava" })
     public void deleteAllQueues() {
-        GlobalUtils.getInstance().purgeAllQueues();
+        CppBrokerUtils.getInstance().purgeAllQueues();
     }
     
     // Test the commit feature
