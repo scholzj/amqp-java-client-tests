@@ -24,7 +24,7 @@ public class Disposition extends BaseTest {
         super.prepare(utils);
     }
 
-    @BeforeMethod(groups = { "disableInMRG" })
+    @BeforeMethod(groups = { "disableInQpidJava" })
     public void deleteAllQueues() {
         CppBrokerUtils.getInstance().purgeAllQueues();
     }
