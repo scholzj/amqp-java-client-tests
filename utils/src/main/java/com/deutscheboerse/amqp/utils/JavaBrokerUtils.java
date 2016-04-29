@@ -37,8 +37,7 @@ public class JavaBrokerUtils extends GlobalUtils {
         for (String queueName : queuesToBeDeleted) {
             this.clearQueue(queueName);
         }
-        List<String> queuesToCheck = new ArrayList<>();
-        queuesToCheck.addAll(queuesToBeDeleted);
+        List<String> queuesToCheck = new ArrayList<>(queuesToBeDeleted);
         while (!queuesToCheck.isEmpty()) {
             List<String> queuesWithMessages = new ArrayList<>();
             for (String queueName : queuesToCheck) {
@@ -55,20 +54,18 @@ public class JavaBrokerUtils extends GlobalUtils {
         Client client = this.getRestClient();
         WebTarget target = client.target(this.getInfoQueueRestUri(queueName));
 
-        JsonArray response = target.request(APPLICATION_JSON).get(JsonArray.class);
-        for (JsonObject jsonObject : response.getValuesAs(JsonObject.class)) {
-            JsonObject statistics = jsonObject.getJsonObject("statistics");
-            return statistics.getInt("queueDepthBytes") == 0;
+        List<JsonObject> response = target.request(APPLICATION_JSON).get(JsonArray.class).getValuesAs(JsonObject.class);
+        if (response.size() != 1) {
+            throw new IllegalAccessException("Unable to retrieve queue depth for " + queueName);
         }
-        return false;
+        int queueDepth = response.get(0).getJsonObject("statistics").getInt("queueDepthBytes");
+        return queueDepth == 0;
     }
 
     public void clearQueue(String queueName) throws IllegalAccessException {
         Client client = this.getRestClient();
         WebTarget target = client.target(this.getClearQueueRestUri(queueName));
-
         Response response = target.request(APPLICATION_JSON).post(Entity.json("{}"));
-
         if (Response.Status.OK.getStatusCode() != response.getStatus()) {
             throw new IllegalAccessException("Error while queue purge " + response);
         }
