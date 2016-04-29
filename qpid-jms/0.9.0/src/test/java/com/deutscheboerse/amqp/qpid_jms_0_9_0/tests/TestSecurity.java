@@ -1,11 +1,9 @@
 package com.deutscheboerse.amqp.qpid_jms_0_9_0.tests;
 
 import com.deutscheboerse.amqp.tests.Security;
-import com.deutscheboerse.amqp.utils.CppBrokerUtils;
 import javax.jms.*;
 import javax.naming.NamingException;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import com.deutscheboerse.amqp.qpid_jms_0_9_0.utils.Utils;
 
@@ -14,11 +12,6 @@ public class TestSecurity extends Security {
     @BeforeClass
     public void prepare() {
         super.prepare(new Utils());
-    }
-
-    @BeforeMethod(groups = { "disableInQpidJava" })
-    public void deleteAllQueues() {
-        CppBrokerUtils.getInstance().purgeAllQueues();
     }
 
     @Test

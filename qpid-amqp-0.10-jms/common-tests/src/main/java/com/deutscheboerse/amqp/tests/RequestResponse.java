@@ -2,14 +2,11 @@ package com.deutscheboerse.amqp.tests;
 
 import com.deutscheboerse.amqp.configuration.Settings;
 import com.deutscheboerse.amqp.utils.AutoCloseableConnection;
-import com.deutscheboerse.amqp.utils.CppBrokerUtils;
-import com.deutscheboerse.amqp.utils.JavaBrokerUtils;
 
 import javax.jms.*;
 import javax.naming.NamingException;
 import java.util.UUID;
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
 
 public class RequestResponse extends BaseTest {
     private static final String USER1_USERNAME = Settings.get("user1.username");
@@ -21,16 +18,6 @@ public class RequestResponse extends BaseTest {
 
     private static final String RESPONSE_TOPIC = Settings.get("routing.response_topic");
     private static final String RESPONSE_QUEUE_PREFIX = Settings.get("routing.response_queue_prefix");
-
-    @BeforeMethod(groups = { "disableInQpidJava" })
-    public void deleteAllQueues() {
-        CppBrokerUtils.getInstance().purgeAllQueues();
-    }
-
-    @BeforeMethod(groups = { "disableInMRG" })
-    public void clearAllQueues() throws IllegalAccessException {
-        JavaBrokerUtils.getInstance().clearAllQueues();
-    }
 
     public void testResponseQueue() throws JMSException, NamingException, InterruptedException {
         try (AutoCloseableConnection connection = this.utils.getConnectionBuilder().username(USER1_USERNAME).password(USER1_PASSWORD).build()) {

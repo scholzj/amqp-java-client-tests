@@ -7,9 +7,6 @@ import javax.naming.NamingException;
 import org.testng.Assert;
 import com.deutscheboerse.amqp.utils.AbstractConnectionBuilder;
 import com.deutscheboerse.amqp.utils.AutoCloseableConnection;
-import com.deutscheboerse.amqp.utils.CppBrokerUtils;
-import com.deutscheboerse.amqp.utils.JavaBrokerUtils;
-import org.testng.annotations.BeforeMethod;
 
 public class SSL extends BaseTest {
     private static final String USER1_KEYSTORE = Settings.getPath("user1.keystore");
@@ -38,16 +35,6 @@ public class SSL extends BaseTest {
     private static final String INVALID_TRUSTSTORE_PASSWORD = Settings.get("broker.invalid_truststore_password");
 
     private static final String RTG_QUEUE = Settings.get("routing.rtg_queue");
-
-    @BeforeMethod(groups = { "disableInQpidJava" })
-    public void deleteAllQueues() {
-        CppBrokerUtils.getInstance().purgeAllQueues();
-    }
-
-    @BeforeMethod(groups = { "disableInMRG" })
-    public void clearAllQueues() throws IllegalAccessException {
-        JavaBrokerUtils.getInstance().clearAllQueues();
-    }
 
     public void testSuccessfullClientAuthentication() throws JMSException, NamingException {
         try (AutoCloseableConnection connection = this.utils.getSSLConnectionBuilder().keystore(USER1_KEYSTORE).keystorePassword(USER1_KEYSTORE_PASSWORD).keystoreAlias(USER1_KEYSTORE_ALIAS).build()) {

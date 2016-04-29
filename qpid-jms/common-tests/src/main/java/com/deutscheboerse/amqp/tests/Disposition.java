@@ -9,11 +9,8 @@ import javax.jms.Session;
 import javax.naming.NamingException;
 import org.apache.qpid.qmf2.common.QmfException;
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
 import com.deutscheboerse.amqp.utils.AbstractUtils;
 import com.deutscheboerse.amqp.utils.AutoCloseableConnection;
-import com.deutscheboerse.amqp.utils.CppBrokerUtils;
-import com.deutscheboerse.amqp.utils.JavaBrokerUtils;
 
 public class Disposition extends BaseTest {
     private static final String RTG_QUEUE = Settings.get("routing.rtg_queue");
@@ -22,16 +19,6 @@ public class Disposition extends BaseTest {
     public void prepare(AbstractUtils utils) {
         //System.setProperty("org.slf4j.simpleLogger.log.org.apache.qpid.jms.provider.amqp.FRAMES", "trace");
         super.prepare(utils);
-    }
-
-    @BeforeMethod(groups = { "disableInQpidJava" })
-    public void deleteAllQueues() {
-        CppBrokerUtils.getInstance().purgeAllQueues();
-    }
-
-    @BeforeMethod(groups = { "disableInMRG" })
-    public void clearAllQueues() throws IllegalAccessException {
-        JavaBrokerUtils.getInstance().clearAllQueues();
     }
 
     public void testAcceptDisposition() throws JMSException, NamingException, QmfException {
