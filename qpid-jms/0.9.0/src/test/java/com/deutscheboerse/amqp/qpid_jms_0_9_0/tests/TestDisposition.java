@@ -10,6 +10,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import com.deutscheboerse.amqp.qpid_jms_0_9_0.utils.Utils;
 
+@Test(groups = { "enableInQpidJava-6.2" })
 public class TestDisposition extends Disposition {
     private static final String RTG_QUEUE = Settings.get("routing.rtg_queue");
 
@@ -52,7 +53,7 @@ public class TestDisposition extends Disposition {
     /*
     This is the updated version of the previous test case, which reflects the fix in MRG-M 3.3 / Qpid 0.36
      */
-    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0", "disableInMRG-3.2.0" })
+    @Test(groups = { "disableInQpidJava", "disableInQpid0.34", "disableInMRG-3.0.0", "disableInMRG-3.2.0" })
     @Override
     public void testModifiedUndeliverableDispositionFixed() throws JMSException, NamingException, QmfException {
         super.testModifiedUndeliverableDispositionFixed();
