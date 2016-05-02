@@ -7,7 +7,7 @@ import javax.jms.*;
 import javax.naming.NamingException;
 import org.testng.annotations.Test;
 
-
+@Test(groups = { "enableInQpidJava-6.2" })
 public class TestFiltering extends Filtering {
 
     @org.testng.annotations.BeforeClass
@@ -15,7 +15,7 @@ public class TestFiltering extends Filtering {
         super.prepare(new Utils());
     }
 
-    @Test(groups = { "disableInMRG-3.0.0" })
+    @Test(groups = { "disableInMRG-3.0.0", "disableInQpidJava" })
     @Override
     public void testCorrelationIDFilteringAMQPStyle() throws JMSException, NamingException, InterruptedException {
         super.testCorrelationIDFilteringAMQPStyle();
@@ -69,7 +69,7 @@ public class TestFiltering extends Filtering {
         super.testPropertiesFilteringOr();
     }
 
-    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0" })
+    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0", "disableInQpidJava" })
     @Override
     public void testMessageIDFilteringAMQPStyle() throws JMSException, NamingException, InterruptedException {
         super.testMessageIDFilteringAMQPStyle();
@@ -81,7 +81,7 @@ public class TestFiltering extends Filtering {
         super.testMessageIDFilteringJMSStyle();
     }
 
-    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0" })
+    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0", "disableInQpidJava" })
     @Override
     public void testPriorityFilteringAMQPStyle() throws JMSException, NamingException, InterruptedException {
         super.testPriorityFilteringAMQPStyle();
@@ -93,7 +93,7 @@ public class TestFiltering extends Filtering {
         super.testPriorityFilteringJMSStyle();
     }
 
-    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0" })
+    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0", "disableInQpidJava" })
     @Override
     public void testSubjectFilteringAMQPStyle() throws JMSException, NamingException, InterruptedException {
         super.testSubjectFilteringAMQPStyle();
@@ -105,7 +105,7 @@ public class TestFiltering extends Filtering {
         super.testSubjectFilteringJMSStyle();
     }
 
-    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0" })
+    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0", "disableInQpidJava" })
     @Override
     public void testTimestampFilteringAMQPStyle() throws JMSException, NamingException, InterruptedException {
         super.testTimestampFilteringAMQPStyle();

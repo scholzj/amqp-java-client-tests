@@ -7,6 +7,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import com.deutscheboerse.amqp.qpid_amqp_0_10_jms_6_1_0.utils.Utils;
 
+@Test(groups = { "enableInQpidJava-6.2" })
 public class TestFiltering extends Filtering {
 
     @BeforeClass
@@ -62,7 +63,7 @@ public class TestFiltering extends Filtering {
         super.testPropertiesFilteringOr();
     }
 
-    @Test
+    @Test(groups = { "disableInQpidJava" })
     @Override
     public void testMessageIDFilteringJMSStyle() throws JMSException, NamingException, InterruptedException {
         super.testMessageIDFilteringJMSStyle();
@@ -86,7 +87,7 @@ public class TestFiltering extends Filtering {
         super.testRoutingKeyFilteringJMSStyle();
     }
 
-    @Test
+    @Test(groups = { "disableInQpidJava" })
     @Override
     public void testTimestampFilteringJMSStyle() throws JMSException, NamingException, InterruptedException {
         super.testTimestampFilteringJMSStyle();

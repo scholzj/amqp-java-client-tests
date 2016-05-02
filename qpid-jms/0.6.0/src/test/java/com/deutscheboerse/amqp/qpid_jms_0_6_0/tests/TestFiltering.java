@@ -8,7 +8,7 @@ import javax.naming.NamingException;
 
 import org.testng.annotations.Test;
 
-
+@Test(groups = { "enableInQpidJava-6.2" })
 public class TestFiltering extends Filtering {
 
     @org.testng.annotations.BeforeClass
@@ -16,7 +16,7 @@ public class TestFiltering extends Filtering {
         super.prepare(new Utils());
     }
 
-    @Test(groups = { "disableInMRG-3.0.0" })
+    @Test(groups = { "disableInMRG-3.0.0", "disableInQpidJava" })
     @Override
     public void testCorrelationIDFilteringAMQPStyle() throws JMSException, NamingException, InterruptedException {
         super.testCorrelationIDFilteringAMQPStyle();
