@@ -8,6 +8,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import com.deutscheboerse.amqp.qpid_jms_0_5_0.utils.Utils;
 
+@Test(groups = { "enableInQpidJava-6.2" })
 public class TestMisc extends Misc {
     @BeforeClass
     public void prepare() {

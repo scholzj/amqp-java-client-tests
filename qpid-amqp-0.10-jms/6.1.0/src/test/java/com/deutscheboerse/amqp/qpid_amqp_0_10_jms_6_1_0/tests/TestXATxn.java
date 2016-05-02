@@ -62,7 +62,7 @@ public class TestXATxn extends XATxn {
         super.testTxnTimeout();
     }
 
-    // Tests the default transaction timeout => Takes quite long, because defualt timeout is 60 seconds.
+    // Tests the default transaction timeout => Takes quite long, because default timeout is 60 seconds.
     @Test(expectedExceptions = XAException.class)
     @Override
     public void testTxnDefaultTimeout() throws JMSException, NamingException, XAException, InterruptedException {

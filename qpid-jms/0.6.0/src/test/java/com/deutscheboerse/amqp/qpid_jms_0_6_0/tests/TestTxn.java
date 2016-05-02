@@ -8,7 +8,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import com.deutscheboerse.amqp.qpid_jms_0_6_0.utils.Utils;
 
-@Test(groups = { "disableInMRG-3.0.0" })
+@Test(groups = { "disableInMRG-3.0.0", "enableInQpidJava-6.2" })
 public class TestTxn extends Txn {
 
     @BeforeClass
