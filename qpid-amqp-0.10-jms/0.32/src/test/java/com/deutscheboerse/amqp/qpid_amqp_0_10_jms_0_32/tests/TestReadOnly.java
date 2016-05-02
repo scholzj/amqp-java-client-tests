@@ -9,7 +9,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import com.deutscheboerse.amqp.qpid_amqp_0_10_jms_0_32.utils.Utils;
 
-@Test(groups = { "enableInQpidJava-6.2" })
 public class TestReadOnly extends ReadOnly {
 
     @BeforeClass

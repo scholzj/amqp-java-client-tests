@@ -9,7 +9,7 @@ import org.apache.qpid.qmf2.common.QmfException;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-@Test(groups = { "disableInMRG-3.0.0", "enableInQpidJava-6.2" })
+@Test(groups = { "disableInMRG-3.0.0" })
 public class TestReadOnly extends ReadOnly {
 
     @BeforeClass

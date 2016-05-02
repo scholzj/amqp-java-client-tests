@@ -9,7 +9,6 @@ import org.apache.qpid.qmf2.common.QmfException;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-@Test(groups = { "enableInQpidJava-6.2" })
 public class TestMisc extends Misc {
 
     @BeforeClass

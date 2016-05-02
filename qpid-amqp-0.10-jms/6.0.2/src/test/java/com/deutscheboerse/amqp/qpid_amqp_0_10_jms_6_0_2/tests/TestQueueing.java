@@ -28,14 +28,14 @@ public class TestQueueing extends Queueing {
         super.testDeadLetterQueue();
     }
 
-    @Test
+    @Test(groups = { "disableInQpidJava" })
     @Override
     public void testRingQueue() throws JMSException, NamingException {
         super.testRingQueue();
     }
 
     // Works only in 0.6.0 and higher
-    @Test
+    @Test(groups = { "disableInQpidJava" })
     @Override
     public void testFullQueue() throws JMSException, NamingException, InterruptedException, QmfException {
         super.testFullQueue();

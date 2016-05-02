@@ -10,7 +10,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import com.deutscheboerse.amqp.qpid_amqp_0_10_jms_6_1_0.utils.Utils;
 
-@Test(groups = { "enableInQpidJava-6.2" })
 public class TestSSL extends SSL {
 
     @BeforeClass

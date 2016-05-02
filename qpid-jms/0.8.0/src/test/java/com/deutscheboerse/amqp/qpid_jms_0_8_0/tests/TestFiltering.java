@@ -7,7 +7,6 @@ import javax.jms.*;
 import javax.naming.NamingException;
 import org.testng.annotations.Test;
 
-@Test(groups = { "enableInQpidJava-6.2" })
 public class TestFiltering extends Filtering {
 
     @org.testng.annotations.BeforeClass

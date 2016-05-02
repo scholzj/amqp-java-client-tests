@@ -10,7 +10,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import com.deutscheboerse.amqp.qpid_jms_0_9_0.utils.Utils;
 
-@Test(groups = { "enableInQpidJava-6.2" })
 public class TestDisposition extends Disposition {
     private static final String RTG_QUEUE = Settings.get("routing.rtg_queue");
 

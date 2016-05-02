@@ -9,6 +9,7 @@ import javax.jms.JMSException;
 import javax.jms.JMSSecurityException;
 import javax.naming.NamingException;
 
+@Test(groups = { "disableInQpidJava" })
 public class TestTempQueues extends TempQueues {
 
     @BeforeClass

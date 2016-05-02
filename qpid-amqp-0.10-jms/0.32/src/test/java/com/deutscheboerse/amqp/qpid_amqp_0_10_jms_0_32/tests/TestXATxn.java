@@ -44,7 +44,7 @@ public class TestXATxn extends XATxn {
     }
 
     // Timeout higher than 600 seconds should cause an error
-    @Test
+    @Test(groups = { "disableInQpidJava-6.0.2" })
     @Override
     public void testTxnMaximumTimeout() throws JMSException, NamingException, XAException {
         super.testTxnMaximumTimeout();
@@ -63,7 +63,7 @@ public class TestXATxn extends XATxn {
     }
 
     // Tests the default transaction timeout => Takes quite long, because defualt timeout is 60 seconds.
-    @Test(expectedExceptions = XAException.class)
+    @Test(expectedExceptions = XAException.class, groups = { "disableInQpidJava-6.0.2" })
     @Override
     public void testTxnDefaultTimeout() throws JMSException, NamingException, XAException, InterruptedException {
         super.testTxnDefaultTimeout();

@@ -27,7 +27,7 @@ public class TestQueueing extends Queueing {
         super.testDeadLetterQueue();
     }
 
-    @Test
+    @Test(groups = { "disableInQpidJava" })
     @Override
     public void testRingQueue() throws JMSException, NamingException {
         super.testRingQueue();

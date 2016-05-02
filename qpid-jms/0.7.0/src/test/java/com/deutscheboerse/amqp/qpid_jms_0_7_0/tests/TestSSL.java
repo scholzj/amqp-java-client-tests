@@ -8,7 +8,6 @@ import javax.naming.NamingException;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-@Test(groups = { "enableInQpidJava-6.2" })
 public class TestSSL extends SSL {
 
     @BeforeClass

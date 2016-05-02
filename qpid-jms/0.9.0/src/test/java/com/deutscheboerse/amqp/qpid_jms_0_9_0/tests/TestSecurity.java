@@ -50,19 +50,19 @@ public class TestSecurity extends Security {
         super.testWrongUsername();
     }
 
-    @Test(expectedExceptions = {JMSSecurityException.class, javax.jms.IllegalStateException.class}, timeOut = 10000)
+    @Test(expectedExceptions = {JMSSecurityException.class, javax.jms.IllegalStateException.class}, timeOut = 10000, groups = { "disableInQpidJava-6.0.2" })
     @Override
     public void testACLDeniedConsumer() throws JMSException, NamingException, InterruptedException {
         super.testACLDeniedConsumer();
     }
 
-    @Test(expectedExceptions = JMSException.class, timeOut = 10000, groups = { "disableInMRG-3.0.0" })
+    @Test(expectedExceptions = JMSException.class, timeOut = 10000, groups = { "disableInMRG-3.0.0", "disableInQpidJava-6.0.2" })
     @Override
     public void testACLDeniedProducerForbiddenTopic() throws JMSException, NamingException, InterruptedException {
         super.testACLDeniedProducerForbiddenTopic();
     }
 
-    @Test(expectedExceptions = JMSSecurityException.class)
+    @Test(expectedExceptions = JMSSecurityException.class, groups = { "disableInQpidJava-6.0.2" })
     @Override
     public void testACLDeniedProducerForbiddenRoutingKey() throws JMSException, NamingException, InterruptedException {
         super.testACLDeniedProducerForbiddenRoutingKey();

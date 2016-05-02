@@ -7,7 +7,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import com.deutscheboerse.amqp.qpid_jms_0_7_0.utils.Utils;
 
-@Test( groups = { "enableInQpidJava-6.2" })
 public class TestLVQ extends LVQ {
 
     @BeforeClass

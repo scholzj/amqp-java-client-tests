@@ -51,13 +51,13 @@ public class TestSecurity extends Security {
         super.testWrongUsername();
     }
 
-    @Test(expectedExceptions = {JMSSecurityException.class, javax.jms.IllegalStateException.class}, timeOut = 10000)
+    @Test(expectedExceptions = {JMSSecurityException.class, javax.jms.IllegalStateException.class}, timeOut = 10000, groups = { "disableInQpidJava" })
     @Override
     public void testACLDeniedConsumer() throws JMSException, NamingException, InterruptedException {
         super.testACLDeniedConsumer();
     }
 
-    @Test
+    @Test(groups = { "disableInQpidJava" })
     @Override
     public void testMaximumAllowedConnections() throws JMSException, NamingException, InterruptedException {
         super.testMaximumAllowedConnections();
