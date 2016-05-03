@@ -68,6 +68,12 @@ public class TestFiltering extends Filtering {
         super.testMessageIDFilteringJMSStyle();
     }
 
+    @Test(groups = { "disableInMRG" })
+    @Override
+    public void testMessageIDFilteringJMSStyleJavaBroker() throws JMSException, NamingException, InterruptedException {
+        super.testMessageIDFilteringJMSStyleJavaBroker();
+    }
+
     @Test
     @Override
     public void testPriorityFilteringJMSStyle() throws JMSException, NamingException, InterruptedException {
@@ -90,5 +96,11 @@ public class TestFiltering extends Filtering {
     @Override
     public void testTimestampFilteringJMSStyle() throws JMSException, NamingException, InterruptedException {
         super.testTimestampFilteringJMSStyle();
+    }
+
+    @Test(groups = { "disableInMRG" })
+    @Override
+    public void testTimestampFilteringJMSStyleJavaBroker() throws JMSException, NamingException, InterruptedException {
+        super.testTimestampFilteringJMSStyleJavaBroker();
     }
 }

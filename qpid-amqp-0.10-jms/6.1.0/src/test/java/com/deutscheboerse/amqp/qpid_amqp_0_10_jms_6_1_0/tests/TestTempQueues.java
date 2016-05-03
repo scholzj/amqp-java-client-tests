@@ -9,7 +9,6 @@ import javax.jms.JMSException;
 import javax.jms.JMSSecurityException;
 import javax.naming.NamingException;
 
-@Test(groups = { "disableInQpidJava" })
 public class TestTempQueues extends TempQueues {
 
     @BeforeClass
@@ -35,7 +34,7 @@ public class TestTempQueues extends TempQueues {
         super.testResponseWrongRoutingKey();
     }
 
-    @Test(expectedExceptions = JMSSecurityException.class)
+    @Test(expectedExceptions = JMSSecurityException.class, groups = { "disableInQpidJava" })
     @Override
     public void testResponseInvalidPolicy() throws JMSException, NamingException, InterruptedException {
         super.testResponseInvalidPolicy();
@@ -53,25 +52,25 @@ public class TestTempQueues extends TempQueues {
         super.testResponseWrongExchange();
     }
 
-    @Test(expectedExceptions = JMSSecurityException.class)
+    @Test(expectedExceptions = JMSSecurityException.class, groups = { "disableInQpidJava" })
     @Override
     public void testResponseTooBigSize() throws JMSException, NamingException, InterruptedException {
         super.testResponseTooBigSize();
     }
 
-    @Test(expectedExceptions = JMSSecurityException.class)
+    @Test(expectedExceptions = JMSSecurityException.class, groups = { "disableInQpidJava" })
     @Override
     public void testResponseTooSmallSize() throws JMSException, NamingException, InterruptedException {
         super.testResponseTooSmallSize();
     }
 
-    @Test(expectedExceptions = JMSSecurityException.class)
+    @Test(expectedExceptions = JMSSecurityException.class, groups = { "disableInQpidJava" })
     @Override
     public void testResponseTooBigCount() throws JMSException, NamingException, InterruptedException {
         super.testResponseTooBigCount();
     }
 
-    @Test(expectedExceptions = JMSSecurityException.class)
+    @Test(expectedExceptions = JMSSecurityException.class, groups = { "disableInQpidJava" })
     @Override
     public void testResponseTooSmallCount() throws JMSException, NamingException, InterruptedException {
         super.testResponseTooSmallCount();
@@ -89,7 +88,7 @@ public class TestTempQueues extends TempQueues {
         super.testResponseQueueAutodelete();
     }
 
-    @Test
+    @Test(groups = { "disableInQpidJava" })
     @Override
     public void testResponseQueueAutodeleteTimeout() throws JMSException, NamingException, InterruptedException {
         super.testResponseQueueAutodeleteTimeout();
