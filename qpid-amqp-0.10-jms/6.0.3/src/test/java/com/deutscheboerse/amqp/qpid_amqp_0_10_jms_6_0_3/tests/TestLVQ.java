@@ -5,7 +5,7 @@ import javax.jms.*;
 import javax.naming.NamingException;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import com.deutscheboerse.amqp.qpid_amqp_0_10_jms_6_0_2.utils.Utils;
+import com.deutscheboerse.amqp.qpid_amqp_0_10_jms_6_0_3.utils.Utils;
 
 public class TestLVQ extends LVQ {
 
