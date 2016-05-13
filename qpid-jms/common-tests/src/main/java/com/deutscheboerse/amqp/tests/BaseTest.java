@@ -21,7 +21,7 @@ public abstract class BaseTest {
         CppBrokerUtils.getInstance().purgeAllQueues();
     }
 
-    @BeforeMethod(groups = { "enableInQpidJava-6.2", "disableInMRG" })
+    @BeforeMethod(groups = { "disableInMRG" })
     public void clearAllQueues() throws IllegalAccessException {
         JavaBrokerUtils.getInstance().clearAllQueues();
     }
