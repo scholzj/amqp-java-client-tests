@@ -1,4 +1,4 @@
-package com.deutscheboerse.amqp.qpid_amqp_0_10_jms_6_0_2.utils;
+package com.deutscheboerse.amqp.qpid_amqp_0_10_jms_6_0_3.utils;
 
 import com.deutscheboerse.amqp.configuration.Settings;
 import com.deutscheboerse.amqp.utils.AbstractConnectionBuilder;
