@@ -1,7 +1,9 @@
 package com.deutscheboerse.amqp.utils;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import javax.jms.JMSException;
 import javax.naming.NamingException;
 
@@ -18,7 +20,7 @@ public abstract class AbstractConnectionBuilder {
     protected String truststorePassword;
     protected Boolean ssl = false;
     protected Boolean syncPublish;
-    protected final List<String> brokerOptions = new LinkedList<>();
+    protected final Set<String> brokerOptions = new HashSet<>();
     
     public AbstractConnectionBuilder ssl() {
         this.ssl = true;
