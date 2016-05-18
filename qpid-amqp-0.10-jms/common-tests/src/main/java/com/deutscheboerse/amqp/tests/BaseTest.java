@@ -5,12 +5,16 @@ import com.deutscheboerse.amqp.utils.CppBrokerUtils;
 import com.deutscheboerse.amqp.utils.JavaBrokerUtils;
 import org.testng.annotations.BeforeMethod;
 
+import java.util.Date;
+
 public abstract class BaseTest {
 
     protected AbstractUtils utils;
 
     public void prepare(AbstractUtils utils) {
-        System.setProperty("org.slf4j.simpleLogger.logFile", "/var/lib/qpidd/scholzj/hudson/qpidc.log");
+        Date d = new Date();
+        String timestamp = d.toString()
+        System.setProperty("org.slf4j.simpleLogger.logFile", "/var/lib/qpidd/scholzj/hudson/qpidc.log." + timestamp);
         System.setProperty("org.slf4j.simpleLogger.showDateTime", "true");
         System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "trace");
         System.setProperty("org.slf4j.simpleLogger.dateTimeFormat", "yyyy-MM-dd'T'HH:mm:ss.SSSZ");
