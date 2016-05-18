@@ -15,6 +15,7 @@ public class Heartbeat extends BaseTest {
     
     // Test the idle timeout
     public void testHeartbeat() throws JMSException, NamingException, InterruptedException {
+       System.setProperty("org.slf4j.simpleLogger.logFile", "/var/lib/qpidd/scholzj/hudson/heartbeat.log");
        System.setProperty("org.slf4j.simpleLogger.showDateTime", "true");
        System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "trace");
        System.setProperty("org.slf4j.simpleLogger.dateTimeFormat", "yyyy-MM-dd'T'HH:mm:ss.SSSZ");
