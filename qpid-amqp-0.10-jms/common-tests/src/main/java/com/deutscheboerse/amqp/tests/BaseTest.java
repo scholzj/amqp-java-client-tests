@@ -10,8 +10,11 @@ public abstract class BaseTest {
     protected AbstractUtils utils;
 
     public void prepare(AbstractUtils utils) {
+        System.setProperty("org.slf4j.simpleLogger.logFile", "/var/lib/qpidd/scholzj/hudson/qpidc.log");
+        System.setProperty("org.slf4j.simpleLogger.showDateTime", "true");
         System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "trace");
-        System.setProperty("org.slf4j.simpleLogger.showThreadName", "false");
+        System.setProperty("org.slf4j.simpleLogger.dateTimeFormat", "yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        System.setProperty("slf4j.logger.org.apache.qpid", "trace");
 
         this.utils = utils;
     }
