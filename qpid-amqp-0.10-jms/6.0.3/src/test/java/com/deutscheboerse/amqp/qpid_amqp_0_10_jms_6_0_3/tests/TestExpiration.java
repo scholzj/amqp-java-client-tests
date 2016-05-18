@@ -1,4 +1,4 @@
-package com.deutscheboerse.amqp.qpid_amqp_0_10_jms_6_0_2.tests;
+package com.deutscheboerse.amqp.qpid_amqp_0_10_jms_6_0_3.tests;
 
 import com.deutscheboerse.amqp.tests.Expiration;
 import javax.jms.JMSException;
