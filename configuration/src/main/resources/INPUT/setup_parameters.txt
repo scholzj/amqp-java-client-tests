@@ -1,1 +1,1 @@
---bus-day-id=setup --setup --no-gen-pass --gen-node-conf --fixed-response-queues --enable-timestamp=yes --log_level_amqp_0_10=trace+
+--bus-day-id=setup --setup --no-gen-pass --gen-node-conf --fixed-response-queues --enable-timestamp=yes
