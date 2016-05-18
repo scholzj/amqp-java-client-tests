@@ -13,8 +13,7 @@ public abstract class BaseTest {
 
     public void prepare(AbstractUtils utils) {
         Date d = new Date();
-        String timestamp = d.toString()
-        System.setProperty("org.slf4j.simpleLogger.logFile", "/var/lib/qpidd/scholzj/hudson/qpidc.log." + timestamp);
+        System.setProperty("org.slf4j.simpleLogger.logFile", "/var/lib/qpidd/scholzj/hudson/qpidc.log." + d.toString());
         System.setProperty("org.slf4j.simpleLogger.showDateTime", "true");
         System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "trace");
         System.setProperty("org.slf4j.simpleLogger.dateTimeFormat", "yyyy-MM-dd'T'HH:mm:ss.SSSZ");
