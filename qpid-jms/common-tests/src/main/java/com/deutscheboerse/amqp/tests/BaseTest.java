@@ -1,6 +1,7 @@
 package com.deutscheboerse.amqp.tests;
 
 import com.deutscheboerse.amqp.utils.AbstractUtils;
+import com.deutscheboerse.amqp.utils.ArtemisBrokerUtils;
 import com.deutscheboerse.amqp.utils.CppBrokerUtils;
 import com.deutscheboerse.amqp.utils.JavaBrokerUtils;
 import org.testng.annotations.BeforeMethod;
@@ -16,14 +17,18 @@ public abstract class BaseTest {
         this.utils = utils;
     }
 
-    @BeforeMethod(groups = { "disableInQpidJava" })
+    @BeforeMethod(groups = { "disableInQpidJava", "disableInArtemis" })
     public void deleteAllQueues() {
         CppBrokerUtils.getInstance().purgeAllQueues();
     }
 
-    @BeforeMethod(groups = { "disableInMRG" })
+    @BeforeMethod(groups = { "disableInMRG", "disableInArtemis" })
     public void clearAllQueues() throws IllegalAccessException {
         JavaBrokerUtils.getInstance().clearAllQueues();
     }
 
+    @BeforeMethod(groups = { "disableInMRG", "disableInQpidJava" })
+    public void clearAllQueuesArtemis() {
+        ArtemisBrokerUtils.getInstance().purgeAllQueues();
+    }
 }
