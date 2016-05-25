@@ -5,7 +5,7 @@
     <groups>
       <run>
         <exclude name="disableInQpidJava" />
-        <exclude name="disableInQpidJava-6.0.2"  />
+        <exclude name="disableInQpidJava-6.0.2" />
       </run>
     </groups>
 

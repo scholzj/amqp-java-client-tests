@@ -26,7 +26,7 @@ public class TestSecurity extends Security {
         super.testAuthenticationPlain();
     }
 
-    @Test
+    @Test(groups = { "disableInArtemis" })
     @Override
     public void testAuthenticationCramMD5() throws JMSException, NamingException, InterruptedException {
         super.testAuthenticationCramMD5();
@@ -50,7 +50,7 @@ public class TestSecurity extends Security {
         super.testWrongUsername();
     }
 
-    @Test(expectedExceptions = {JMSSecurityException.class, javax.jms.IllegalStateException.class}, timeOut = 10000, groups = { "disableInQpidJava-6.0.2" })
+    @Test(expectedExceptions = {JMSSecurityException.class, javax.jms.IllegalStateException.class, JMSException.class}, timeOut = 10000, groups = { "disableInQpidJava-6.0.2" })
     @Override
     public void testACLDeniedConsumer() throws JMSException, NamingException, InterruptedException {
         super.testACLDeniedConsumer();
@@ -62,19 +62,19 @@ public class TestSecurity extends Security {
         super.testACLDeniedProducerForbiddenTopic();
     }
 
-    @Test(expectedExceptions = JMSSecurityException.class, groups = { "disableInQpidJava-6.0.2" })
+    @Test(expectedExceptions = {JMSSecurityException.class, JMSException.class}, groups = { "disableInQpidJava-6.0.2" })
     @Override
     public void testACLDeniedProducerForbiddenRoutingKey() throws JMSException, NamingException, InterruptedException {
         super.testACLDeniedProducerForbiddenRoutingKey();
     }
 
-    @Test
+    @Test(groups = { "disableInArtemis" })
     @Override
     public void testMaximumAllowedConnections() throws JMSException, NamingException, InterruptedException {
         super.testMaximumAllowedConnections();
     }
 
-    @Test
+    @Test(groups = { "disableInArtemis" })
     @Override
     public void testUserID() throws JMSException, NamingException, InterruptedException {
         super.testUserID();

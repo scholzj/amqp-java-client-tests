@@ -14,7 +14,7 @@ public class TestFiltering extends Filtering {
         super.prepare(new Utils());
     }
 
-    @Test(groups = { "disableInMRG-3.0.0", "disableInQpidJava" })
+    @Test(groups = { "disableInMRG-3.0.0", "disableInQpidJava", "disableInArtemis" })
     @Override
     public void testCorrelationIDFilteringAMQPStyle() throws JMSException, NamingException, InterruptedException {
         super.testCorrelationIDFilteringAMQPStyle();
@@ -26,7 +26,7 @@ public class TestFiltering extends Filtering {
         super.testCorrelationIDFilteringJMSStyle();
     }
 
-    @Test(groups = { "disableInMRG-3.0.0" })
+    @Test(groups = { "disableInMRG-3.0.0", "disableInArtemis" })
     @Override
     public void testPropertiesFilteringWithPeriod() throws JMSException, NamingException, InterruptedException {
         super.testPropertiesFilteringWithPeriod();
@@ -68,31 +68,35 @@ public class TestFiltering extends Filtering {
         super.testPropertiesFilteringOr();
     }
 
-    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0", "disableInQpidJava" })
+    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0", "disableInQpidJava", "disableInArtemis" })
     @Override
     public void testMessageIDFilteringAMQPStyle() throws JMSException, NamingException, InterruptedException {
         super.testMessageIDFilteringAMQPStyle();
     }
 
-    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0" })
+    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0", "disableInArtemis" })
     @Override
     public void testMessageIDFilteringJMSStyle() throws JMSException, NamingException, InterruptedException {
         super.testMessageIDFilteringJMSStyle();
     }
 
-    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0", "disableInQpidJava" })
+    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0", "disableInQpidJava", "disableInArtemis" })
     @Override
     public void testPriorityFilteringAMQPStyle() throws JMSException, NamingException, InterruptedException {
         super.testPriorityFilteringAMQPStyle();
     }
 
-    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0" })
-    @Override
+    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0", "disableInArtemis" })
     public void testPriorityFilteringJMSStyle() throws JMSException, NamingException, InterruptedException {
         super.testPriorityFilteringJMSStyle();
     }
 
-    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0", "disableInQpidJava" })
+    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0" })
+    public void testPriorityFilteringJMSStyleArtemis() throws JMSException, NamingException, InterruptedException {
+        super.testPriorityFilteringJMSStyleArtemis();
+    }
+
+    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0", "disableInQpidJava", "disableInArtemis" })
     @Override
     public void testSubjectFilteringAMQPStyle() throws JMSException, NamingException, InterruptedException {
         super.testSubjectFilteringAMQPStyle();
@@ -104,15 +108,19 @@ public class TestFiltering extends Filtering {
         super.testSubjectFilteringJMSStyle();
     }
 
-    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0", "disableInQpidJava" })
+    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0", "disableInQpidJava", "disableInArtemis" })
     @Override
     public void testTimestampFilteringAMQPStyle() throws JMSException, NamingException, InterruptedException {
         super.testTimestampFilteringAMQPStyle();
     }
 
-    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0"})
-    @Override
+    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0", "disableInArtemis" })
     public void testTimestampFilteringJMSStyle() throws JMSException, NamingException, InterruptedException {
         super.testTimestampFilteringJMSStyle();
+    }
+
+    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0"})
+    public void testTimestampFilteringJMSStyleArtemis() throws JMSException, NamingException, InterruptedException {
+        super.testTimestampFilteringJMSStyleArtemis();
     }
 }

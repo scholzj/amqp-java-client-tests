@@ -38,9 +38,19 @@ public class ArtemisBrokerUtils extends GlobalUtils {
         for (String queueName : queuesToBeDeleted) {
             try {
                 purgeQueue(queueName);
+                checkDeletion(queueName);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
+        }
+    }
+
+    private void checkDeletion(String queueName) throws Exception {
+        ObjectName name = ObjectNameBuilder.create(null, Settings.get("broker.name")).getQueueObjectName(new SimpleString(queueName), new SimpleString(queueName));
+        long messageCount = MBeanServerInvocationHandler.newProxyInstance(connection, name, JMSQueueControl.class, false).listMessages("").length;
+        while (messageCount > 0) {
+            System.out.println("There are '" + messageCount + "' messages still in queue '" + queueName + "'");
+            Thread.sleep(300);
         }
     }
 

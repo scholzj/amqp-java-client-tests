@@ -22,7 +22,7 @@ public class Disposition extends BaseTest {
     }
 
     public void testAcceptDisposition() throws JMSException, NamingException, QmfException {
-        try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().build()) {
+        try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().brokerOption("amqp.traceFrames=true").build()) {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
@@ -261,7 +261,7 @@ public class Disposition extends BaseTest {
     }
 
     public void testBlockRejectDisposition() throws JMSException, NamingException, QmfException {
-        try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().build()) {
+        try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().brokerOption("amqp.traceFrames=true").build()) {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
@@ -304,6 +304,7 @@ public class Disposition extends BaseTest {
 
             // Is the queue really empty?
             receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
+            received = receiver.receive(1000);
             received = receiver.receive(1000);
             Assert.assertNull(received, "Received unexpected message");
         }
@@ -364,7 +365,7 @@ public class Disposition extends BaseTest {
                 received = receiver.receive(1000);
             }
 
-            Assert.assertEquals(5, messageCount, "Didn't received expected number of peviously released message");
+            Assert.assertEquals(5, messageCount, "Didn't received expected number of previously released message");
         }
     }
 }

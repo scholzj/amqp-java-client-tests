@@ -30,14 +30,14 @@ public class TestFailover extends Failover {
     }
 
     // This doesn't test the actual failover - just connecting using the failover URI
-    @Test
+    @Test(groups = { "disableInArtemis" })
     @Override
     public void testSSLFailover() throws JMSException, NamingException, InterruptedException {
         super.testSSLFailover();
     }
 
     // This doesn't test the actual failover - just connecting using the failover URI
-    @Test
+    @Test(groups = { "disableInArtemis" })
     @Override
     public void testSSLFailoverNested() throws JMSException, NamingException, InterruptedException {
         super.testSSLFailoverNested();

@@ -15,23 +15,35 @@ public class TestLVQ extends LVQ {
     }
 
     // Test the LVQ feature
-    @Test
-    @Override
+    @Test(groups = { "disableInArtemis" })
     public void testLVQQueueBasic() throws JMSException, NamingException {
         super.testLVQQueueBasic();
     }
 
+    @Test(groups = { "disableInMRG", "disableInQpidJava" })
+    public void testLVQQueueBasicArtemis() throws JMSException, NamingException {
+        super.testLVQQueueBasicArtemis();
+    }
+
     // Test the LVQ feature
-    @Test
-    @Override
+    @Test(groups = { "disableInArtemis" })
     public void testLVQQueueManyMessages() throws JMSException, NamingException {
         super.testLVQQueueManyMessages();
     }
 
+    @Test(groups = { "disableInMRG", "disableInQpidJava" })
+    public void testLVQQueueManyMessagesArtemis() throws JMSException, NamingException {
+        super.testLVQQueueManyMessagesArtemis();
+    }
+
     // Test the LVQ feature
-    @Test(groups = { "disableInMRG-3.0.0" })
-    @Override
+    @Test(groups = { "disableInMRG-3.0.0", "disableInArtemis" })
     public void testLVQQueueInTxn() throws JMSException, NamingException {
         super.testLVQQueueInTxn();
+    }
+
+    @Test(groups = { "disableInMRG-3.0.0", "disableInMRG", "disableInQpidJava" })
+    public void testLVQQueueInTxnArtemis() throws JMSException, NamingException {
+        super.testLVQQueueInTxnArtemis();
     }
 }

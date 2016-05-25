@@ -37,7 +37,7 @@ public class TestTxn extends Txn {
     }
 
     // Test the commit feature with large commit
-    @Test
+    @Test(groups = { "disableInArtemis" })
     @Override
     public void testTxnCommitLotOfMessages() throws JMSException, NamingException {
         super.testTxnCommitLotOfMessages();

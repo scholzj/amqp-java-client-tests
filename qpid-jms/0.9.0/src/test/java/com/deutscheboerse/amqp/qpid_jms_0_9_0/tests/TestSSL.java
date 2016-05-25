@@ -15,7 +15,7 @@ public class TestSSL extends SSL {
         super.prepare(new Utils());
     }
 
-    @Test
+    @Test(groups = { "disableInArtemis" })
     @Override
     public void testSuccessfullClientAuthentication() throws JMSException, NamingException, InterruptedException {
         super.testSuccessfullClientAuthentication();
@@ -27,13 +27,13 @@ public class TestSSL extends SSL {
         super.testUnsuccessfullClientAuthentication();
     }
 
-    @Test
+    @Test(groups = { "disableInArtemis" })
     @Override
     public void testHostnameVerification() throws JMSException, NamingException, InterruptedException {
         super.testHostnameVerification();
     }
 
-    @Test
+    @Test(groups = { "disableInArtemis" })
     @Override
     public void testWrongServerCertificate() throws JMSException, NamingException, InterruptedException {
         super.testWrongServerCertificate();
@@ -51,31 +51,31 @@ public class TestSSL extends SSL {
         super.testSSLv2();
     }
 
-    @Test
+    @Test(groups = { "disableInArtemis" })
     @Override
     public void testTLSv1() throws JMSException, NamingException, InterruptedException {
         super.testTLSv1();
     }
 
-    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0", "disableInMRG-3.2.0" })
+    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0", "disableInMRG-3.2.0", "disableInArtemis" })
     @Override
     public void testTLSv11() throws JMSException, NamingException, InterruptedException {
         super.testTLSv11();
     }
 
-    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0", "disableInMRG-3.2.0" })
+    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0", "disableInMRG-3.2.0", "disableInArtemis" })
     @Override
     public void testTLSv12() throws JMSException, NamingException, InterruptedException {
         super.testTLSv12();
     }
 
-    @Test
+    @Test(groups = { "disableInArtemis" })
     @Override
     public void testCipherSuite3DES() throws JMSException, NamingException, InterruptedException {
         super.testCipherSuite3DES();
     }
 
-    @Test
+    @Test(groups = { "disableInArtemis" })
     @Override
     public void testCipherSuiteAES128() throws JMSException, NamingException, InterruptedException {
         super.testCipherSuiteAES128();
@@ -83,25 +83,25 @@ public class TestSSL extends SSL {
 
     // JCA Unlimited Strength policy files are needed for AES256
     // http://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html
-    @Test
+    @Test(groups = { "disableInArtemis" })
     @Override
     public void testCipherSuiteAES256() throws JMSException, NamingException, InterruptedException {
         super.testCipherSuiteAES256();
     }
 
-    @Test(expectedExceptions = JMSSecurityException.class)
+    @Test(groups = { "disableInArtemis" }, expectedExceptions = JMSSecurityException.class)
     @Override
     public void testPlainOverSSLWithClientAuth() throws JMSException, NamingException, InterruptedException {
         super.testPlainOverSSLWithClientAuth();
     }
 
-    @Test(expectedExceptions = JMSException.class)
+    @Test(expectedExceptions = JMSException.class, groups = { "disableInArtemis" })
     @Override
     public void testPlainOverSSL() throws JMSException, NamingException, InterruptedException {
         super.testPlainOverSSL();
     }
 
-    @Test(expectedExceptions = JMSSecurityException.class)
+    @Test(expectedExceptions = JMSException.class)
     @Override
     public void testAnonymousOverSSLWithClientAuth() throws JMSException, NamingException, InterruptedException {
         super.testAnonymousOverSSLWithClientAuth();
@@ -125,7 +125,7 @@ public class TestSSL extends SSL {
         super.testNonSSLConnectionToSSLPort();
     }
 
-    @Test
+    @Test(groups = { "disableInArtemis" })
     @Override
     public void testMaximumAllowedConnectionsOverSSL() throws JMSException, NamingException, InterruptedException {
         super.testMaximumAllowedConnectionsOverSSL();
