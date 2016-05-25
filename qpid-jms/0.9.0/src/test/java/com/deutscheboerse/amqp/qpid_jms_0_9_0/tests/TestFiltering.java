@@ -91,7 +91,7 @@ public class TestFiltering extends Filtering {
         super.testPriorityFilteringJMSStyle();
     }
 
-    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0" })
+    @Test(groups = { "disableInQpidJava", "disableInMRG" })
     public void testPriorityFilteringJMSStyleArtemis() throws JMSException, NamingException, InterruptedException {
         super.testPriorityFilteringJMSStyleArtemis();
     }
@@ -119,7 +119,7 @@ public class TestFiltering extends Filtering {
         super.testTimestampFilteringJMSStyle();
     }
 
-    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0"})
+    @Test(groups = { "disableInQpidJava", "disableInMRG" })
     public void testTimestampFilteringJMSStyleArtemis() throws JMSException, NamingException, InterruptedException {
         super.testTimestampFilteringJMSStyleArtemis();
     }
