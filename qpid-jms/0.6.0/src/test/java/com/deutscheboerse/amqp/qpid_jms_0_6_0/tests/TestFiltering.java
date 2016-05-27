@@ -15,7 +15,7 @@ public class TestFiltering extends Filtering {
         super.prepare(new Utils());
     }
 
-    @Test(groups = { "disableInMRG-3.0.0", "disableInQpidJava" })
+    @Test(groups = { "disableInMRG-3.0.0", "disableInQpidJava", "disableInArtemis" })
     @Override
     public void testCorrelationIDFilteringAMQPStyle() throws JMSException, NamingException, InterruptedException {
         super.testCorrelationIDFilteringAMQPStyle();
@@ -27,7 +27,7 @@ public class TestFiltering extends Filtering {
         super.testCorrelationIDFilteringJMSStyle();
     }
 
-    @Test(groups = { "disableInMRG-3.0.0" })
+    @Test(groups = { "disableInMRG-3.0.0", "disableInArtemis" })
     @Override
     public void testPropertiesFilteringWithPeriod() throws JMSException, NamingException, InterruptedException {
         super.testPropertiesFilteringWithPeriod();

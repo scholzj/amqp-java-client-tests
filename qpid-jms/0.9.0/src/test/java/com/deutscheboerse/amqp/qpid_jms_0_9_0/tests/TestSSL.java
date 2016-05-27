@@ -101,7 +101,8 @@ public class TestSSL extends SSL {
         super.testPlainOverSSL();
     }
 
-    @Test(expectedExceptions = JMSException.class)
+    // doesn't work for artemis, because it returns JMSException
+    @Test(groups = { "disableInArtemis" }, expectedExceptions = JMSSecurityException.class)
     @Override
     public void testAnonymousOverSSLWithClientAuth() throws JMSException, NamingException, InterruptedException {
         super.testAnonymousOverSSLWithClientAuth();

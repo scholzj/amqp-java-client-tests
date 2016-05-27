@@ -305,7 +305,6 @@ public class Disposition extends BaseTest {
             // Is the queue really empty?
             receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             received = receiver.receive(1000);
-            received = receiver.receive(1000);
             Assert.assertNull(received, "Received unexpected message");
         }
     }

@@ -1,0 +1,16 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="artemis" verbose="1" >
+  <test name="artemis">
+    <groups>
+      <run>
+        <exclude name="disableInArtemis" />
+        <exclude name="disableInArtemis-1.3.0"  />
+      </run>
+    </groups>
+
+    <packages>
+      <package name="com.deutscheboerse.amqp.*" />
+    </packages>
+  </test>
+</suite>

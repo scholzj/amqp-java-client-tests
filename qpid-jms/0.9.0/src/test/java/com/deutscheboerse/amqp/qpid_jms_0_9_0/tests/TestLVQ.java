@@ -42,7 +42,7 @@ public class TestLVQ extends LVQ {
         super.testLVQQueueInTxn();
     }
 
-    @Test(groups = { "disableInMRG-3.0.0", "disableInMRG", "disableInQpidJava" })
+    @Test(groups = { "disableInMRG", "disableInQpidJava" })
     public void testLVQQueueInTxnArtemis() throws JMSException, NamingException {
         super.testLVQQueueInTxnArtemis();
     }

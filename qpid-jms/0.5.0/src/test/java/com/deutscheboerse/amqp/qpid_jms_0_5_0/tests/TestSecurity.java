@@ -27,7 +27,7 @@ public class TestSecurity extends Security {
         super.testAuthenticationPlain();
     }
 
-    @Test
+    @Test(groups = { "disableInArtemis" })
     @Override
     public void testAuthenticationCramMD5() throws JMSException, NamingException, InterruptedException {
         super.testAuthenticationCramMD5();
@@ -51,13 +51,14 @@ public class TestSecurity extends Security {
         super.testWrongUsername();
     }
 
-    @Test(expectedExceptions = {JMSSecurityException.class, javax.jms.IllegalStateException.class}, timeOut = 10000, groups = { "disableInQpidJava" })
+    // doesn't work for artemis, because it returns JMSException
+    @Test(expectedExceptions = {JMSSecurityException.class, javax.jms.IllegalStateException.class}, timeOut = 10000, groups = { "disableInQpidJava-6.0.2", "disableInArtemis" })
     @Override
     public void testACLDeniedConsumer() throws JMSException, NamingException, InterruptedException {
         super.testACLDeniedConsumer();
     }
 
-    @Test(groups = { "disableInQpidJava" })
+    @Test(groups = { "disableInQpidJava", "disableInArtemis" })
     @Override
     public void testMaximumAllowedConnections() throws JMSException, NamingException, InterruptedException {
         super.testMaximumAllowedConnections();

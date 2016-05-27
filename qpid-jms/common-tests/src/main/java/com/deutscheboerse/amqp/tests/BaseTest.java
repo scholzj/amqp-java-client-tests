@@ -6,6 +6,8 @@ import com.deutscheboerse.amqp.utils.CppBrokerUtils;
 import com.deutscheboerse.amqp.utils.JavaBrokerUtils;
 import org.testng.annotations.BeforeMethod;
 
+import java.lang.reflect.Method;
+
 public abstract class BaseTest {
 
     protected AbstractUtils utils;
@@ -25,6 +27,12 @@ public abstract class BaseTest {
     @BeforeMethod(groups = { "disableInMRG", "disableInArtemis" })
     public void clearAllQueues() throws IllegalAccessException {
         JavaBrokerUtils.getInstance().clearAllQueues();
+    }
+
+    @BeforeMethod
+    public void handleTestMethodName(Method method)
+    {
+        System.out.println("Test method = [" + method.getName() + "]");
     }
 
     @BeforeMethod(groups = { "disableInMRG", "disableInQpidJava" })

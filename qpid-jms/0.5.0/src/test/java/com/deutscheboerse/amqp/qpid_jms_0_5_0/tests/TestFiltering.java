@@ -15,7 +15,7 @@ public class TestFiltering extends Filtering {
         super.prepare(new Utils());
     }
 
-    @Test(groups = { "disableInMRG-3.0.0", "disableInQpidJava" })
+    @Test(groups = { "disableInMRG-3.0.0", "disableInQpidJava", "disableInArtemis" })
     @Override
     public void testCorrelationIDFilteringAMQPStyle() throws JMSException, NamingException, InterruptedException {
         super.testCorrelationIDFilteringAMQPStyle();

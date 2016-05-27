@@ -30,14 +30,14 @@ public class TestTxn extends Txn {
     }
 
     // Test the receiver rollback feature
-    @Test
+    @Test(groups = { "disableInArtemis" })
     @Override
     public void testTxnReceiverRollback() throws JMSException, NamingException {
         super.testTxnReceiverRollback();
     }
 
     // Test the commit feature with large commit
-    @Test(groups = { "disableInArtemis" })
+    @Test
     @Override
     public void testTxnCommitLotOfMessages() throws JMSException, NamingException {
         super.testTxnCommitLotOfMessages();

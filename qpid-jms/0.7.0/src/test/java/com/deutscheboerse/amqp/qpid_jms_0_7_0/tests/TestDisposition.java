@@ -31,19 +31,19 @@ public class TestDisposition extends Disposition {
         super.testRejectDisposition();
     }
 
-    @Test
+    @Test(groups = { "disableInArtemis" })
     @Override
     public void testReleasedDisposition() throws JMSException, NamingException, QmfException {
         super.testReleasedDisposition();
     }
 
-    @Test
+    @Test(groups = { "disableInArtemis" })
     @Override
     public void testModifiedFailedDisposition() throws JMSException, NamingException, QmfException {
         super.testModifiedFailedDisposition();
     }
 
-    @Test(groups = { "disableInQpid0.36" })
+    @Test(groups = { "disableInQpid0.36", "disableInArtemis" })
     @Override
     public void testModifiedUndeliverableDisposition() throws JMSException, NamingException, QmfException {
         super.testModifiedUndeliverableDisposition();
