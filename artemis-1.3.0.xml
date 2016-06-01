@@ -10,7 +10,11 @@
     </groups>
 
     <packages>
-      <package name="com.deutscheboerse.amqp.*" />
+      <package name="com.deutscheboerse.amqp.qpid_jms_0_5_0.*" />
+      <package name="com.deutscheboerse.amqp.qpid_jms_0_6_0.*" />
+      <package name="com.deutscheboerse.amqp.qpid_jms_0_7_0.*" />
+      <package name="com.deutscheboerse.amqp.qpid_jms_0_8_0.*" />
+      <package name="com.deutscheboerse.amqp.qpid_jms_0_9_0.*" />
     </packages>
   </test>
 </suite>

@@ -31,7 +31,7 @@ public class TestTxn extends Txn {
     }
 
     // Test the receiver rollback feature
-    @Test(groups = { "disableInArtemis" })
+    @Test
     @Override
     public void testTxnReceiverRollback() throws JMSException, NamingException {
         super.testTxnReceiverRollback();
