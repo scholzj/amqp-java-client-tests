@@ -38,7 +38,7 @@ public class ArtemisBrokerUtils extends GlobalUtils {
         for (String queueName : queuesToBeDeleted) {
             try {
                 purgeQueue(queueName);
-                Thread.sleep(1000);
+                Thread.sleep(100);
                 checkDeletion(queueName);
             } catch (Exception e) {
                 throw new RuntimeException(e);

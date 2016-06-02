@@ -1,0 +1,5 @@
+These files are expected in Artemis etc direcory.
+
+In file artemis.profile change path to ARTEMIS_HOME and ARTEMIS_INSTANCE directories.
+
+In file broker.xml change path to keystore and trustore in amqpSsl acceptor.
