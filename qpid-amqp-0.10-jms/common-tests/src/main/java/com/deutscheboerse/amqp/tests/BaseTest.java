@@ -1,13 +1,9 @@
 package com.deutscheboerse.amqp.tests;
 
+import com.deutscheboerse.amqp.commons.CommonBaseTest;
 import com.deutscheboerse.amqp.utils.AbstractUtils;
-import com.deutscheboerse.amqp.utils.CppBrokerUtils;
-import com.deutscheboerse.amqp.utils.JavaBrokerUtils;
-import org.testng.annotations.BeforeMethod;
 
-import java.util.Date;
-
-public abstract class BaseTest {
+public abstract class BaseTest extends CommonBaseTest {
 
     protected AbstractUtils utils;
 
@@ -20,15 +16,5 @@ public abstract class BaseTest {
         System.setProperty("slf4j.logger.org.apache.qpid", "warn");
 
         this.utils = utils;
-    }
-
-    @BeforeMethod(groups = { "disableInQpidJava" })
-    public void deleteAllQueues() {
-        CppBrokerUtils.getInstance().purgeAllQueues();
-    }
-
-    @BeforeMethod(groups = { "disableInMRG" })
-    public void clearAllQueues() throws IllegalAccessException {
-        JavaBrokerUtils.getInstance().clearAllQueues();
     }
 }

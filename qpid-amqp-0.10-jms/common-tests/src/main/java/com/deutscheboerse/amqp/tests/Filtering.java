@@ -6,7 +6,6 @@ import javax.jms.*;
 import javax.naming.NamingException;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.UUID;
 import org.testng.Assert;
 import com.deutscheboerse.amqp.utils.AutoCloseableConnection;

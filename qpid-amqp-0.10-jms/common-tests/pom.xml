@@ -35,6 +35,11 @@
       <artifactId>utils</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>com.deutscheboerse.java-client-tests</groupId>
+      <artifactId>commons</artifactId>
+      <version>1.0</version>
+    </dependency>
   </dependencies>
 
 </project>
