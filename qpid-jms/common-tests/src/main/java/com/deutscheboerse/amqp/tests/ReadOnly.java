@@ -13,9 +13,20 @@ public class ReadOnly extends BaseTest {
     
     private static final String USER1_USERNAME = Settings.get("user1.username");
     private static final String USER1_PASSWORD = Settings.get("user1.password");
-    
-    // Test the read only queue feature
+
+    private static final String ASYNC_ACKS_OPTION_VERSION_0_6_0_AND_LOWER = "jms.sendAcksAsync";
+    private static final String ASYNC_ACKS_OPTION_VERSION_0_7_0_AND_HIGHER = "jms.forceAsyncAcks";
+
+    public void testReadOnlyQueue_0_6_0_AndLower() throws JMSException, NamingException, QmfException {
+        testReadOnlyQueue(ASYNC_ACKS_OPTION_VERSION_0_6_0_AND_LOWER);
+    }
+
     public void testReadOnlyQueue() throws JMSException, NamingException, QmfException {
+        testReadOnlyQueue(ASYNC_ACKS_OPTION_VERSION_0_7_0_AND_HIGHER);
+    }
+
+    // Test the read only queue feature
+    public void testReadOnlyQueue(String asyncAcksOption) throws JMSException, NamingException, QmfException {
         int MESSAGE_COUNT = 10;
         
         try (AutoCloseableConnection senderConnection = this.utils.getAdminConnectionBuilder().build()) {
@@ -31,7 +42,7 @@ public class ReadOnly extends BaseTest {
             }
         }
         
-        try (AutoCloseableConnection receiverConnection = this.utils.getConnectionBuilder().username(USER1_USERNAME).password(USER1_PASSWORD).brokerOption("jms.sendAcksAsync=False").build()) {
+        try (AutoCloseableConnection receiverConnection = this.utils.getConnectionBuilder().username(USER1_USERNAME).password(USER1_PASSWORD).brokerOption(asyncAcksOption + "=False").build()) {
             receiverConnection.start();
             
             // First receiver
@@ -71,9 +82,17 @@ public class ReadOnly extends BaseTest {
             Assert.assertEquals(MESSAGE_COUNT, receivedNo, "Read Only queue test received unexpected number of messages in second run");
         }
     }
-    
-    // Test the read only queue feature with transaction reader
+
+    public void testReadOnlyQueueWithTxn_0_6_0_AndLower() throws JMSException, NamingException, QmfException {
+        testReadOnlyQueueWithTxn(ASYNC_ACKS_OPTION_VERSION_0_6_0_AND_LOWER);
+    }
+
     public void testReadOnlyQueueWithTxn() throws JMSException, NamingException, QmfException {
+        testReadOnlyQueueWithTxn(ASYNC_ACKS_OPTION_VERSION_0_7_0_AND_HIGHER);
+    }
+
+    // Test the read only queue feature with transaction reader
+    public void testReadOnlyQueueWithTxn(String asyncAcksOption) throws JMSException, NamingException, QmfException {
         int MESSAGE_COUNT = 10;
         
         try (AutoCloseableConnection senderConnection = this.utils.getAdminConnectionBuilder().build()) {
@@ -89,7 +108,7 @@ public class ReadOnly extends BaseTest {
             }
         }
         
-        try (AutoCloseableConnection receiverConnection = this.utils.getConnectionBuilder().username(USER1_USERNAME).password(USER1_PASSWORD).brokerOption("jms.sendAcksAsync=False").build()) {
+        try (AutoCloseableConnection receiverConnection = this.utils.getConnectionBuilder().username(USER1_USERNAME).password(USER1_PASSWORD).brokerOption(asyncAcksOption + "=False").build()) {
             receiverConnection.start();
             
             // First receiver
