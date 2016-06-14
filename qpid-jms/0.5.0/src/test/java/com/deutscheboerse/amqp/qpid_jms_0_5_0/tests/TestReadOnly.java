@@ -22,14 +22,14 @@ public class TestReadOnly extends ReadOnly {
     @Test
     @Override
     public void testReadOnlyQueue() throws JMSException, NamingException, QmfException {
-        super.testReadOnlyQueue_0_6_0_AndLower();
+        super.testReadOnlyQueue();
     }
 
     // Test the read only queue feature with transaction reader
     @Test
     @Override
     public void testReadOnlyQueueWithTxn() throws JMSException, NamingException, QmfException {
-        super.testReadOnlyQueueWithTxn_0_6_0_AndLower();
+        super.testReadOnlyQueueWithTxn();
     }
 
 }

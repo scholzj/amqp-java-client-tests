@@ -10,143 +10,124 @@ import com.deutscheboerse.amqp.utils.AutoCloseableConnection;
 
 public class ReadOnly extends BaseTest {
     private static final String RO_QUEUE = Settings.get("routing.read_only_queue");
-    
+
     private static final String USER1_USERNAME = Settings.get("user1.username");
     private static final String USER1_PASSWORD = Settings.get("user1.password");
 
-    private static final String ASYNC_ACKS_OPTION_VERSION_0_6_0_AND_LOWER = "jms.sendAcksAsync";
-    private static final String ASYNC_ACKS_OPTION_VERSION_0_7_0_AND_HIGHER = "jms.forceAsyncAcks";
-
-    public void testReadOnlyQueue_0_6_0_AndLower() throws JMSException, NamingException, QmfException {
-        testReadOnlyQueue(ASYNC_ACKS_OPTION_VERSION_0_6_0_AND_LOWER);
-    }
-
-    public void testReadOnlyQueue() throws JMSException, NamingException, QmfException {
-        testReadOnlyQueue(ASYNC_ACKS_OPTION_VERSION_0_7_0_AND_HIGHER);
-    }
-
     // Test the read only queue feature
-    public void testReadOnlyQueue(String asyncAcksOption) throws JMSException, NamingException, QmfException {
+    public void testReadOnlyQueue() throws JMSException, NamingException, QmfException {
         int MESSAGE_COUNT = 10;
-        
+
         try (AutoCloseableConnection senderConnection = this.utils.getAdminConnectionBuilder().build()) {
             senderConnection.start();
-            
+
             // Sender session
             Session session = senderConnection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
-            
+
             MessageProducer sender = session.createProducer(this.utils.getQueue(RO_QUEUE));
-            
+
             for (int i = 0; i < MESSAGE_COUNT; i++) {
                 sender.send(session.createMessage());
             }
         }
-        
-        try (AutoCloseableConnection receiverConnection = this.utils.getConnectionBuilder().username(USER1_USERNAME).password(USER1_PASSWORD).brokerOption(asyncAcksOption + "=False").build()) {
+
+        try (AutoCloseableConnection receiverConnection = this.utils.getConnectionBuilder().username(USER1_USERNAME).password(USER1_PASSWORD).setAsyncAcks(false).build()) {
             receiverConnection.start();
-            
+
             // First receiver
             Session session2 = receiverConnection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
-            
+
             MessageConsumer receiver = session2.createConsumer(this.utils.getQueue(RO_QUEUE));
             int receivedNo = 0;
-            
+
             Message received = receiver.receive(1000);
-            
+
             while(received != null) {
                 receivedNo++;
                 received.acknowledge();
                 received = receiver.receive(1000);
             }
-            
+
             session2.close();
-            
+
             Assert.assertEquals(MESSAGE_COUNT, receivedNo, "Read Only queue test received unexpected number of messages in first run");
-            
+
             // Second Receiver
             Session session3 = receiverConnection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
-            
+
             receiver = session3.createConsumer(this.utils.getQueue(RO_QUEUE));
             receivedNo = 0;
-            
+
             received = receiver.receive(1000);
-            
+
             while(received != null) {
                 receivedNo++;
                 received.acknowledge();
                 received = receiver.receive(1000);
             }
-            
+
             session3.close();
-            
+
             Assert.assertEquals(MESSAGE_COUNT, receivedNo, "Read Only queue test received unexpected number of messages in second run");
         }
     }
 
-    public void testReadOnlyQueueWithTxn_0_6_0_AndLower() throws JMSException, NamingException, QmfException {
-        testReadOnlyQueueWithTxn(ASYNC_ACKS_OPTION_VERSION_0_6_0_AND_LOWER);
-    }
-
-    public void testReadOnlyQueueWithTxn() throws JMSException, NamingException, QmfException {
-        testReadOnlyQueueWithTxn(ASYNC_ACKS_OPTION_VERSION_0_7_0_AND_HIGHER);
-    }
-
     // Test the read only queue feature with transaction reader
-    public void testReadOnlyQueueWithTxn(String asyncAcksOption) throws JMSException, NamingException, QmfException {
+    public void testReadOnlyQueueWithTxn() throws JMSException, NamingException, QmfException {
         int MESSAGE_COUNT = 10;
-        
+
         try (AutoCloseableConnection senderConnection = this.utils.getAdminConnectionBuilder().build()) {
             senderConnection.start();
-            
+
             // Sender session
             Session session = senderConnection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
-            
+
             MessageProducer sender = session.createProducer(this.utils.getQueue(RO_QUEUE));
-            
+
             for (int i = 0; i < MESSAGE_COUNT; i++) {
                 sender.send(session.createMessage());
             }
         }
-        
-        try (AutoCloseableConnection receiverConnection = this.utils.getConnectionBuilder().username(USER1_USERNAME).password(USER1_PASSWORD).brokerOption(asyncAcksOption + "=False").build()) {
+
+        try (AutoCloseableConnection receiverConnection = this.utils.getConnectionBuilder().username(USER1_USERNAME).password(USER1_PASSWORD).setAsyncAcks(false).build()) {
             receiverConnection.start();
-            
+
             // First receiver
             Session session2 = receiverConnection.createSession(true, Session.CLIENT_ACKNOWLEDGE);
-            
+
             MessageConsumer receiver = session2.createConsumer(this.utils.getQueue(RO_QUEUE));
             int receivedNo = 0;
-            
+
             Message received = receiver.receive(1000);
-            
+
             while(received != null) {
                 receivedNo++;
                 received.acknowledge();
                 received = receiver.receive(1000);
             }
-            
+
             session2.commit();
-            
+
             session2.close();
-            
+
             Assert.assertEquals(MESSAGE_COUNT, receivedNo, "Read Only queue test received unexpected number of messages in first run");
-            
+
             // Second Receiver
             Session session3 = receiverConnection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
-            
+
             receiver = session3.createConsumer(this.utils.getQueue(RO_QUEUE));
             receivedNo = 0;
-            
+
             received = receiver.receive(1000);
-            
+
             while(received != null) {
                 receivedNo++;
                 received.acknowledge();
                 received = receiver.receive(1000);
             }
-            
+
             session3.close();
-            
+
             Assert.assertEquals(MESSAGE_COUNT, receivedNo, "Read Only queue test received unexpected number of messages in second run");
         }
     }

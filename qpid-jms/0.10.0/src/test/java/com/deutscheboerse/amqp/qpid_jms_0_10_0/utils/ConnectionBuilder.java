@@ -105,6 +105,12 @@ public class ConnectionBuilder extends AbstractConnectionBuilder {
     }
 
     @Override
+    public AbstractConnectionBuilder setAsyncAcks(boolean async) {
+        brokerOption("jms.forceAsyncAcks=" + async);
+        return this;
+    }
+
+    @Override
     public AutoCloseableConnection build() throws NamingException, JMSException {
         Properties props = new Properties();
         props.setProperty("java.naming.factory.initial", "org.apache.qpid.jms.jndi.JmsInitialContextFactory");
