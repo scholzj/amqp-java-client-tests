@@ -74,14 +74,14 @@ public class TestXATxn extends XATxn {
     }
 
     // Timeout higher than 600 seconds should cause an error
-    @Test
+    @Test(groups = { "disableInQpidJava" })
     @Override
     public void testTxnMaximumTimeout() throws JMSException, NamingException, XAException {
         super.testTxnMaximumTimeout();
     }
 
     // Timeout higher than 600 seconds should cause an error
-    @Test(groups = { "disableInQpidJava" })
+    @Test(groups = { "disableInQpidJava", "disableInMRG" })
     @Override
     public void testTxnMaximumTimeoutUsingTransactionManager() throws JMSException, NamingException, NotSupportedException, SystemException {
         super.testTxnMaximumTimeoutUsingTransactionManager();
@@ -112,14 +112,14 @@ public class TestXATxn extends XATxn {
     }
 
     // Tests the default transaction timeout => Takes quite long, because default timeout is 60 seconds.
-    @Test(expectedExceptions = XAException.class)
+    @Test(expectedExceptions = XAException.class,  groups = { "disableInQpidJava" })
     @Override
     public void testTxnDefaultTimeout() throws JMSException, NamingException, XAException, InterruptedException {
         super.testTxnDefaultTimeout();
     }
 
     // Tests the default transaction timeout => Takes quite long, because default timeout is 60 seconds.
-    @Test(expectedExceptions = BitronixSystemException.class, groups = { "disableInQpidJava" })
+    @Test(expectedExceptions = BitronixSystemException.class, groups = { "disableInQpidJava", "disableInMRG" })
     @Override
     public void testTxnDefaultTimeoutUsingTransactionManager() throws InterruptedException, HeuristicMixedException, NamingException, RollbackException, SystemException, JMSException, HeuristicRollbackException, NotSupportedException {
         super.testTxnDefaultTimeoutUsingTransactionManager();

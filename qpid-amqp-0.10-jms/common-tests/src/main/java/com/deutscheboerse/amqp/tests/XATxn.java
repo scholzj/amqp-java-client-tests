@@ -707,7 +707,6 @@ public class XATxn extends BaseTest {
 
             // Sender session
             connection.begin();
-            System.out.println("DEFAULT: " + TransactionManagerServices.getConfiguration().getDefaultTransactionTimeout());
             Session session = connection.createSession(true, Session.AUTO_ACKNOWLEDGE);
             MessageProducer sender = session.createProducer(this.utils.getQueue(TXN_QUEUE));
 
