@@ -16,8 +16,8 @@ machine:
 dependencies:
   pre:
     - unzip jce_policy-8.zip
-    - cp UnlimitedJCEPolicyJDK8/local_policy.jar ${JAVA_HOME}/jre/lib/security
-    - cp UnlimitedJCEPolicyJDK8/US_export_policy.jar ${JAVA_HOME}/jre/lib/security
+    - sudo cp UnlimitedJCEPolicyJDK8/local_policy.jar ${JAVA_HOME}/jre/lib/security
+    - sudo cp UnlimitedJCEPolicyJDK8/US_export_policy.jar ${JAVA_HOME}/jre/lib/security
     - mvn install -DskipTests=true
     
 test:
