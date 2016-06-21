@@ -15,6 +15,9 @@ machine:
 
 dependencies:
   pre:
+    - unzip jce_policy-8.zip
+    - mv local_policy.jar $(dirname $(dirname $(which java)))/jre/lib/security
+    - mv US_export_policy.jar $(dirname $(dirname $(which java)))/jre/lib/security
     - mvn install -DskipTests=true
     
 test:
