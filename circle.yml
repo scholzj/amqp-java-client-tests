@@ -13,6 +13,10 @@ machine:
     #- MAVEN_TEST_SUITE=mrg-3.0.0.xml BROKER_DOCKER_IMAGE=scholzj/java-client-tests:3.0.0
     #- MAVEN_TEST_SUITE=mrg-3.2.0.xml BROKER_DOCKER_IMAGE=scholzj/java-client-tests:3.2.0
 
+dependencies:
+  pre:
+    - mvn install -DskipTests=true
+    
 test:
   pre:
     - docker run -d -p 35672:5672 -p 35671:5671 $BROKER_DOCKER_IMAGE
