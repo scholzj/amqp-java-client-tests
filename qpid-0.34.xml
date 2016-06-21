@@ -1,15 +1,16 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
 <suite name="qpid-0.34" verbose="1" >
-    <test name="qpid-0.34">
-        <groups>
-            <run>
-                <exclude name="disableInQpid0.34"  />
-            </run>
-        </groups>
+  <test name="qpid-0.34">
+    <groups>
+      <run>
+        <exclude name="disableInMRG"  />
+        <exclude name="disableInQpid0.34"  />
+      </run>
+    </groups>
 
-        <packages>
-            <package name="com.deutscheboerse.amqp.*" />
-        </packages>
-    </test>
+    <packages>
+      <package name="com.deutscheboerse.amqp.*" />
+    </packages>
+  </test>
 </suite>

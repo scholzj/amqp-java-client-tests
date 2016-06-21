@@ -22,11 +22,11 @@ public class Queueing extends BaseTest {
         try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().connectionOption("sync_publish='all'").build()) {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
-            
+
             MessageProducer sender = session.createProducer(this.utils.getTopic(RTG_TOPIC, RTG_ROUTING_KEY));
             Message msg = session.createMessage();
             sender.send(msg);
-            
+
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             Message received = receiver.receive(5000);
             received.acknowledge();
@@ -38,11 +38,11 @@ public class Queueing extends BaseTest {
         try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().build()) {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
-            
+
             MessageProducer sender = session.createProducer(this.utils.getTopic(DLQ_TOPIC, DLQ_ROUTING_KEY));
             Message msg = session.createMessage();
             sender.send(msg);
-            
+
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(DLQ_QUEUE));
             Message received = receiver.receive(1000);
             received.acknowledge();
@@ -56,12 +56,12 @@ public class Queueing extends BaseTest {
         try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().connectionOption("sync_publish='all'").build()) {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
-            
+
             MessageProducer sender = session.createProducer(this.utils.getQueue(RING_QUEUE));
             for (String message : messagesToBeSent) {
                 sender.send(session.createTextMessage(message));
             }
-            
+
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RING_QUEUE));
             int index = 1;
             for (String expectedMessage : messagesToBeReceived) {
@@ -79,9 +79,9 @@ public class Queueing extends BaseTest {
         try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().connectionOption("sync_publish='all'").build()) {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
-            
+
             MessageProducer sender = session.createProducer(this.utils.getQueue(SMALL_QUEUE));
-            
+
             try
             {
                 sender.send(session.createMessage());
@@ -89,7 +89,7 @@ public class Queueing extends BaseTest {
                 sender.send(session.createMessage());
                 sender.send(session.createMessage());
                 sender.send(session.createMessage());
-                
+
                 try
                 {
                     sender.send(session.createMessage());

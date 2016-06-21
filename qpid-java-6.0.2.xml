@@ -1,0 +1,16 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="qpid-java-6.2" verbose="1" >
+  <test name="qpid-java-6.2">
+    <groups>
+      <run>
+        <exclude name="disableInQpidJava" />
+        <exclude name="disableInQpidJava-6.0.2" />
+      </run>
+    </groups>
+
+    <packages>
+      <package name="com.deutscheboerse.amqp.*" />
+    </packages>
+  </test>
+</suite>

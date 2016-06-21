@@ -1,15 +1,16 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
 <suite name="mrg-3.2.0" verbose="1" >
-    <test name="mrg-3.2.0">
-        <groups>
-            <run>
-                <exclude name="disableInMRG-3.2.0"  />
-            </run>
-        </groups>
+  <test name="mrg-3.2.0">
+    <groups>
+      <run>
+        <exclude name="disableInMRG"  />
+        <exclude name="disableInMRG-3.2.0"  />
+      </run>
+    </groups>
 
-        <packages>
-            <package name="com.deutscheboerse.amqp.*" />
-        </packages>
-    </test>
+    <packages>
+      <package name="com.deutscheboerse.amqp.*" />
+    </packages>
+  </test>
 </suite>

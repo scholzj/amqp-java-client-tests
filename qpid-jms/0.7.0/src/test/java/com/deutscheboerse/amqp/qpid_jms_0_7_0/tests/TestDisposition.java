@@ -31,19 +31,19 @@ public class TestDisposition extends Disposition {
         super.testRejectDisposition();
     }
 
-    @Test
+    @Test(groups = { "disableInArtemis" })
     @Override
     public void testReleasedDisposition() throws JMSException, NamingException, QmfException {
         super.testReleasedDisposition();
     }
 
-    @Test
+    @Test(groups = { "disableInArtemis" })
     @Override
     public void testModifiedFailedDisposition() throws JMSException, NamingException, QmfException {
         super.testModifiedFailedDisposition();
     }
 
-    @Test(groups = { "disableInQpid0.36" })
+    @Test(groups = { "disableInQpid0.36", "disableInArtemis" })
     @Override
     public void testModifiedUndeliverableDisposition() throws JMSException, NamingException, QmfException {
         super.testModifiedUndeliverableDisposition();
@@ -52,7 +52,7 @@ public class TestDisposition extends Disposition {
     /*
     This is the updated version of the previous test case, which reflects the fix in MRG-M 3.3 / Qpid 0.36
      */
-    @Test(groups = { "disableInQpid0.34", "disableInMRG-3.0.0", "disableInMRG-3.2.0" })
+    @Test(groups = { "disableInQpidJava", "disableInQpid0.34", "disableInMRG-3.0.0", "disableInMRG-3.2.0" })
     @Override
     public void testModifiedUndeliverableDispositionFixed() throws JMSException, NamingException, QmfException {
         super.testModifiedUndeliverableDispositionFixed();

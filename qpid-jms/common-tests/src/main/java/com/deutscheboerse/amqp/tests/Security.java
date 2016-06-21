@@ -144,4 +144,54 @@ public class Security extends BaseTest {
             Assert.fail("Failed to open 5 connections!");
         }
     }
+
+    public void testUserID() throws JMSException, NamingException, InterruptedException {
+        try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().brokerOption("jms.populateJMSXUserID=true").build()) {
+            connection.start();
+            Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+
+            MessageProducer sender = session.createProducer(this.utils.getTopic(RTG_TOPIC));
+            Message msg = session.createMessage();
+            msg.setJMSType(RTG_ROUTING_KEY);
+            sender.send(msg);
+
+            MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
+            Message received = receiver.receive(5000);
+            received.acknowledge();
+            Assert.assertNotNull(received, "Didn't receive expected message with jms.populateJMSXUserID=true");
+            Assert.assertEquals(received.getStringProperty("JMSXUserID"), "admin", "Received unexpected user ID with jms.populateJMSXUserID=true");
+        }
+
+        try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().brokerOption("jms.populateJMSXUserID=false").build()) {
+            connection.start();
+            Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+
+            MessageProducer sender = session.createProducer(this.utils.getTopic(RTG_TOPIC));
+            Message msg = session.createMessage();
+            msg.setJMSType(RTG_ROUTING_KEY);
+            sender.send(msg);
+
+            MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
+            Message received = receiver.receive(5000);
+            received.acknowledge();
+            Assert.assertNotNull(received, "Didn't receive expected message with jms.populateJMSXUserID=false");
+            Assert.assertNotEquals(received.getStringProperty("JMSXUserID"), "admin", "Received unexpected user ID with jms.populateJMSXUserID=false");
+        }
+
+        try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().build()) {
+            connection.start();
+            Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+
+            MessageProducer sender = session.createProducer(this.utils.getTopic(RTG_TOPIC));
+            Message msg = session.createMessage();
+            msg.setJMSType(RTG_ROUTING_KEY);
+            sender.send(msg);
+
+            MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
+            Message received = receiver.receive(5000);
+            received.acknowledge();
+            Assert.assertNotNull(received, "Didn't receive expected message");
+            Assert.assertNotEquals(received.getStringProperty("JMSXUserID"), "admin", "Received unexpected user ID");
+        }
+    }
 }

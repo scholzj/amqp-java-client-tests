@@ -6,7 +6,6 @@ import javax.jms.*;
 import javax.naming.NamingException;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.UUID;
 import org.testng.Assert;
 import com.deutscheboerse.amqp.utils.AutoCloseableConnection;
@@ -309,6 +308,32 @@ public class Filtering extends BaseTest {
         }
     }
 
+    public void testMessageIDFilteringJMSStyleJavaBroker() throws JMSException, NamingException, InterruptedException {
+        try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().build()) {
+            connection.start();
+            Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+
+            MessageProducer sender = session.createProducer(this.utils.getQueue(RTG_QUEUE));
+            Message msg = session.createMessage();
+            sender.send(msg);
+
+            String messageID = msg.getJMSMessageID();
+            String JMSMessageID = messageID.substring(3);
+            MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE), "JMSMessageID = '" + UUID.randomUUID().toString() + "'");
+            Message notRcvMsg = receiver.receive(1000);
+
+            assertNull(notRcvMsg, "Received unexpected message");
+
+            MessageConsumer receiver2 = session.createConsumer(this.utils.getQueue(RTG_QUEUE), "JMSMessageID = '" + JMSMessageID + "'");
+            Message rcvMsg = receiver2.receive(1000);
+
+            assertNotNull(rcvMsg, "Didn't receive expected message");
+            assertEquals(messageID, rcvMsg.getJMSMessageID(), "MessageID is wrong");
+
+            rcvMsg.acknowledge();
+        }
+    }
+
     public void testPriorityFilteringJMSStyle() throws JMSException, NamingException, InterruptedException {
         try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().build()) {
             connection.start();
@@ -406,6 +431,37 @@ public class Filtering extends BaseTest {
             assertNull(notRcvMsg, "Received unexpected message for time " + tomorrow.getTime()/1000);
 
             MessageConsumer receiver2 = session.createConsumer(this.utils.getQueue(RTG_QUEUE), "JMSTimestamp > " + yesterday.getTime()/1000);
+            Message rcvMsg = receiver2.receive(1000);
+
+            assertNotNull(rcvMsg, "Didn't receive expected message");
+
+            rcvMsg.acknowledge();
+        }
+    }
+
+    public void testTimestampFilteringJMSStyleJavaBroker() throws JMSException, NamingException, InterruptedException {
+        try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().build()) {
+            connection.start();
+            Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+
+            Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.DAY_OF_YEAR, -1);
+            Date yesterday = cal.getTime();
+
+            MessageProducer sender = session.createProducer(this.utils.getQueue(RTG_QUEUE));
+            Message msg = session.createMessage();
+            sender.send(msg);
+
+            cal = Calendar.getInstance();
+            cal.add(Calendar.DAY_OF_YEAR, 1);
+            Date tomorrow = cal.getTime();
+
+            MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE), "JMSTimestamp > " + tomorrow.getTime());
+            Message notRcvMsg = receiver.receive(1000);
+
+            assertNull(notRcvMsg, "Received unexpected message for time " + tomorrow.getTime());
+
+            MessageConsumer receiver2 = session.createConsumer(this.utils.getQueue(RTG_QUEUE), "JMSTimestamp > " + yesterday.getTime());
             Message rcvMsg = receiver2.receive(1000);
 
             assertNotNull(rcvMsg, "Didn't receive expected message");

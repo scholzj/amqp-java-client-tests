@@ -131,7 +131,7 @@ public class SSL extends BaseTest {
     public void testSSLConnectionToNonSSLPort() throws JMSException, NamingException, InterruptedException {
         // Default timeout of 60 seconds would slow down the test too much
         System.setProperty("qpid.ssl_timeout", "5000");
-        
+
         try (AutoCloseableConnection connection = this.utils.getSSLConnectionBuilder().keystore(USER1_KEYSTORE).keystorePassword(USER1_KEYSTORE_PASSWORD).keystoreAlias(USER1_KEYSTORE_ALIAS).port(TCP_PORT).build()) {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
@@ -147,7 +147,7 @@ public class SSL extends BaseTest {
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
         }
     }
-    
+
     public void testMaximumAllowedConnectionsOverSSL() throws JMSException, NamingException, InterruptedException {
         AbstractConnectionBuilder connectionBuilder = this.utils.getSSLConnectionBuilder().keystore(USER2_KEYSTORE).keystorePassword(USER2_KEYSTORE_PASSWORD).keystoreAlias(USER2_KEYSTORE_ALIAS);
         try (AutoCloseableConnection connection1 = connectionBuilder.build();

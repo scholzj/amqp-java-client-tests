@@ -96,7 +96,7 @@ public class Txn extends BaseTest {
                 received = receiver.receive(1000);
             }
             
-            Assert.assertEquals(0, receivedNo, "Txn test received unexpected number of messages after rollback");
+            Assert.assertEquals(receivedNo, 0, "Txn test received unexpected number of messages after rollback");
         }
     }
     
@@ -151,7 +151,7 @@ public class Txn extends BaseTest {
                 received = receiver.receive(1000);
             }
             
-            Assert.assertEquals(MESSAGE_COUNT, receivedNo, "Txn test received unexpected number of messages after rollback");
+            Assert.assertEquals(receivedNo, MESSAGE_COUNT, "Txn test received unexpected number of messages after rollback");
         }
     }
     
@@ -189,7 +189,7 @@ public class Txn extends BaseTest {
             
             session2.commit();
             
-            Assert.assertEquals(MESSAGE_COUNT, receivedNo, "Txn test received unexpected number of messages");
+            Assert.assertEquals(receivedNo, MESSAGE_COUNT, "Txn test received unexpected number of messages");
         }
     }
 }

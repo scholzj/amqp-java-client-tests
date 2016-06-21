@@ -1,0 +1,356 @@
+<?xml version='1.0'?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<configuration xmlns="urn:activemq"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="urn:activemq /schema/artemis-configuration.xsd">
+
+   <core xmlns="urn:activemq:core">
+
+      <queues>
+          <!-- exchanges below -->
+          <queue name="broadcast">
+              <address>broadcast</address>
+          </queue>
+          <queue name="broadcast_global_default">
+              <address>broadcast_global_default</address>
+          </queue>
+          <queue name="broadcast_resend">
+              <address>broadcast_resend</address>
+          </queue>
+          <queue name="request.user1">
+              <address>request.user1</address>
+          </queue>
+          <queue name="response">
+              <address>response</address>
+          </queue>
+          <!-- queues below -->
+          <queue name="broadcast.readOnlyQueue">
+              <address>broadcast.readOnlyQueue</address>
+          </queue>
+          <queue name="broadcast.user1.dlqQueue">
+              <address>broadcast.user1.dlqQueue</address>
+          </queue>
+          <queue name="broadcast.user1.lvqQueue">
+              <address>broadcast.user1.lvqQueue</address>
+          </queue>
+          <queue name="broadcast.user1.ringQueue">
+              <address>broadcast.user1.ringQueue</address>
+          </queue>
+          <queue name="broadcast.user1.rtgQueue">
+              <address>broadcast.user1.rtgQueue</address>
+          </queue>
+          <queue name="broadcast.user1.smallQueue">
+              <address>broadcast.user1.smallQueue</address>
+          </queue>
+          <queue name="broadcast.user1.ttlQueue">
+              <address>broadcast.user1.ttlQueue</address>
+          </queue>
+          <queue name="broadcast.user1.txnQueue">
+              <address>broadcast.user1.txnQueue</address>
+          </queue>
+          <queue name="broadcast.user2.forbiddenQueue">
+              <address>broadcast.user2.forbiddenQueue</address>
+          </queue>
+          <queue name="request_be.user1.ReqResp">
+              <address>request_be.user1.ReqResp</address>
+          </queue>
+          <queue name="response.user1.ReqResp">
+              <address>response.user1.ReqResp</address>
+          </queue>
+      </queues>
+
+      <name>artemisTestBroker</name>
+
+      <persistence-enabled>true</persistence-enabled>
+
+      <!-- this could be ASYNCIO or NIO
+       -->
+      <journal-type>ASYNCIO</journal-type>
+
+      <paging-directory>./data/paging</paging-directory>
+
+      <bindings-directory>./data/bindings</bindings-directory>
+
+      <journal-directory>./data/journal</journal-directory>
+
+      <large-messages-directory>./data/large-messages</large-messages-directory>
+
+      <journal-min-files>10</journal-min-files>
+
+      <journal-pool-files>-1</journal-pool-files>
+
+      <connection-ttl-override>-1</connection-ttl-override>
+
+      <!--
+       This value was determined through a calculation.
+       Your system could perform 11.36 writes per millisecond
+       on the current journal configuration.
+       That translates as a sync write every 88000 nanoseconds
+      -->
+      <journal-buffer-timeout>88000</journal-buffer-timeout>
+
+      <!-- true to expose ActiveMQ Artemis resources through JMX -->
+      <!--jmx-management-enabled>true</jmx-management-enabled-->
+
+      <acceptors>
+         <!-- Default ActiveMQ Artemis Acceptor.  Multi-protocol adapter.  Currently supports ActiveMQ Artemis Core, OpenWire, STOMP, AMQP, MQTT, and HornetQ Core. -->
+         <!-- performance tests have shown that openWire performs best with these buffer sizes -->
+         <!--acceptor name="artemis">tcp://0.0.0.0:61616?tcpSendBufferSize=1048576;tcpReceiveBufferSize=1048576</acceptor-->
+
+         <!-- AMQP Acceptor.  Listens on default AMQP port for AMQP traffic.-->
+         <acceptor name="amqp">tcp://0.0.0.0:5674?protocols=AMQP</acceptor>
+
+         <!-- AMQP Acceptor.  Listens on default AMQP port for AMQP traffic.-->
+         <acceptor name="amqpSsl">tcp://0.0.0.0:5673?protocols=AMQP;sslEnabled=true;keyStorePath=/var/lib/qpidd/vavrtom/artemis/broker-1.3.0/etc/cbgc03.keystore;keyStorePassword=123456;trustStorePath=/var/lib/qpidd/vavrtom/artemis/broker-1.3.0/etc/member.truststore;trustStorePassword=123456</acceptor>
+
+         <!-- STOMP Acceptor. -->
+         <!--acceptor name="stomp">tcp://0.0.0.0:61613?protocols=STOMP</acceptor-->
+
+         <!-- HornetQ Compatibility Acceptor.  Enables HornetQ Core and STOMP for legacy HornetQ clients. -->
+         <!--acceptor name="hornetq">tcp://0.0.0.0:5445?protocols=HORNETQ,STOMP</acceptor-->
+
+         <!-- MQTT Acceptor -->
+         <!--acceptor name="mqtt">tcp://0.0.0.0:1883?protocols=MQTT</acceptor-->
+      </acceptors>
+
+      <resource-limit-settings>
+          <resource-limit-setting match="user2">
+              <max-connections>5</max-connections>
+              <!--max-queues>3</max-queues-->
+          </resource-limit-setting>
+      </resource-limit-settings>
+
+      <security-settings>
+         <security-setting match="#">
+            <permission type="createNonDurableQueue" roles="amq"/>
+            <permission type="deleteNonDurableQueue" roles="amq"/>
+            <permission type="createDurableQueue" roles="amq"/>
+            <permission type="deleteDurableQueue" roles="amq"/>
+            <permission type="consume" roles="amq"/>
+            <permission type="send" roles="amq"/>
+            <!-- we need this otherwise ./artemis data imp wouldn't work -->
+            <permission type="manage" roles="amq"/>
+         </security-setting>
+         <!-- ACCOUNT: user1 -->
+         <security-setting match="broadcast.user1.#">
+             <permission type="consume" roles="user1,amq"/>
+             <permission type="send" roles="user1,amq"/>
+         </security-setting>
+         <security-setting match="broadcast.readOnlyQueue">
+             <permission type="consume" roles="user1"/>
+             <permission type="send" roles="amq"/>
+         </security-setting>
+         <security-setting match="broadcast">
+             <permission type="send" roles="user1,user2,amq"/>
+         </security-setting>
+         <security-setting match="broadcast_resend">
+             <permission type="send" roles="user1,user2"/>
+         </security-setting>
+         <security-setting match="request.user1">
+             <permission type="send" roles="user1"/>
+         </security-setting>
+         <security-setting match="response.user1.*">
+             <permission type="createNonDurableQueue" roles="user1"/>
+             <permission type="deleteNonDurableQueue" roles="user1"/>
+             <permission type="consume" roles="user1"/>
+             <permission type="send" roles="user1"/>
+             <permission type="manage" roles="user1"/>
+         </security-setting>
+         <security-setting match="response">
+             <permission type="send" roles="user1"/>
+             <permission type="manage" roles="user1"/>
+         </security-setting>
+         <security-setting match="response.user1.ReqResp">
+             <permission type="consume" roles="user1"/>
+         </security-setting>
+         <security-setting match="request_be.user1.ReqResp">
+             <permission type="consume" roles="user1"/>
+         </security-setting>
+         <!-- ACCOUNT: user2 -->
+         <security-setting match="broadcast.user2.forbiddenQueue">
+             <permission type="consume" roles="user2"/>
+             <permission type="send" roles="user2"/>
+         </security-setting>
+      </security-settings>
+
+      <diverts>
+          <divert name="routing.broadcast.readOnlyQueue.">
+              <routing-name>broadcast.readOnlyQueue.#</routing-name>
+              <filter string="JMSType LIKE 'broadcast.readOnlyQueue%'"/>
+              <address>broadcast</address>
+              <forwarding-address>broadcast.readOnlyQueue</forwarding-address>
+              <exclusive>true</exclusive>
+          </divert>
+          <divert name="routing.broadcast.lvqQueue.">
+              <routing-name>broadcast.lvqQueue.#</routing-name>
+              <filter string="JMSType LIKE 'broadcast.lvqQueue%'"/>
+              <address>broadcast</address>
+              <forwarding-address>broadcast.user1.lvqQueue</forwarding-address>
+              <exclusive>true</exclusive>
+          </divert>
+          <divert name="routing.broadcast.ringQueue.">
+              <routing-name>broadcast.ringQueue.#</routing-name>
+              <filter string="JMSType LIKE 'broadcast.ringQueue%'"/>
+              <address>broadcast</address>
+              <forwarding-address>broadcast.user1.ringQueue</forwarding-address>
+              <exclusive>true</exclusive>
+          </divert>
+          <divert name="routing.broadcast.rtgQueue.">
+              <routing-name>broadcast.rtgQueue.#</routing-name>
+              <filter string="JMSType LIKE 'broadcast.rtgQueue%'"/>
+              <address>broadcast</address>
+              <forwarding-address>broadcast.user1.rtgQueue</forwarding-address>
+              <exclusive>true</exclusive>
+          </divert>
+          <divert name="routing.broadcast.smallQueue.">
+              <routing-name>broadcast.smallQueue.#</routing-name>
+              <filter string="JMSType LIKE 'broadcast.smallQueue%'"/>
+              <address>broadcast</address>
+              <forwarding-address>broadcast.user1.smallQueue</forwarding-address>
+              <exclusive>true</exclusive>
+          </divert>
+          <divert name="routing.broadcast.ttlQueue.">
+              <routing-name>broadcast.ttlQueue.#</routing-name>
+              <address>broadcast</address>
+              <filter string="JMSType LIKE 'broadcast.ttlQueue%'"/>
+              <forwarding-address>broadcast.user1.ttlQueue</forwarding-address>
+              <exclusive>true</exclusive>
+          </divert>
+          <divert name="routing.broadcast.txnQueue.">
+              <routing-name>broadcast.txnQueue.#</routing-name>
+              <address>broadcast</address>
+              <filter string="JMSType LIKE 'broadcast.txnQueue%'"/>
+              <forwarding-address>broadcast.user1.txnQueue</forwarding-address>
+              <exclusive>true</exclusive>
+          </divert>
+          <divert name="routing.broadcast.forbiddenQueue.">
+              <routing-name>broadcast.forbiddenQueue.#</routing-name>
+              <filter string="JMSType LIKE 'broadcast.forbiddenQueue%'"/>
+              <address>broadcast</address>
+              <forwarding-address>broadcast.user2.forbiddenQueue</forwarding-address>
+              <exclusive>true</exclusive>
+          </divert>
+          <divert name="broadcast-alternate-exchange">
+              <routing-name>#</routing-name>
+              <filter string="JMSType LIKE '%'"/>
+              <address>broadcast</address>
+              <forwarding-address>broadcast_global_default</forwarding-address>
+              <exclusive>true</exclusive>
+          </divert>
+          <divert name="broadcast_global_default.dlq">
+              <routing-name>#</routing-name>
+              <filter string="JMSType LIKE '%'"/>
+              <address>broadcast_global_default</address>
+              <forwarding-address>broadcast.user1.dlqQueue</forwarding-address>
+              <exclusive>true</exclusive>
+          </divert>
+          <divert name="broadcast_resend.readOnlyQueue">
+              <routing-name>resend.broadcast.readOnlyQueue</routing-name>
+              <filter string="JMSType='resend.broadcast.readOnlyQueue'"/>
+              <address>broadcast_resend</address>
+              <forwarding-address>broadcast.readOnlyQueue</forwarding-address>
+              <exclusive>true</exclusive>
+          </divert>
+          <divert name="broadcast_resend.lvqQueue">
+              <routing-name>resend.broadcast.lvqQueue</routing-name>
+              <filter string="JMSType LIKE 'resend.broadcast._.lvqQueue%'"/>
+              <address>broadcast_resend</address>
+              <forwarding-address>broadcast.user1.lvqQueue</forwarding-address>
+              <exclusive>true</exclusive>
+          </divert>
+          <divert name="broadcast_resend.ringQueue">
+              <routing-name>resend.broadcast.ringQueue</routing-name>
+              <filter string="JMSType LIKE 'resend.broadcast._.ringQueue%'"/>
+              <address>broadcast_resend</address>
+              <forwarding-address>broadcast.user1.ringQueue</forwarding-address>
+              <exclusive>true</exclusive>
+          </divert>
+          <divert name="broadcast_resend.rtgQueue.">
+              <routing-name>resend.broadcast.rtgQueue</routing-name>
+              <filter string="JMSType LIKE 'resend.broadcast._.rtgQueue%'"/>
+              <address>broadcast_resend</address>
+              <forwarding-address>broadcast.user1.rtgQueue</forwarding-address>
+              <exclusive>true</exclusive>
+          </divert>
+          <divert name="broadcast_resend.smallQueue">
+              <routing-name>resend.broadcast.smallQueue</routing-name>
+              <filter string="JMSType LIKE 'resend.broadcast._.smallQueue%'"/>
+              <address>broadcast_resend</address>
+              <forwarding-address>broadcast.user1.smallQueue</forwarding-address>
+              <exclusive>true</exclusive>
+          </divert>
+          <divert name="broadcast_resend.ttlQueue">
+              <routing-name>resend.broadcast.ttlQueue</routing-name>
+              <filter string="JMSType LIKE 'resend.broadcast._.ttlQueue%'"/>
+              <address>broadcast_resend</address>
+              <forwarding-address>broadcast.user1.ttlQueue</forwarding-address>
+              <exclusive>true</exclusive>
+          </divert>
+          <divert name="broadcast_resend.txnQueue.">
+              <routing-name>resend.broadcast.txnQueue</routing-name>
+              <filter string="JMSType LIKE 'resend.broadcast._.txnQueue%'"/>
+              <address>broadcast_resend</address>
+              <forwarding-address>broadcast.user1.txnQueue</forwarding-address>
+              <exclusive>true</exclusive>
+          </divert>
+          <divert name="broadcast_resend.forbiddenQueue.">
+              <routing-name>resend.broadcast.forbiddenQueue</routing-name>
+              <filter string="JMSType='resend.broadcast.forbiddenQueue'"/>
+              <address>broadcast_resend</address>
+              <forwarding-address>broadcast.user2.forbiddenQueue</forwarding-address>
+              <exclusive>true</exclusive>
+          </divert>
+          <divert name="ReqResp.">
+              <routing-name>ReqResp.#</routing-name>
+              <filter string="JMSType LIKE 'ReqResp%'"/>
+              <address>request.user1</address>
+              <forwarding-address>request_be.user1.ReqResp</forwarding-address>
+              <exclusive>true</exclusive>
+          </divert>
+          <divert name="response.user1.ReqResp-divert">
+              <routing-name>response.user1.ReqResp</routing-name>
+              <filter string="JMSType='response.user1.ReqResp'"/>
+              <address>response</address>
+              <forwarding-address>response.user1.ReqResp</forwarding-address>
+              <exclusive>true</exclusive>
+          </divert>
+      </diverts>
+
+      <address-settings>
+         <address-setting match="broadcast.user1.lvqQueue">
+             <last-value-queue>true</last-value-queue>
+         </address-setting>
+         <address-setting match="broadcast.lvqQueue">
+             <last-value-queue>true</last-value-queue>
+         </address-setting>
+         <!--default for catch all-->
+         <address-setting match="#">
+            <!--dead-letter-address>jms.queue.DLQ</dead-letter-address-->
+            <!--expiry-address>jms.queue.ExpiryQueue</expiry-address-->
+            <redelivery-delay>0</redelivery-delay>
+            <max-delivery-attempts>1</max-delivery-attempts>
+            <max-size-bytes>1073741824</max-size-bytes>
+            <message-counter-history-day-limit>10</message-counter-history-day-limit>
+            <address-full-policy>BLOCK</address-full-policy>
+         </address-setting>
+      </address-settings>
+   </core>
+</configuration>

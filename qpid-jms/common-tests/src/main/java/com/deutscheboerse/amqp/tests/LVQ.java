@@ -3,10 +3,12 @@ package com.deutscheboerse.amqp.tests;
 import com.deutscheboerse.amqp.configuration.Settings;
 
 import javax.jms.*;
+import javax.jms.Message;
 import javax.naming.NamingException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+
 import org.testng.Assert;
 import com.deutscheboerse.amqp.utils.AutoCloseableConnection;
 
@@ -14,9 +16,18 @@ public class LVQ extends BaseTest {
 
     private static final String LVQ_QUEUE = Settings.get("routing.lvq_queue");
     private static final String LVQ_KEY = Settings.get("routing.lvq_key");
+    private static final String ARTEMIS_LVQ_KEY = org.apache.activemq.artemis.api.core.Message.HDR_LAST_VALUE_NAME.toString();
+
+    public void testLVQQueueBasic() throws JMSException, NamingException {
+        testLVQQueueBasic(LVQ_KEY);
+    }
+
+    public void testLVQQueueBasicArtemis() throws JMSException, NamingException {
+        testLVQQueueBasic(ARTEMIS_LVQ_KEY);
+    }
 
     // Test the LVQ feature
-    public void testLVQQueueBasic() throws JMSException, NamingException {
+    private void testLVQQueueBasic(String lvqKey) throws JMSException, NamingException {
         try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().brokerOption("jms.validatePropertyNames=False").build()) {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
@@ -24,19 +35,19 @@ public class LVQ extends BaseTest {
             MessageProducer sender = session.createProducer(this.utils.getQueue(LVQ_QUEUE));
 
             Message lvq1 = session.createTextMessage("A");
-            lvq1.setStringProperty(LVQ_KEY, "1");
+            lvq1.setStringProperty(lvqKey, "1");
             sender.send(lvq1);
 
             Message lvq2 = session.createTextMessage("B");
-            lvq2.setStringProperty(LVQ_KEY, "1");
+            lvq2.setStringProperty(lvqKey, "1");
             sender.send(lvq2);
 
             Message lvq3 = session.createTextMessage("C");
-            lvq3.setStringProperty(LVQ_KEY, "1");
+            lvq3.setStringProperty(lvqKey, "1");
             sender.send(lvq3);
 
             Message lvq4 = session.createTextMessage("D");
-            lvq4.setStringProperty(LVQ_KEY, "1");
+            lvq4.setStringProperty(lvqKey, "1");
             sender.send(lvq4);
 
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(LVQ_QUEUE));
@@ -54,8 +65,16 @@ public class LVQ extends BaseTest {
         }
     }
 
-    // Test the LVQ feature
     public void testLVQQueueManyMessages() throws JMSException, NamingException {
+        testLVQQueueManyMessages(LVQ_KEY);
+    }
+
+    public void testLVQQueueManyMessagesArtemis() throws JMSException, NamingException {
+        testLVQQueueManyMessages(ARTEMIS_LVQ_KEY);
+    }
+
+    // Test the LVQ feature
+    private void testLVQQueueManyMessages(String lvqKey) throws JMSException, NamingException {
         int MESSAGE_COUNT = 10000;
 
         try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().syncPublish(false).brokerOption("jms.validatePropertyNames=False").build()) {
@@ -80,7 +99,7 @@ public class LVQ extends BaseTest {
 
             for (int i = 0; i < MESSAGE_COUNT; i++) {
                 Message lvqMessage = session.createTextMessage("A");
-                lvqMessage.setStringProperty(LVQ_KEY, keys.get(generator.nextInt(keys.size())));
+                lvqMessage.setStringProperty(lvqKey, keys.get(generator.nextInt(keys.size())));
                 sender.send(lvqMessage);
             }
 
@@ -90,10 +109,10 @@ public class LVQ extends BaseTest {
             while (received != null) {
                 received.acknowledge();
 
-                if (keys.contains(received.getStringProperty(LVQ_KEY))) {
-                    keys.remove(received.getStringProperty(LVQ_KEY));
+                if (keys.contains(received.getStringProperty(lvqKey))) {
+                    keys.remove(received.getStringProperty(lvqKey));
                 } else {
-                    Assert.fail("received message with wrong LVQ key" + received.getStringProperty(LVQ_KEY));
+                    Assert.fail("received message with wrong LVQ key" + received.getStringProperty(lvqKey));
                 }
 
                 received = (TextMessage) receiver.receive(1000);
@@ -102,8 +121,16 @@ public class LVQ extends BaseTest {
         }
     }
 
-    // Test the LVQ feature
     public void testLVQQueueInTxn() throws JMSException, NamingException {
+        testLVQQueueInTxn(LVQ_KEY);
+    }
+
+    public void testLVQQueueInTxnArtemis() throws JMSException, NamingException {
+        testLVQQueueInTxn(ARTEMIS_LVQ_KEY);
+    }
+
+    // Test the LVQ feature
+    private void testLVQQueueInTxn(String lvqKey) throws JMSException, NamingException {
         try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().brokerOption("jms.validatePropertyNames=False").build()) {
             connection.start();
             Session session = connection.createSession(true, Session.CLIENT_ACKNOWLEDGE);
@@ -111,19 +138,19 @@ public class LVQ extends BaseTest {
             MessageProducer sender = session.createProducer(this.utils.getQueue(LVQ_QUEUE));
 
             Message lvq1 = session.createTextMessage("A");
-            lvq1.setStringProperty(LVQ_KEY, "1");
+            lvq1.setStringProperty(lvqKey, "1");
             sender.send(lvq1);
 
             Message lvq2 = session.createTextMessage("B");
-            lvq2.setStringProperty(LVQ_KEY, "1");
+            lvq2.setStringProperty(lvqKey, "1");
             sender.send(lvq2);
 
             Message lvq3 = session.createTextMessage("C");
-            lvq3.setStringProperty(LVQ_KEY, "1");
+            lvq3.setStringProperty(lvqKey, "1");
             sender.send(lvq3);
 
             Message lvq4 = session.createTextMessage("D");
-            lvq4.setStringProperty(LVQ_KEY, "1");
+            lvq4.setStringProperty(lvqKey, "1");
             sender.send(lvq4);
 
             session.commit();

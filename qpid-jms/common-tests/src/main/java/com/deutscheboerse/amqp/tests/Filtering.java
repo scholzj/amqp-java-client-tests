@@ -16,6 +16,10 @@ import static org.testng.Assert.assertNull;
 
 public class Filtering extends BaseTest {
     private static final String RTG_QUEUE = Settings.get("routing.rtg_queue");
+    private static final String JMS_PRIORITY_SELECTOR = "JMSPriority";
+    private static final String JMS_TIMESTAMP_SELECTOR = "JMSTimestamp";
+    private static final String ARTEMIS_PRIORITY_SELECTOR = "AMQPriority";
+    private static final String ARTEMIS_TIMESTAMP_SELECTOR = "AMQTimestamp";
 
     public void testCorrelationIDFilteringAMQPStyle() throws JMSException, NamingException, InterruptedException {
         try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().build()) {
@@ -379,6 +383,14 @@ public class Filtering extends BaseTest {
     }
 
     public void testPriorityFilteringJMSStyle() throws JMSException, NamingException, InterruptedException {
+        testPriorityFilteringJMSStyle(JMS_PRIORITY_SELECTOR);
+    }
+
+    public void testPriorityFilteringJMSStyleArtemis() throws JMSException, NamingException, InterruptedException {
+        testPriorityFilteringJMSStyle(ARTEMIS_PRIORITY_SELECTOR);
+    }
+
+    private void testPriorityFilteringJMSStyle(String selectorName) throws JMSException, NamingException, InterruptedException {
         try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().build()) {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
@@ -388,12 +400,12 @@ public class Filtering extends BaseTest {
             Message msg = session.createMessage();
             sender.send(msg);
 
-            MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE), "JMSPriority < 5");
+            MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE), selectorName + " < 5");
             Message notRcvMsg = receiver.receive(1000);
 
             assertNull(notRcvMsg, "Received unexpected message");
 
-            MessageConsumer receiver2 = session.createConsumer(this.utils.getQueue(RTG_QUEUE), "JMSPriority > 5");
+            MessageConsumer receiver2 = session.createConsumer(this.utils.getQueue(RTG_QUEUE), selectorName + " > 5");
             Message rcvMsg = receiver2.receive(1000);
 
             assertNotNull(rcvMsg, "Didn't receive expected message");
@@ -485,6 +497,14 @@ public class Filtering extends BaseTest {
     }
 
     public void testTimestampFilteringJMSStyle() throws JMSException, NamingException, InterruptedException {
+        testTimestampFilteringJMSStyle(JMS_TIMESTAMP_SELECTOR);
+    }
+
+    public void testTimestampFilteringJMSStyleArtemis() throws JMSException, NamingException, InterruptedException {
+        testTimestampFilteringJMSStyle(ARTEMIS_TIMESTAMP_SELECTOR);
+    }
+
+    private void testTimestampFilteringJMSStyle(String selectorName) throws JMSException, NamingException, InterruptedException {
         try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().build()) {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
@@ -501,12 +521,12 @@ public class Filtering extends BaseTest {
             cal.add(Calendar.YEAR, 1);
             Date tomorrow = cal.getTime();
 
-            MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE), "JMSTimestamp > " + tomorrow.getTime());
+            MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE), selectorName + " > " + tomorrow.getTime());
             Message notRcvMsg = receiver.receive(1000);
 
             assertNull(notRcvMsg, "Received unexpected message");
 
-            MessageConsumer receiver2 = session.createConsumer(this.utils.getQueue(RTG_QUEUE), "JMSTimestamp > " + yesterday.getTime());
+            MessageConsumer receiver2 = session.createConsumer(this.utils.getQueue(RTG_QUEUE), selectorName + " > " + yesterday.getTime());
             Message rcvMsg = receiver2.receive(1000);
 
             assertNotNull(rcvMsg, "Didn't receive expected message");

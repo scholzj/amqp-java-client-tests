@@ -6,9 +6,7 @@ import com.deutscheboerse.amqp.utils.AutoCloseableConnection;
 import javax.jms.*;
 import javax.naming.NamingException;
 import java.util.UUID;
-
-import static org.testng.AssertJUnit.assertNotNull;
-import static org.testng.AssertJUnit.assertNull;
+import org.testng.Assert;
 
 public class RequestResponse extends BaseTest {
     private static final String USER1_USERNAME = Settings.get("user1.username");
@@ -41,13 +39,16 @@ public class RequestResponse extends BaseTest {
             Session serverSession = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
             MessageConsumer requestReceiver = serverSession.createConsumer(this.utils.getQueue(REQUEST_QUEUE));
             Message serverMessage = requestReceiver.receive(1000);
-            assertNotNull("Server didn't received request message", serverMessage);
+            Assert.assertNotNull(serverMessage, "Server didn't receive request message");
             MessageProducer serverProducer = serverSession.createProducer(serverMessage.getJMSReplyTo());
             serverProducer.send(serverSession.createMessage());
+            serverMessage.acknowledge();
 
             // Receive the response
             Message responseMessage = responseReceiver.receive(1000);
-            assertNotNull("Didn't received response message", responseMessage);
+            Assert.assertNotNull(responseMessage, "Didn't receive response message");
+            responseMessage.acknowledge();
         }
     }
+
 }
