@@ -24,5 +24,5 @@ test:
   pre:
     - docker run -d -p 35672:5672 -p 35671:5671 $BROKER_DOCKER_IMAGE
   override:
-    - mvn test -Dsurefire.suiteXmlFiles=$(pwd)/$MAVEN_TEST_SUITE
+    - mvn -fae test -Dsurefire.suiteXmlFiles=$(pwd)/$MAVEN_TEST_SUITE
   
