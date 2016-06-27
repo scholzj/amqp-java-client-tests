@@ -7,9 +7,9 @@ machine:
     - docker
   environment:
     #- MAVEN_TEST_SUITE=no-tests.xml BROKER_DOCKER_IMAGE=scholzj/java-client-tests:0.34
-    MAVEN_TEST_SUITE: qpid-0.34.xml
-    # MAVEN_TEST_SUITE: mrg-3.2.0.xml
-    BROKER_DOCKER_IMAGE: scholzj/java-client-tests:0.34
+    #MAVEN_TEST_SUITE: qpid-0.34.xml
+    MAVEN_TEST_SUITE: mrg-3.2.0.xml
+    BROKER_DOCKER_IMAGE: scholzj/java-client-tests:3.2.0
     #- MAVEN_TEST_SUITE=qpid-0.36.xml BROKER_DOCKER_IMAGE=scholzj/java-client-tests:0.36
     #- MAVEN_TEST_SUITE=mrg-3.0.0.xml BROKER_DOCKER_IMAGE=scholzj/java-client-tests:3.0.0
     #- MAVEN_TEST_SUITE=mrg-3.2.0.xml BROKER_DOCKER_IMAGE=scholzj/java-client-tests:3.2.0
