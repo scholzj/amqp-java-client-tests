@@ -83,29 +83,8 @@ function start_qpidd_container() {
 # param: $1 - image version
 function start_tests_container() {
     local AMQP_CONTAINER_NAME_IP_ADDRESS=$(${SUDO} docker inspect --format "{{ .NetworkSettings.Networks.${DOCKER_NETWORK}.IPAddress }}" ${AMQP_CONTAINER_NAME})
-    ${SUDO} docker run -d -it --net=${DOCKER_NETWORK} --add-host ${AMQP_HOST}:${AMQP_CONTAINER_NAME_IP_ADDRESS} --name=${JAVA_CONTAINER_NAME} --hostname=${JAVA_HOST} maven:$1 bash
+    ${SUDO} docker run -d -it --dns=8.8.8.8 --dns=8.8.4.4 --net=${DOCKER_NETWORK} --add-host ${AMQP_HOST}:${AMQP_CONTAINER_NAME_IP_ADDRESS} --name=${JAVA_CONTAINER_NAME} --hostname=${JAVA_HOST} maven:$1 bash
     RESULTS_MSG+="MAVEN IMAGE: $1, "
-}
-
-# create and copy maven's settings.xml file with proxy settings into the docker image
-function prepare_maven_on_container() {
-    cat > ${TMP_DIR}/settings.xml <<EOF
-<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
-                  http://maven.apache.org/xsd/settings-1.0.0.xsd">
-  <proxies>
-    <proxy>
-      <active>true</active>
-      <protocol>http</protocol>
-      <host>webproxy.deutsche-boerse.de</host>
-      <port>8080</port>
-      <nonProxyHosts>cmqaart.deutsche-boerse.de</nonProxyHosts>
-    </proxy>
-  </proxies>
-</settings>
-EOF
-    ${SUDO} docker cp ${TMP_DIR}/settings.xml ${JAVA_CONTAINER_NAME}:/root/.m2/
 }
 
 # get source code into the docker container
@@ -160,7 +139,6 @@ function execute_single_run() {
     create_network && \
     start_qpidd_container ${QPIDD_CONTAINER_VERSION} && \
     start_tests_container ${MAVEN_CONTAINER_VERSION} && \
-    prepare_maven_on_container && \
     prepare_sources_on_container && \
     prepare_truststore_on_container && \
     prepare_configuration_for_tests && \
