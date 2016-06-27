@@ -2,8 +2,18 @@ language: bash
 
 sudo: required
 
+env:
+  - MVN=3-jdk-7 QPID=0.34
+  - MVN=3-jdk-8 QPID=0.34
+  - MVN=3-jdk-7 QPID=0.36
+  - MVN=3-jdk-8 QPID=0.36
+  - MVN=3-jdk-7 QPID=3.2.0
+  - MVN=3-jdk-8 QPID=3.2.0
+  - MVN=3-jdk-7 QPID=3.0.0
+  - MVN=3-jdk-8 QPID=3.0.0
+
 services:
   - docker
 
 script:
-   - ./docker_run.sh
+  - ./docker_run.sh --mrg-version=$QPID --mvn-version=$MVN
