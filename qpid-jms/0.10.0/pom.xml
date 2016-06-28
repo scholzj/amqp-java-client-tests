@@ -12,14 +12,14 @@
     <artifactId>qpid-jms-0.10.0</artifactId>
 
     <repositories>
-        <repository>
+        <!--<repository>
             <id>apache-snapshots</id>
             <url>https://repository.apache.org/content/repositories/snapshots</url>
-        </repository>
-        <!--<repository>
-            <id>apache-rcs</id>
-            <url>https://repository.apache.org/content/repositories/orgapacheqpid-1069</url>
         </repository>-->
+        <repository>
+            <id>apache-rcs</id>
+            <url>https://repository.apache.org/content/repositories/orgapacheqpid-1078</url>
+        </repository>
         <!--<repository>
             <id>apache-rcs</id>
             <url>https://repository.apache.org/content/repositories/orgapacheqpid-1064/</url>
@@ -30,7 +30,7 @@
         <dependency>
             <groupId>org.apache.qpid</groupId>
             <artifactId>qpid-jms-client</artifactId>
-            <version>0.10.0-SNAPSHOT</version>
+            <version>0.10.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
