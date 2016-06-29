@@ -18,6 +18,8 @@ dependencies:
     
 test:
   pre:
-    - docker run -d -p 35672:5672 -p 35671:5671 $BROKER_DOCKER_IMAGE
+    - case $CIRCLE_NODE_INDEX in 0) docker run -d -p 35672:5672 -p 35671:5671 scholzj/java-client-tests:3.0.0 ;; 1) docker run -d -p 35672:5672 -p 35671:5671 scholzj/java-client-tests:3.2.0 ;; 2) docker run -d -p 35672:5672 -p 35671:5671 scholzj/java-client-tests:0.34 ;; 3) docker run -d -p 35672:5672 -p 35671:5671 scholzj/java-client-tests:0.36 ;; esac:
+        parallel: true
   override:
-    - mvn -fae test -Dsurefire.suiteXmlFiles=$(pwd)/$MAVEN_TEST_SUITE
+    - case $CIRCLE_NODE_INDEX in 0) mvn -fae test -Dsurefire.suiteXmlFiles=$(pwd)/mrg-3.0.0.xml ;; 1) mvn -fae test -Dsurefire.suiteXmlFiles=$(pwd)/mrg-3.2.0.xml ;; 2) mvn -fae test -Dsurefire.suiteXmlFiles=$(pwd)/qpid-0.34.xml ;; 3) mvn -fae test -Dsurefire.suiteXmlFiles=$(pwd)/qpid-0.36.xml ;; esac:
+        parallel: true
