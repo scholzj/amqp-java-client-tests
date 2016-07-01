@@ -1,8 +1,10 @@
 package com.deutscheboerse.amqp.qpid_amqp_0_10_jms_6_1_0.utils;
 
+import bitronix.tm.resource.jms.PoolingConnectionFactory;
 import com.deutscheboerse.amqp.configuration.Settings;
 import com.deutscheboerse.amqp.utils.AbstractConnectionBuilder;
 import com.deutscheboerse.amqp.utils.AutoCloseableConnection;
+import com.deutscheboerse.amqp.utils.AutoCloseableConnectionTransactionManager;
 import com.deutscheboerse.amqp.utils.AutoCloseableXAConnection;
 import java.util.Properties;
 import javax.jms.ConnectionFactory;
@@ -110,10 +112,26 @@ public class ConnectionBuilder extends AbstractConnectionBuilder {
         Properties props = new Properties();
         props.setProperty("java.naming.factory.initial", "org.apache.qpid.jndi.PropertiesFileInitialContextFactory");
         props.setProperty("connectionfactory.connection", url());
-        
+
         InitialContext ctx = new InitialContext(props);
         XAQueueConnectionFactory fact = (XAQueueConnectionFactory) ctx.lookup("connection");
         
         return new AutoCloseableXAConnection(fact.createXAConnection());
+    }
+
+    @Override
+    public AutoCloseableConnectionTransactionManager buildWithTransactionManager() throws NamingException, JMSException {
+        PoolingConnectionFactory connectionFactory = new PoolingConnectionFactory ();
+        connectionFactory.setClassName("com.deutscheboerse.amqp.utils.AMQConnectionFactory");
+        connectionFactory.setUniqueName("test");
+        connectionFactory.setMinPoolSize(1);
+        connectionFactory.setMaxPoolSize(2);
+        connectionFactory.setAllowLocalTransactions(true);
+        connectionFactory.setUser(username);
+        connectionFactory.setPassword(password);
+        connectionFactory.getDriverProperties().setProperty("brokerUrl", url());
+        connectionFactory.init();
+
+        return new AutoCloseableConnectionTransactionManager(connectionFactory);
     }
 }

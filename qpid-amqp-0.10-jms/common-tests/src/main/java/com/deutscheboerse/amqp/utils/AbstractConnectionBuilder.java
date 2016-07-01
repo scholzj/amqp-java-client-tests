@@ -1,8 +1,6 @@
 package com.deutscheboerse.amqp.utils;
 
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 import javax.jms.JMSException;
 import javax.naming.NamingException;
@@ -91,5 +89,5 @@ public abstract class AbstractConnectionBuilder {
     
     public abstract AutoCloseableConnection build() throws NamingException, JMSException;
     public abstract AutoCloseableXAConnection buildXA() throws NamingException, JMSException;
-
+    public abstract AutoCloseableConnectionTransactionManager buildWithTransactionManager() throws NamingException, JMSException;
 }
