@@ -1,4 +1,4 @@
-package com.deutscheboerse.amqp.qpid_amqp_0_10_jms_6_0_2.utils;
+package com.deutscheboerse.amqp.qpid_amqp_0_10_jms_6_0_4.utils;
 
 import bitronix.tm.resource.jms.PoolingConnectionFactory;
 import com.deutscheboerse.amqp.configuration.Settings;
@@ -115,7 +115,7 @@ public class ConnectionBuilder extends AbstractConnectionBuilder {
         
         InitialContext ctx = new InitialContext(props);
         XAQueueConnectionFactory fact = (XAQueueConnectionFactory) ctx.lookup("connection");
-        
+
         return new AutoCloseableXAConnection(fact.createXAConnection());
     }
 

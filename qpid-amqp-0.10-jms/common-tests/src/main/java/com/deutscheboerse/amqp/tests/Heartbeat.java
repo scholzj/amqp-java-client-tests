@@ -9,8 +9,8 @@ import javax.naming.NamingException;
 import com.deutscheboerse.amqp.utils.AutoCloseableConnection;
 
 public class Heartbeat extends BaseTest {
-    private static final Integer HEARTBEAT = 1; //seconds
-    private static final Integer WAIT_TIME = 5000; //milliseconds
+    private static final Integer HEARTBEAT = 5; //seconds
+    private static final Integer WAIT_TIME = 20000; //milliseconds
     private static final String RTG_QUEUE = Settings.get("routing.rtg_queue");
     
     // Test the idle timeout
