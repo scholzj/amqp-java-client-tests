@@ -4,7 +4,7 @@ machine:
   java:
     version: oraclejdk8
   services:
-    - docke
+    - docker
   environment:
     McAVEN_TEST_SUITE: qpid-0.36.xml
     BROKER_DOCKER_IMAGE: holzj/java-client-tests:0.36
