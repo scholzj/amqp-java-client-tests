@@ -52,7 +52,7 @@ public class TestSecurity extends Security {
     }
 
     // doesn't work for artemis, because it returns JMSException
-    @Test(expectedExceptions = {JMSSecurityException.class, javax.jms.IllegalStateException.class}, timeOut = 10000, groups = { "disableInQpidJava-6.0.2", "disableInArtemis" })
+    @Test(expectedExceptions = {JMSSecurityException.class, javax.jms.IllegalStateException.class}, timeOut = 30000, groups = { "disableInQpidJava-6.0.2", "disableInArtemis" })
     @Override
     public void testACLDeniedConsumer() throws JMSException, NamingException, InterruptedException {
         super.testACLDeniedConsumer();

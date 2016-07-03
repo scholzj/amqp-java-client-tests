@@ -87,7 +87,7 @@ public class Security extends BaseTest {
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(FORBIDDEN_QUEUE));
-            receiver.receive(1000);
+            receiver.receive(10000);
         }
     }
 
