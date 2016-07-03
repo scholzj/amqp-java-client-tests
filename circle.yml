@@ -4,10 +4,10 @@ machine:
   java:
     version: oraclejdk8
   services:
-    - docker
+    - docke
   environment:
-    MAVEN_TEST_SUITE: qpid-0.36.xml
-    BROKER_DOCKER_IMAGE: scholzj/java-client-tests:0.36
+    McAVEN_TEST_SUITE: qpid-0.36.xml
+    BROKER_DOCKER_IMAGE: holzj/java-client-tests:0.36
 
 dependencies:
   pre:
@@ -23,3 +23,9 @@ test:
   override:
     - case $CIRCLE_NODE_INDEX in 0) mvn -fae test -Dsurefire.suiteXmlFiles=$(pwd)/mrg-3.0.0.xml ;; 1) mvn -fae test -Dsurefire.suiteXmlFiles=$(pwd)/mrg-3.2.0.xml ;; 2) mvn -fae test -Dsurefire.suiteXmlFiles=$(pwd)/qpid-0.34.xml ;; 3) mvn -fae test -Dsurefire.suiteXmlFiles=$(pwd)/qpid-0.36.xml ;; esac:
         parallel: true
+  post:
+     - case $CIRCLE_NODE_INDEX in 0) mkdir -p $CIRCLE_TEST_REPORTS/junit/mrg-3.0.0 ;; 1)  mkdir -p $CIRCLE_TEST_REPORTS/junit/mrg-3.2.0 ;; 2)  mkdir -p $CIRCLE_TEST_REPORTS/junit/qpid-0.34 ;; 3)  mkdir -p $CIRCLE_TEST_REPORTS/junit/qpid-0.36 ;; esac:
+        parallel: true
+     - case $CIRCLE_NODE_INDEX in 0) find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/mrg-3.0.0 \; ;; 1)  find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/mrg-3.2.0 \; ;; 2)  find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/qpid-0.34 \; ;; 3) find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/qpid-0.36 \;  ;; esac:
+        parallel: true
+
