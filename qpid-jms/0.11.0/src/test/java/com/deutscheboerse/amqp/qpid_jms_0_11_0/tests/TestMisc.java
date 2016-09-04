@@ -26,13 +26,13 @@ public class TestMisc extends Misc {
     @Test
     @Override
     public void testMessageIDFormatUUID() throws JMSException, NamingException, QmfException {
-        super.testMessageIDFormatUUID();
+        super.testMessageIDFormatUUIDNewFormat();
     }
 
     @Test
     @Override
     public void testMessageIDFormatUUIDString() throws JMSException, NamingException, QmfException {
-        super.testMessageIDFormatUUIDString();
+        super.testMessageIDFormatUUIDStringNewFormat();
     }
 
 }

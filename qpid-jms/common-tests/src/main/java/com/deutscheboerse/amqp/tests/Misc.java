@@ -60,4 +60,36 @@ public class Misc extends BaseTest {
             Assert.assertEquals(msg.getJMSMessageID(), received.getJMSMessageID(), "The Message IDs are different");
         }
     }
+
+    public void testMessageIDFormatUUIDNewFormat() throws JMSException, NamingException, QmfException {
+        try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().syncPublish(false).brokerOption("jms.messageIDPolicy.messageIDType=UUID").build()) {
+            connection.start();
+            Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+
+            MessageProducer sender = session.createProducer(this.utils.getQueue(RTG_QUEUE));
+            Message msg = session.createMessage();
+            sender.send(msg);
+
+            MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
+            Message received = receiver.receive(1000);
+            Assert.assertNotNull(received, "Didn't receive expected message");
+            Assert.assertEquals(msg.getJMSMessageID(), received.getJMSMessageID(), "The Message IDs are different");
+        }
+    }
+
+    public void testMessageIDFormatUUIDStringNewFormat() throws JMSException, NamingException, QmfException {
+        try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().syncPublish(false).brokerOption("jms.messageIDPolicy.messageIDType=UUID_STRING").build()) {
+            connection.start();
+            Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+
+            MessageProducer sender = session.createProducer(this.utils.getQueue(RTG_QUEUE));
+            Message msg = session.createMessage();
+            sender.send(msg);
+
+            MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
+            Message received = receiver.receive(1000);
+            Assert.assertNotNull(received, "Didn't receive expected message");
+            Assert.assertEquals(msg.getJMSMessageID(), received.getJMSMessageID(), "The Message IDs are different");
+        }
+    }
 }
