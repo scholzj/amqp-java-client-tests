@@ -22,7 +22,7 @@
         <module>0.8.0</module>
         <module>0.9.0</module>
         <module>0.10.0</module>
-        <module>0.11.0</module>
+        <!--<module>0.11.0</module>-->
         <module>0.11.1</module>
         <module>0.20.0</module>
     </modules>
