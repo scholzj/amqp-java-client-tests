@@ -11,25 +11,6 @@
 
     <artifactId>qpid-jms-0.20.0</artifactId>
 
-    <repositories>
-        <!--<repository>
-            <id>apache-snapshots</id>
-            <url>https://repository.apache.org/content/repositories/snapshots</url>
-        </repository>-->
-        <repository>
-            <id>staging</id>
-            <url>https://repository.apache.org/content/repositories/orgapacheqpid-1097</url>
-        </repository>
-    <!--<repository>
-        <id>apache-rcs</id>
-        <url>https://repository.apache.org/content/repositories/orgapacheqpid-1078</url>
-    </repository>-->
-        <!--<repository>
-            <id>apache-rcs</id>
-            <url>https://repository.apache.org/content/repositories/orgapacheqpid-1064/</url>
-        </repository>-->
-    </repositories>
-
     <dependencies>
         <dependency>
             <groupId>org.apache.qpid</groupId>
