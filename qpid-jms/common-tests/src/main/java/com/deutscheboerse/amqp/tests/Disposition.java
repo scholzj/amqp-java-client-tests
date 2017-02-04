@@ -164,8 +164,10 @@ public class Disposition extends BaseTest {
             MessageProducer sender = session.createProducer(this.utils.getQueue(RTG_QUEUE));
             Message msg = session.createMessage();
             sender.send(msg);
+            session.close();
 
             // Acknowledge the message
+            session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             Message received = receiver.receive(1000);
             Assert.assertNotNull(received, "Didn't received expected message");
@@ -181,8 +183,10 @@ public class Disposition extends BaseTest {
             Assert.assertEquals(true, received.getJMSRedelivered(), "Modified message is not set as redelivered on the same receiver");
 
             receiver.close();
+            session.close();
 
             // Is the modified message still there
+            session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
             MessageConsumer receiver2 = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             received = receiver2.receive(1000);
             Assert.assertNotNull(received, "Didn't received released message");
@@ -203,8 +207,10 @@ public class Disposition extends BaseTest {
             MessageProducer sender = session.createProducer(this.utils.getQueue(RTG_QUEUE));
             Message msg = session.createMessage();
             sender.send(msg);
+            session.close();
 
             // Acknowledge the message
+            session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             Message received = receiver.receive(1000);
             Assert.assertNotNull(received, "Didn't received expected message");
@@ -218,8 +224,10 @@ public class Disposition extends BaseTest {
             Assert.assertNull(received, "Received modified message again");
 
             receiver.close();
+            session.close();
 
             // Is the modified message still there
+            session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
             MessageConsumer receiver2 = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             received = receiver2.receive(1000);
             Assert.assertNotNull(received, "Didn't received released message");
