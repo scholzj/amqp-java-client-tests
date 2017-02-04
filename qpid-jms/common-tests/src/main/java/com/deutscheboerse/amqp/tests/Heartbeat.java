@@ -1,12 +1,12 @@
 package com.deutscheboerse.amqp.tests;
 
 import com.deutscheboerse.amqp.configuration.Settings;
+import com.deutscheboerse.amqp.utils.AutoCloseableConnection;
 
 import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
 import javax.jms.Session;
 import javax.naming.NamingException;
-import com.deutscheboerse.amqp.utils.AutoCloseableConnection;
 
 public class Heartbeat extends BaseTest {
     private static final int IDLE_TIMEOUT = 2000; //milliseconds
@@ -23,6 +23,8 @@ public class Heartbeat extends BaseTest {
             receiver.receive(1);
             Thread.sleep(WAIT_TIME);
             receiver.receive(1);
+            receiver.close();
+            session.close();
         }
     }
 }

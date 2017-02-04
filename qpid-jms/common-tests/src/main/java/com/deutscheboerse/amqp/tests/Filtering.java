@@ -1,18 +1,16 @@
 package com.deutscheboerse.amqp.tests;
 
 import com.deutscheboerse.amqp.configuration.Settings;
+import com.deutscheboerse.amqp.utils.AutoCloseableConnection;
+import org.testng.Assert;
 
 import javax.jms.*;
 import javax.naming.NamingException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
-import org.testng.Assert;
-import com.deutscheboerse.amqp.utils.AutoCloseableConnection;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertNull;
+import static org.testng.Assert.*;
 
 public class Filtering extends BaseTest {
     private static final String RTG_QUEUE = Settings.get("routing.rtg_queue");
@@ -35,6 +33,7 @@ public class Filtering extends BaseTest {
 
         MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE), "\"amqp.correlation_id\" = '" + UUID.randomUUID().toString() + "'");
         Message notRcvMsg = receiver.receive(1000);
+        receiver.close();
 
         assertNull(notRcvMsg, "Received unexpected message");
 
@@ -45,6 +44,9 @@ public class Filtering extends BaseTest {
         assertEquals(correlationID, rcvMsg.getJMSCorrelationID(), "CorrelationID is wrong");
 
         rcvMsg.acknowledge();
+
+        receiver2.close();
+        session.close();
         }
     }
     
@@ -62,6 +64,7 @@ public class Filtering extends BaseTest {
             
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE), "JMSCorrelationID = '" + UUID.randomUUID().toString() + "'");
             Message notRcvMsg = receiver.receive(1000);
+            receiver.close();
             
             assertNull(notRcvMsg, "Received unexpected message");
             
@@ -72,6 +75,9 @@ public class Filtering extends BaseTest {
             assertEquals(correlationID, rcvMsg.getJMSCorrelationID(), "CorrelationID is wrong");
             
             rcvMsg.acknowledge();
+
+            receiver2.close();
+            session.close();
         }
     }
 
@@ -88,6 +94,7 @@ public class Filtering extends BaseTest {
             
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE), "\"filter.test\" = '" + UUID.randomUUID().toString() + "'");
             Message notRcvMsg = receiver.receive(1000);
+            receiver.close();
             
             Assert.assertNull(notRcvMsg, "Received unexpected message");
             
@@ -98,6 +105,9 @@ public class Filtering extends BaseTest {
             assertEquals(key, rcvMsg.getStringProperty("filter.test"), "Key is wrong");
             
             rcvMsg.acknowledge();
+
+            receiver2.close();
+            session.close();
         }
     }
 
@@ -115,6 +125,7 @@ public class Filtering extends BaseTest {
             
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE), "filterTest = '" + UUID.randomUUID().toString() + "'");
             Message notRcvMsg = receiver.receive(1000);
+            receiver.close();
             
             Assert.assertNull(notRcvMsg, "Received unexpected message");
             
@@ -125,6 +136,9 @@ public class Filtering extends BaseTest {
             Assert.assertEquals(key, rcvMsg.getStringProperty("filterTest"), "Key is wrong");
             
             rcvMsg.acknowledge();
+
+            receiver2.close();
+            session.close();
         }
     }
 
@@ -142,6 +156,7 @@ public class Filtering extends BaseTest {
 
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE), "filterTest in ('pink', 'violet', 'smurfy')");
             Message notRcvMsg = receiver.receive(1000);
+            receiver.close();
 
             Assert.assertNull(notRcvMsg, "Received unexpected message");
 
@@ -152,6 +167,9 @@ public class Filtering extends BaseTest {
             Assert.assertEquals(key, rcvMsg.getStringProperty("filterTest"), "Key is wrong");
 
             rcvMsg.acknowledge();
+
+            receiver2.close();
+            session.close();
         }
     }
 
@@ -169,6 +187,7 @@ public class Filtering extends BaseTest {
 
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE), "filterTest between 5 and 10");
             Message notRcvMsg = receiver.receive(1000);
+            receiver.close();
 
             Assert.assertNull(notRcvMsg, "Received unexpected message");
 
@@ -179,6 +198,9 @@ public class Filtering extends BaseTest {
             Assert.assertEquals(key, rcvMsg.getIntProperty("filterTest"), "Key is wrong");
 
             rcvMsg.acknowledge();
+
+            receiver2.close();
+            session.close();
         }
     }
 
@@ -196,16 +218,19 @@ public class Filtering extends BaseTest {
 
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE), "filterTest like '%red%'");
             Message notRcvMsg = receiver.receive(1000);
+            receiver.close();
 
             Assert.assertNull(notRcvMsg, "Received unexpected message for '%red%'");
 
             receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE), "filterTest like 'blue%'");
             notRcvMsg = receiver.receive(1000);
+            receiver.close();
 
             Assert.assertNull(notRcvMsg, "Received unexpected message for 'blue%'");
 
             receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE), "filterTest like '%blue'");
             notRcvMsg = receiver.receive(1000);
+            receiver.close();
 
             Assert.assertNull(notRcvMsg, "Received unexpected message for '%blue'");
 
@@ -216,6 +241,9 @@ public class Filtering extends BaseTest {
             Assert.assertEquals(key, rcvMsg.getStringProperty("filterTest"), "Key is wrong");
 
             rcvMsg.acknowledge();
+
+            receiver2.close();
+            session.close();
         }
     }
 
@@ -240,11 +268,13 @@ public class Filtering extends BaseTest {
 
             receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE), "filterTest1 = 'blue' AND filterTest2 = 'blue'");
             notRcvMsg = receiver.receive(1000);
+            receiver.close();
 
             Assert.assertNull(notRcvMsg, "Received unexpected message - blue & blue");
 
             receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE), "filterTest1 = 'red' AND filterTest2 = 'red'");
             notRcvMsg = receiver.receive(1000);
+            receiver.close();
 
             Assert.assertNull(notRcvMsg, "Received unexpected message - red & red");
 
@@ -256,6 +286,9 @@ public class Filtering extends BaseTest {
             Assert.assertEquals(key2, rcvMsg.getStringProperty("filterTest2"), "Key2 is wrong");
 
             rcvMsg.acknowledge();
+
+            receiver2.close();
+            session.close();
         }
     }
 
@@ -273,35 +306,44 @@ public class Filtering extends BaseTest {
             msg.setStringProperty("filterTest2", key2);
             sender.send(msg);
 
+            session.close();
+            session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE), "filterTest1 = 'red' or filterTest2 = 'blue'");
             Message notRcvMsg = receiver.receive(1000);
+            receiver.close();
+            session.close();
 
             Assert.assertNull(notRcvMsg, "Received unexpected message - red & blue");
 
+            session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
             MessageConsumer receiver2 = session.createConsumer(this.utils.getQueue(RTG_QUEUE), "filterTest1 = 'blue' or filterTest2 = 'blue'");
             Message rcvMsg = receiver2.receive(1000);
             receiver2.close();
+            session.close();
 
             Assert.assertNotNull(rcvMsg, "Didn't receive expected message - blue & blue");
             Assert.assertEquals(key1, rcvMsg.getStringProperty("filterTest1"), "Key1 is wrong");
             Assert.assertEquals(key2, rcvMsg.getStringProperty("filterTest2"), "Key2 is wrong");
 
-            receiver2 = session.createConsumer(this.utils.getQueue(RTG_QUEUE), "filterTest1 = 'red' or filterTest2 = 'red'");
-            rcvMsg = receiver2.receive(1000);
-            receiver2.close();
+            session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+            MessageConsumer receiver3 = session.createConsumer(this.utils.getQueue(RTG_QUEUE), "filterTest1 = 'red' or filterTest2 = 'red'");
+            rcvMsg = receiver3.receive(1000);
+            receiver3.close();
+            session.close();
 
             Assert.assertNotNull(rcvMsg, "Didn't receive expected message - red & red");
             Assert.assertEquals(key1, rcvMsg.getStringProperty("filterTest1"), "Key1 is wrong");
             Assert.assertEquals(key2, rcvMsg.getStringProperty("filterTest2"), "Key2 is wrong");
 
-            receiver2 = session.createConsumer(this.utils.getQueue(RTG_QUEUE), "filterTest1 = 'blue' or filterTest2 = 'red'");
-            rcvMsg = receiver2.receive(1000);
+            session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+            MessageConsumer receiver4 = session.createConsumer(this.utils.getQueue(RTG_QUEUE), "filterTest1 = 'blue' or filterTest2 = 'red'");
+            rcvMsg = receiver4.receive(1000);
+            receiver4.close();
+            session.close();
 
             Assert.assertNotNull(rcvMsg, "Didn't receive expected message - blue & red");
             Assert.assertEquals(key1, rcvMsg.getStringProperty("filterTest1"), "Key1 is wrong");
             Assert.assertEquals(key2, rcvMsg.getStringProperty("filterTest2"), "Key2 is wrong");
-
-            rcvMsg.acknowledge();
         }
     }
 
@@ -328,6 +370,8 @@ public class Filtering extends BaseTest {
             assertEquals(messageID, rcvMsg.getJMSMessageID(), "MessageID is wrong");
 
             rcvMsg.acknowledge();
+            receiver2.close();
+            session.close();
         }
     }
 
@@ -344,6 +388,7 @@ public class Filtering extends BaseTest {
 
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE), "JMSMessageID = '" + UUID.randomUUID().toString() + "'");
             Message notRcvMsg = receiver.receive(1000);
+            receiver.close();
 
             assertNull(notRcvMsg, "Received unexpected message");
 
@@ -354,6 +399,8 @@ public class Filtering extends BaseTest {
             assertEquals(messageID, rcvMsg.getJMSMessageID(), "MessageID is wrong");
 
             rcvMsg.acknowledge();
+            receiver2.close();
+            session.close();
         }
     }
 
@@ -369,6 +416,7 @@ public class Filtering extends BaseTest {
 
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE), "\"amqp.priority\" < 5");
             Message notRcvMsg = receiver.receive(1000);
+            receiver.close();
 
             assertNull(notRcvMsg, "Received unexpected message");
 
@@ -379,6 +427,8 @@ public class Filtering extends BaseTest {
             assertEquals(9, rcvMsg.getJMSPriority(), "Priority is wrong");
 
             rcvMsg.acknowledge();
+            receiver2.close();
+            session.close();
         }
     }
 
@@ -402,6 +452,7 @@ public class Filtering extends BaseTest {
 
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE), selectorName + " < 5");
             Message notRcvMsg = receiver.receive(1000);
+            receiver.close();
 
             assertNull(notRcvMsg, "Received unexpected message");
 
@@ -412,6 +463,8 @@ public class Filtering extends BaseTest {
             assertEquals(9, rcvMsg.getJMSPriority(), "JMSPriority is wrong");
 
             rcvMsg.acknowledge();
+            receiver2.close();
+            session.close();
         }
     }
 
@@ -427,6 +480,7 @@ public class Filtering extends BaseTest {
 
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE), "\"amqp.subject\" = 'other.subject.key'");
             Message notRcvMsg = receiver.receive(1000);
+            receiver.close();
 
             assertNull(notRcvMsg, "Received unexpected message");
 
@@ -437,6 +491,8 @@ public class Filtering extends BaseTest {
             assertEquals("my.subject.key", rcvMsg.getJMSType(), "Subject is wrong");
 
             rcvMsg.acknowledge();
+            receiver2.close();
+            session.close();
         }
     }
 
@@ -452,6 +508,7 @@ public class Filtering extends BaseTest {
 
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE), "JMSType = 'other.subject.key'");
             Message notRcvMsg = receiver.receive(1000);
+            receiver.close();
 
             assertNull(notRcvMsg, "Received unexpected message");
 
@@ -462,6 +519,8 @@ public class Filtering extends BaseTest {
             assertEquals("my.subject.key", rcvMsg.getJMSType(), "JMSPriority is wrong");
 
             rcvMsg.acknowledge();
+            receiver2.close();
+            session.close();
         }
     }
 
@@ -484,6 +543,7 @@ public class Filtering extends BaseTest {
 
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE), "\"amqp.creation_time\" > " + tomorrow.getTime());
             Message notRcvMsg = receiver.receive(1000);
+            receiver.close();
 
             assertNull(notRcvMsg, "Received unexpected message");
 
@@ -493,6 +553,8 @@ public class Filtering extends BaseTest {
             assertNotNull(rcvMsg, "Didn't receive expected message");
 
             rcvMsg.acknowledge();
+            receiver2.close();
+            session.close();
         }
     }
 
@@ -523,6 +585,7 @@ public class Filtering extends BaseTest {
 
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE), selectorName + " > " + tomorrow.getTime());
             Message notRcvMsg = receiver.receive(1000);
+            receiver.close();
 
             assertNull(notRcvMsg, "Received unexpected message");
 
@@ -532,6 +595,8 @@ public class Filtering extends BaseTest {
             assertNotNull(rcvMsg, "Didn't receive expected message");
 
             rcvMsg.acknowledge();
+            receiver2.close();
+            session.close();
         }
     }
 }

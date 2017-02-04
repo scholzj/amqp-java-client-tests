@@ -1,12 +1,12 @@
 package com.deutscheboerse.amqp.tests;
 
 import com.deutscheboerse.amqp.configuration.Settings;
+import com.deutscheboerse.amqp.utils.AutoCloseableConnection;
 import org.apache.qpid.qmf2.common.QmfException;
+import org.testng.Assert;
 
 import javax.jms.*;
 import javax.naming.NamingException;
-import org.testng.Assert;
-import com.deutscheboerse.amqp.utils.AutoCloseableConnection;
 
 public class Queueing extends BaseTest {
     private static final String RTG_QUEUE = Settings.get("routing.rtg_queue");
@@ -32,6 +32,8 @@ public class Queueing extends BaseTest {
             Message received = receiver.receive(5000);
             received.acknowledge();
             Assert.assertNotNull(received, "Didn't receive expected message");
+            receiver.close();
+            session.close();
         }
     }
 
@@ -49,6 +51,8 @@ public class Queueing extends BaseTest {
             Message received = receiver.receive(1000);
             received.acknowledge();
             Assert.assertNotNull(received, "Didn't receive expected message");
+            receiver.close();
+            session.close();
         }
     }
 
@@ -73,6 +77,8 @@ public class Queueing extends BaseTest {
                 index++;
             }
             Assert.assertNull(receiver.receive(1000), "Unexpected sixth message");
+            receiver.close();
+            session.close();
         }
     }
 

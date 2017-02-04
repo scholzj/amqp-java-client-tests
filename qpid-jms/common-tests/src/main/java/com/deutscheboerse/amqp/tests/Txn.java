@@ -1,11 +1,11 @@
 package com.deutscheboerse.amqp.tests;
 
 import com.deutscheboerse.amqp.configuration.Settings;
+import com.deutscheboerse.amqp.utils.AutoCloseableConnection;
+import org.testng.Assert;
 
 import javax.jms.*;
 import javax.naming.NamingException;
-import org.testng.Assert;
-import com.deutscheboerse.amqp.utils.AutoCloseableConnection;
 
 public class Txn extends BaseTest {
     private static final String TXN_QUEUE = Settings.get("routing.txn_queue");
@@ -27,6 +27,7 @@ public class Txn extends BaseTest {
             }
             
             session.commit();
+            session.close();
             
             // Receiver session with com.deutscheboerse.qpid.Txn
             Session session2 = connection.createSession(true, Session.CLIENT_ACKNOWLEDGE);
@@ -45,7 +46,10 @@ public class Txn extends BaseTest {
             session2.commit();
             
             Assert.assertEquals(MESSAGE_COUNT, receivedNo, "Txn test received unexpected number of messages");
-            
+
+            receiver.close();
+            session2.close();
+
             // Receiver session without txn
             Session session3 = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
             
@@ -61,6 +65,10 @@ public class Txn extends BaseTest {
             }
             
             Assert.assertEquals(0, receivedNo, "Txn test received unexpected number of messages after commit");
+
+            receiver.close();
+            session3.close();
+
         }
     }
     
@@ -81,7 +89,8 @@ public class Txn extends BaseTest {
             }
             
             session.rollback();
-            
+            session.close();
+
             // Receiver session without txn
             Session session3 = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
             
@@ -97,6 +106,9 @@ public class Txn extends BaseTest {
             }
             
             Assert.assertEquals(receivedNo, 0, "Txn test received unexpected number of messages after rollback");
+
+            receiver.close();
+            session3.close();
         }
     }
     
@@ -117,6 +129,7 @@ public class Txn extends BaseTest {
             }
             
             session.commit();
+            session.close();
             
             // Receiver session with Txn
             Session session2 = connection.createSession(true, Session.AUTO_ACKNOWLEDGE);
@@ -134,6 +147,7 @@ public class Txn extends BaseTest {
             
             session2.rollback();
             receiver.close();
+            session2.close();
             
             Assert.assertEquals(MESSAGE_COUNT, receivedNo, "Txn test received unexpected number of messages");
             
@@ -152,6 +166,9 @@ public class Txn extends BaseTest {
             }
             
             Assert.assertEquals(receivedNo, MESSAGE_COUNT, "Txn test received unexpected number of messages after rollback");
+
+            receiver.close();
+            session3.close();
         }
     }
     
@@ -172,6 +189,7 @@ public class Txn extends BaseTest {
             }
             
             session.commit();
+            session.close();
             
             // Receiver session with Txn
             Session session2 = connection.createSession(true, Session.CLIENT_ACKNOWLEDGE);
@@ -190,6 +208,9 @@ public class Txn extends BaseTest {
             session2.commit();
             
             Assert.assertEquals(receivedNo, MESSAGE_COUNT, "Txn test received unexpected number of messages");
+
+            receiver.close();
+            session2.close();
         }
     }
 }

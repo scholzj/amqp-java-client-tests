@@ -1,11 +1,11 @@
 package com.deutscheboerse.amqp.tests;
 
 import com.deutscheboerse.amqp.configuration.Settings;
+import com.deutscheboerse.amqp.utils.AutoCloseableConnection;
+import org.testng.Assert;
 
 import javax.jms.*;
 import javax.naming.NamingException;
-import org.testng.Assert;
-import com.deutscheboerse.amqp.utils.AutoCloseableConnection;
 
 public class Security extends BaseTest {
 
@@ -28,6 +28,8 @@ public class Security extends BaseTest {
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             receiver.receive(1000);
+            receiver.close();
+            session.close();
         }
     }
 
@@ -38,6 +40,8 @@ public class Security extends BaseTest {
 
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             receiver.receive(1000);
+            receiver.close();
+            session.close();
         }
     }
 
@@ -48,6 +52,8 @@ public class Security extends BaseTest {
 
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             receiver.receive(1000);
+            receiver.close();
+            session.close();
         }
     }
 
@@ -58,6 +64,8 @@ public class Security extends BaseTest {
 
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             receiver.receive(1000);
+            receiver.close();
+            session.close();
         }
     }
 
@@ -68,6 +76,8 @@ public class Security extends BaseTest {
 
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             receiver.receive(1000);
+            receiver.close();
+            session.close();
         }
     }
 
@@ -78,6 +88,8 @@ public class Security extends BaseTest {
 
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             receiver.receive(1000);
+            receiver.close();
+            session.close();
         }
     }
 
@@ -88,6 +100,8 @@ public class Security extends BaseTest {
 
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(FORBIDDEN_QUEUE));
             receiver.receive(10000);
+            receiver.close();
+            session.close();
         }
     }
 
@@ -100,6 +114,8 @@ public class Security extends BaseTest {
             Message msg = session.createMessage();
             msg.setJMSType(RTG_ROUTING_KEY);
             sender.send(msg);
+
+            session.close();
         }
     }
 
@@ -113,6 +129,8 @@ public class Security extends BaseTest {
             Message msg = session.createMessage();
             msg.setJMSType(FORBIDDEN_ROUTING_KEY);
             sender.send(msg);
+
+            session.close();
         }
     }
 
@@ -160,6 +178,8 @@ public class Security extends BaseTest {
             received.acknowledge();
             Assert.assertNotNull(received, "Didn't receive expected message with jms.populateJMSXUserID=true");
             Assert.assertEquals(received.getStringProperty("JMSXUserID"), "admin", "Received unexpected user ID with jms.populateJMSXUserID=true");
+            receiver.close();
+            session.close();
         }
 
         try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().brokerOption("jms.populateJMSXUserID=false").build()) {
@@ -176,6 +196,8 @@ public class Security extends BaseTest {
             received.acknowledge();
             Assert.assertNotNull(received, "Didn't receive expected message with jms.populateJMSXUserID=false");
             Assert.assertNotEquals(received.getStringProperty("JMSXUserID"), "admin", "Received unexpected user ID with jms.populateJMSXUserID=false");
+            receiver.close();
+            session.close();
         }
 
         try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().build()) {
@@ -192,6 +214,8 @@ public class Security extends BaseTest {
             received.acknowledge();
             Assert.assertNotNull(received, "Didn't receive expected message");
             Assert.assertNotEquals(received.getStringProperty("JMSXUserID"), "admin", "Received unexpected user ID");
+            receiver.close();
+            session.close();
         }
     }
 }

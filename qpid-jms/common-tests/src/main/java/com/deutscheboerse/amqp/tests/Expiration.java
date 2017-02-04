@@ -1,13 +1,10 @@
 package com.deutscheboerse.amqp.tests;
 
 import com.deutscheboerse.amqp.configuration.Settings;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.MessageConsumer;
-import javax.jms.MessageProducer;
-import javax.jms.Session;
-import javax.naming.NamingException;
 import com.deutscheboerse.amqp.utils.AutoCloseableConnection;
+
+import javax.jms.*;
+import javax.naming.NamingException;
 
 import static org.testng.AssertJUnit.assertNull;
 
@@ -31,6 +28,8 @@ public class Expiration extends BaseTest {
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(TTL_QUEUE));
             Message received = receiver.receive(1000);
             assertNull("Received unexpected message", received);
+            receiver.close();
+            session.close();
         }
     }
 }

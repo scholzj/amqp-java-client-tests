@@ -1,12 +1,15 @@
 package com.deutscheboerse.amqp.tests;
 
 import com.deutscheboerse.amqp.configuration.Settings;
-
-import javax.jms.*;
-import javax.naming.NamingException;
-import org.testng.Assert;
 import com.deutscheboerse.amqp.utils.AbstractConnectionBuilder;
 import com.deutscheboerse.amqp.utils.AutoCloseableConnection;
+import org.testng.Assert;
+
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.MessageConsumer;
+import javax.jms.Session;
+import javax.naming.NamingException;
 
 public class SSL extends BaseTest {
     private static final String USER1_KEYSTORE = Settings.getPath("user1.keystore");
@@ -42,6 +45,8 @@ public class SSL extends BaseTest {
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             receiver.receive(1000);
+            receiver.close();
+            session.close();
         }
     }
 
@@ -51,6 +56,8 @@ public class SSL extends BaseTest {
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             receiver.receive(1000);
+            receiver.close();
+            session.close();
         }
     }
 
@@ -63,6 +70,8 @@ public class SSL extends BaseTest {
             Message received = receiver.receive(1000);
             received.acknowledge();
             Assert.fail("Managed to connect with wrong hostname");
+            receiver.close();
+            session.close();
         } catch (JMSException expected) {
             // "Expected" exception ... nothing to do :-o
         }
@@ -73,6 +82,8 @@ public class SSL extends BaseTest {
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             receiver.receive(1000);
+            receiver.close();
+            session.close();
         }
         catch (JMSException expected) {
             Assert.fail("Didn't manage to connect with disabled hostname verification!");
@@ -88,6 +99,8 @@ public class SSL extends BaseTest {
             Message received = receiver.receive(1000);
             received.acknowledge();
             Assert.fail("Managed to connect with wrong truststore");
+            receiver.close();
+            session.close();
         }
         catch (JMSException expected) {
             // "Expected" exception ... nothing to do :-o
@@ -99,6 +112,9 @@ public class SSL extends BaseTest {
 
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             Message received = receiver.receive(1000);
+
+            receiver.close();
+            session.close();
         }
         catch (JMSException e) {
             Assert.fail("Didn't manage to connect with disabled server certificate validation!");
@@ -112,6 +128,9 @@ public class SSL extends BaseTest {
 
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             receiver.receive(1000);
+
+            receiver.close();
+            session.close();
         }
     }
 
@@ -122,6 +141,9 @@ public class SSL extends BaseTest {
 
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             receiver.receive(1000);
+
+            receiver.close();
+            session.close();
         }
     }
 
@@ -132,6 +154,9 @@ public class SSL extends BaseTest {
 
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             receiver.receive(1000);
+
+            receiver.close();
+            session.close();
         }
     }
 
@@ -142,6 +167,9 @@ public class SSL extends BaseTest {
 
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             receiver.receive(1000);
+
+            receiver.close();
+            session.close();
         }
     }
 
@@ -152,6 +180,9 @@ public class SSL extends BaseTest {
 
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             receiver.receive(1000);
+
+            receiver.close();
+            session.close();
         }
     }
 
@@ -162,6 +193,9 @@ public class SSL extends BaseTest {
 
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             receiver.receive(1000);
+
+            receiver.close();
+            session.close();
         }
     }
 
@@ -172,6 +206,9 @@ public class SSL extends BaseTest {
 
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             receiver.receive(1000);
+
+            receiver.close();
+            session.close();
         }
     }
 
@@ -184,6 +221,9 @@ public class SSL extends BaseTest {
 
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             receiver.receive(1000);
+
+            receiver.close();
+            session.close();
         }
     }
 
@@ -193,6 +233,9 @@ public class SSL extends BaseTest {
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             receiver.receive(1000);
+
+            receiver.close();
+            session.close();
         }
     }
 
@@ -202,6 +245,9 @@ public class SSL extends BaseTest {
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             receiver.receive(1000);
+
+            receiver.close();
+            session.close();
         }
     }
 
@@ -211,6 +257,9 @@ public class SSL extends BaseTest {
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             receiver.receive(1000);
+
+            receiver.close();
+            session.close();
         }
     }
 
@@ -218,6 +267,7 @@ public class SSL extends BaseTest {
         try (AutoCloseableConnection connection = this.utils.getSSLConnectionBuilder().keystore(USER1_SIGNED_BY_KEYSTORE).keystorePassword(USER1_SIGNED_BY_KEYSTORE_PASSWORD).keystoreAlias(USER1_SIGNED_BY_KEYSTORE_ALIAS).build()) {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+            session.close();
         }
     }
 
@@ -225,6 +275,7 @@ public class SSL extends BaseTest {
         try (AutoCloseableConnection connection = this.utils.getSSLConnectionBuilder().keystore(USER1_KEYSTORE).keystorePassword(USER1_KEYSTORE_PASSWORD).keystoreAlias(USER1_KEYSTORE_ALIAS).port(TCP_PORT).build()) {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+            session.close();
         }
     }
 
@@ -232,6 +283,7 @@ public class SSL extends BaseTest {
         try (AutoCloseableConnection connection = this.utils.getAdminConnectionBuilder().port(SSL_PORT).build()) {
             connection.start();
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+            session.close();
         }
     }
 

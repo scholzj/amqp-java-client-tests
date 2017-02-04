@@ -1,16 +1,13 @@
 package com.deutscheboerse.amqp.tests;
 
 import com.deutscheboerse.amqp.configuration.Settings;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.MessageConsumer;
-import javax.jms.MessageProducer;
-import javax.jms.Session;
-import javax.naming.NamingException;
-import org.apache.qpid.qmf2.common.QmfException;
-import org.testng.Assert;
 import com.deutscheboerse.amqp.utils.AbstractUtils;
 import com.deutscheboerse.amqp.utils.AutoCloseableConnection;
+import org.apache.qpid.qmf2.common.QmfException;
+import org.testng.Assert;
+
+import javax.jms.*;
+import javax.naming.NamingException;
 
 public class Disposition extends BaseTest {
     private static final String RTG_QUEUE = Settings.get("routing.rtg_queue");
@@ -42,9 +39,11 @@ public class Disposition extends BaseTest {
             receiver.close();
 
             // Is the queue really empty?
-            receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
-            received = receiver.receive(1000);
+            MessageConsumer receiver2 = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
+            received = receiver2.receive(1000);
             Assert.assertNull(received, "Received unexpected message");
+            receiver2.close();
+            session.close();
         }
     }
 
@@ -70,9 +69,11 @@ public class Disposition extends BaseTest {
             receiver.close();
 
             // Is the rejected message really gone?
-            receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
-            received = receiver.receive(1000);
+            MessageConsumer receiver2 = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
+            received = receiver2.receive(1000);
             Assert.assertNull(received, "Received unexpected message");
+            receiver2.close();
+            session.close();
         }
     }
 
@@ -84,8 +85,10 @@ public class Disposition extends BaseTest {
             MessageProducer sender = session.createProducer(this.utils.getQueue(RTG_QUEUE));
             Message msg = session.createMessage();
             sender.send(msg);
+            session.close();
 
             // Acknowledge the message
+            session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             Message received = receiver.receive(1000);
             Assert.assertNotNull(received, "Didn't received expected message");
@@ -101,12 +104,16 @@ public class Disposition extends BaseTest {
             Assert.assertEquals(received.getJMSRedelivered(), false, "Released message is set as redelivered on the same receiver");
 
             receiver.close();
+            session.close();
 
             // Is the released message still there
-            receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
-            received = receiver.receive(1000);
+            session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+            MessageConsumer receiver2 = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
+            received = receiver2.receive(1000);
             Assert.assertNotNull(received, "Didn't received released message");
             Assert.assertEquals(received.getJMSRedelivered(), true, "Released message is set as redelivered on a new receiver");
+            receiver2.close();
+            session.close();
         }
     }
 
@@ -118,8 +125,10 @@ public class Disposition extends BaseTest {
             MessageProducer sender = session.createProducer(this.utils.getQueue(RTG_QUEUE));
             Message msg = session.createMessage();
             sender.send(msg);
+            session.close();
 
             // Acknowledge the message
+            session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             Message received = receiver.receive(1000);
             Assert.assertNotNull(received, "Didn't received expected message");
@@ -134,12 +143,16 @@ public class Disposition extends BaseTest {
             Assert.assertEquals(true, received.getJMSRedelivered(), "Modified message is not set as redelivered on the same receiver");
 
             receiver.close();
+            session.close();
 
             // Is the modified message still there
-            receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
-            received = receiver.receive(1000);
+            session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+            MessageConsumer receiver2 = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
+            received = receiver2.receive(1000);
             Assert.assertNotNull(received, "Didn't received released message");
             Assert.assertEquals(true, received.getJMSRedelivered(), "Modified message is not set as redelivered on a new receiver");
+            receiver2.close();
+            session.close();
         }
     }
 
@@ -170,10 +183,12 @@ public class Disposition extends BaseTest {
             receiver.close();
 
             // Is the modified message still there
-            receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
-            received = receiver.receive(1000);
+            MessageConsumer receiver2 = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
+            received = receiver2.receive(1000);
             Assert.assertNotNull(received, "Didn't received released message");
             Assert.assertEquals(true, received.getJMSRedelivered(), "Modified message is not set as redelivered on a new receiver");
+            receiver2.close();
+            session.close();
         }
     }
 
@@ -205,9 +220,11 @@ public class Disposition extends BaseTest {
             receiver.close();
 
             // Is the modified message still there
-            receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
-            received = receiver.receive(1000);
+            MessageConsumer receiver2 = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
+            received = receiver2.receive(1000);
             Assert.assertNotNull(received, "Didn't received released message");
+            receiver2.close();
+            session.close();
         }
     }
 
@@ -254,9 +271,11 @@ public class Disposition extends BaseTest {
             receiver.close();
 
             // Is the queue really empty?
-            receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
-            received = receiver.receive(1000);
+            MessageConsumer receiver2 = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
+            received = receiver2.receive(1000);
             Assert.assertNull(received, "Received unexpected message");
+            receiver2.close();
+            session.close();
         }
     }
 
@@ -303,9 +322,11 @@ public class Disposition extends BaseTest {
             receiver.close();
 
             // Is the queue really empty?
-            receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
-            received = receiver.receive(1000);
+            MessageConsumer receiver2 = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
+            received = receiver2.receive(1000);
             Assert.assertNull(received, "Received unexpected message");
+            receiver2.close();
+            session.close();
         }
     }
 
@@ -352,19 +373,22 @@ public class Disposition extends BaseTest {
             receiver.close();
 
             // Are the messages still in the queue?
-            receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
+            MessageConsumer receiver2 = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             messageCount = 0;
-            received = receiver.receive(1000);
+            received = receiver2.receive(1000);
 
             while (received != null)
             {
                 messageCount++;
                 received.acknowledge();
 
-                received = receiver.receive(1000);
+                received = receiver2.receive(1000);
             }
 
             Assert.assertEquals(5, messageCount, "Didn't received expected number of previously released message");
+
+            receiver2.close();
+            session.close();
         }
     }
 }

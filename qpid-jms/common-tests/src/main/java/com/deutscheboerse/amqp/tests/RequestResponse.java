@@ -2,10 +2,10 @@ package com.deutscheboerse.amqp.tests;
 
 import com.deutscheboerse.amqp.configuration.Settings;
 import com.deutscheboerse.amqp.utils.AutoCloseableConnection;
+import org.testng.Assert;
 
 import javax.jms.*;
 import javax.naming.NamingException;
-import org.testng.Assert;
 
 public class RequestResponse extends BaseTest {
     private static final String USER1_USERNAME = Settings.get("user1.username");
@@ -46,6 +46,10 @@ public class RequestResponse extends BaseTest {
             // Receive the response
             Message responseMessage = responseReceiver.receive(1000);
             Assert.assertNotNull(responseMessage, "Didn't received response message");
+
+            requestReceiver.close();
+            responseReceiver.close();
+            session.close();
         }
     }
 }

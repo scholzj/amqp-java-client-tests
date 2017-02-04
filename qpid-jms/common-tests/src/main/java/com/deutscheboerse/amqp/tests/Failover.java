@@ -1,11 +1,12 @@
 package com.deutscheboerse.amqp.tests;
 
 import com.deutscheboerse.amqp.configuration.Settings;
+import com.deutscheboerse.amqp.utils.AutoCloseableConnection;
+
 import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
 import javax.jms.Session;
 import javax.naming.NamingException;
-import com.deutscheboerse.amqp.utils.AutoCloseableConnection;
 
 public class Failover extends BaseTest {
     private static final String USER1_KEYSTORE = Settings.getPath("user1.keystore");
@@ -32,6 +33,8 @@ public class Failover extends BaseTest {
             
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             receiver.receive(1000);
+            receiver.close();
+            session.close();
         }
     }
     
@@ -43,6 +46,8 @@ public class Failover extends BaseTest {
             
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             receiver.receive(1000);
+            receiver.close();
+            session.close();
         }
     }
     
@@ -54,6 +59,8 @@ public class Failover extends BaseTest {
             
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             receiver.receive(1000);
+            receiver.close();
+            session.close();
         }
     }
     
@@ -65,6 +72,8 @@ public class Failover extends BaseTest {
             
             MessageConsumer receiver = session.createConsumer(this.utils.getQueue(RTG_QUEUE));
             receiver.receive(1000);
+            receiver.close();
+            session.close();
         }
     }
 }

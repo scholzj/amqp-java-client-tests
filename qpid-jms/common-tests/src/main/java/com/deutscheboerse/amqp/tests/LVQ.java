@@ -1,16 +1,14 @@
 package com.deutscheboerse.amqp.tests;
 
 import com.deutscheboerse.amqp.configuration.Settings;
+import com.deutscheboerse.amqp.utils.AutoCloseableConnection;
+import org.testng.Assert;
 
 import javax.jms.*;
-import javax.jms.Message;
 import javax.naming.NamingException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-
-import org.testng.Assert;
-import com.deutscheboerse.amqp.utils.AutoCloseableConnection;
 
 public class LVQ extends BaseTest {
 
@@ -62,6 +60,9 @@ public class LVQ extends BaseTest {
 
             TextMessage received2 = (TextMessage) receiver.receive(1000);
             Assert.assertNull(received2, "Lvq test - expected to receive only one message, not two");
+
+            receiver.close();
+            session.close();
         }
     }
 
@@ -118,6 +119,9 @@ public class LVQ extends BaseTest {
                 received = (TextMessage) receiver.receive(1000);
             }
             Assert.assertEquals(0, keys.size(), "Didn't receive all messages");
+
+            receiver.close();
+            session.close();
         }
     }
 
@@ -168,6 +172,9 @@ public class LVQ extends BaseTest {
 
             TextMessage received2 = (TextMessage) receiver.receive(1000);
             Assert.assertNull(received2, "LVQ test - expected to receive only one message, not two");
+
+            receiver.close();
+            session.close();
         }
     }
 }

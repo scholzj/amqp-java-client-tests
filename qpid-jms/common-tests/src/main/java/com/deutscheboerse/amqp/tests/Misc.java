@@ -1,16 +1,12 @@
 package com.deutscheboerse.amqp.tests;
 
 import com.deutscheboerse.amqp.configuration.Settings;
-
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.MessageConsumer;
-import javax.jms.MessageProducer;
-import javax.jms.Session;
-import javax.naming.NamingException;
+import com.deutscheboerse.amqp.utils.AutoCloseableConnection;
 import org.apache.qpid.qmf2.common.QmfException;
 import org.testng.Assert;
-import com.deutscheboerse.amqp.utils.AutoCloseableConnection;
+
+import javax.jms.*;
+import javax.naming.NamingException;
 
 public class Misc extends BaseTest {
     private static final String USER1_USERNAME = Settings.get("user1.username");
@@ -42,6 +38,8 @@ public class Misc extends BaseTest {
             Message received = receiver.receive(1000);
             Assert.assertNotNull(received, "Didn't receive expected message");
             Assert.assertEquals(msg.getJMSMessageID(), received.getJMSMessageID(), "The Message IDs are different");
+            receiver.close();
+            session.close();
         }
     }
     
@@ -58,6 +56,8 @@ public class Misc extends BaseTest {
             Message received = receiver.receive(1000);
             Assert.assertNotNull(received, "Didn't receive expected message");
             Assert.assertEquals(msg.getJMSMessageID(), received.getJMSMessageID(), "The Message IDs are different");
+            receiver.close();
+            session.close();
         }
     }
 
@@ -74,6 +74,8 @@ public class Misc extends BaseTest {
             Message received = receiver.receive(1000);
             Assert.assertNotNull(received, "Didn't receive expected message");
             Assert.assertEquals(msg.getJMSMessageID(), received.getJMSMessageID(), "The Message IDs are different");
+            receiver.close();
+            session.close();
         }
     }
 
@@ -90,6 +92,8 @@ public class Misc extends BaseTest {
             Message received = receiver.receive(1000);
             Assert.assertNotNull(received, "Didn't receive expected message");
             Assert.assertEquals(msg.getJMSMessageID(), received.getJMSMessageID(), "The Message IDs are different");
+            receiver.close();
+            session.close();
         }
     }
 }
