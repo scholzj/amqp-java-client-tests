@@ -24,10 +24,6 @@
             <id>apache-rcs</id>
             <url>https://repository.apache.org/content/repositories/orgapacheqpid-1064/</url>
         </repository>-->
-            <repository>
-                <id>staging</id>
-                <url>https://repository.apache.org/content/repositories/orgapacheqpid-1100</url>
-            </repository>
     </repositories>
 
     <dependencies>
@@ -35,12 +31,6 @@
             <groupId>org.apache.qpid</groupId>
             <artifactId>qpid-jms-client</artifactId>
             <version>0.21.0-SNAPSHOT</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.qpid</groupId>
-            <artifactId>proton-j</artifactId>
-            <version>0.17.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
