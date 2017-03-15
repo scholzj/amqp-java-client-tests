@@ -25,6 +25,7 @@
     <module>6.0.6</module>
     <!--<module>6.1.0</module>-->
     <module>6.1.1</module>
+    <module>6.1.2</module>
     <module>6.2.0</module>
   </modules>
 </project>
