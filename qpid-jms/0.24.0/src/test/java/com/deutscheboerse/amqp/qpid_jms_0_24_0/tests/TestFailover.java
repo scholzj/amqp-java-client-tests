@@ -1,6 +1,6 @@
-package com.deutscheboerse.amqp.qpid_jms_0_23_0.tests;
+package com.deutscheboerse.amqp.qpid_jms_0_24_0.tests;
 
-import com.deutscheboerse.amqp.qpid_jms_0_23_0.utils.Utils;
+import com.deutscheboerse.amqp.qpid_jms_0_24_0.utils.Utils;
 import com.deutscheboerse.amqp.tests.Failover;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
