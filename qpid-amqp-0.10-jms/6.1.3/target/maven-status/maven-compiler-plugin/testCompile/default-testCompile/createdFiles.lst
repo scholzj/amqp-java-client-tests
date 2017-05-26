@@ -1,0 +1,15 @@
+com/deutscheboerse/amqp/qpid_amqp_0_10_jms_6_1_3/tests/TestHeartbeat.class
+com/deutscheboerse/amqp/qpid_amqp_0_10_jms_6_1_3/tests/TestXATxn.class
+com/deutscheboerse/amqp/qpid_amqp_0_10_jms_6_1_3/tests/TestLVQ.class
+com/deutscheboerse/amqp/qpid_amqp_0_10_jms_6_1_3/tests/TestQueueing.class
+com/deutscheboerse/amqp/qpid_amqp_0_10_jms_6_1_3/tests/TestReadOnly.class
+com/deutscheboerse/amqp/qpid_amqp_0_10_jms_6_1_3/tests/TestSSL.class
+com/deutscheboerse/amqp/qpid_amqp_0_10_jms_6_1_3/tests/TestTxn.class
+com/deutscheboerse/amqp/qpid_amqp_0_10_jms_6_1_3/tests/TestFiltering.class
+com/deutscheboerse/amqp/qpid_amqp_0_10_jms_6_1_3/tests/TestRequestResponse.class
+com/deutscheboerse/amqp/qpid_amqp_0_10_jms_6_1_3/tests/TestMisc.class
+com/deutscheboerse/amqp/qpid_amqp_0_10_jms_6_1_3/utils/Utils.class
+com/deutscheboerse/amqp/qpid_amqp_0_10_jms_6_1_3/tests/TestTempQueues.class
+com/deutscheboerse/amqp/qpid_amqp_0_10_jms_6_1_3/utils/ConnectionBuilder.class
+com/deutscheboerse/amqp/qpid_amqp_0_10_jms_6_1_3/tests/TestSecurity.class
+com/deutscheboerse/amqp/qpid_amqp_0_10_jms_6_1_3/tests/TestExpiration.class
