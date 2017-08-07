@@ -1,4 +1,4 @@
-package com.deutscheboerse.amqp.qpid_amqp_0_10_jms_6_2_0.tests;
+package com.deutscheboerse.amqp.qpid_amqp_0_10_jms_7_0_0.tests;
 
 import com.deutscheboerse.amqp.tests.Queueing;
 import javax.jms.JMSException;
@@ -6,7 +6,7 @@ import javax.naming.NamingException;
 import org.apache.qpid.qmf2.common.QmfException;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import com.deutscheboerse.amqp.qpid_amqp_0_10_jms_6_2_0.utils.Utils;
+import com.deutscheboerse.amqp.qpid_amqp_0_10_jms_7_0_0.utils.Utils;
 
 public class TestQueueing extends Queueing {
 

@@ -1,4 +1,4 @@
-package com.deutscheboerse.amqp.qpid_amqp_0_10_jms_6_2_0.utils;
+package com.deutscheboerse.amqp.qpid_amqp_0_10_jms_7_0_0.utils;
 
 import bitronix.tm.resource.jms.PoolingConnectionFactory;
 import com.deutscheboerse.amqp.configuration.Settings;
@@ -6,12 +6,13 @@ import com.deutscheboerse.amqp.utils.AbstractConnectionBuilder;
 import com.deutscheboerse.amqp.utils.AutoCloseableConnection;
 import com.deutscheboerse.amqp.utils.AutoCloseableConnectionTransactionManager;
 import com.deutscheboerse.amqp.utils.AutoCloseableXAConnection;
-import java.util.Properties;
+
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
 import javax.jms.XAQueueConnectionFactory;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import java.util.Properties;
 
 public class ConnectionBuilder extends AbstractConnectionBuilder {
 
