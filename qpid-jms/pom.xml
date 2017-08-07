@@ -26,9 +26,10 @@
         <module>0.11.1</module>
         <!--<module>0.20.0</module>-->
         <!--<module>0.21.0</module>-->
-        <module>0.22.0</module>
+        <!--<module>0.22.0</module>-->
         <module>0.23.0</module>
         <module>0.24.0</module>
+        <module>0.25.0</module>
     </modules>
 
 </project>
