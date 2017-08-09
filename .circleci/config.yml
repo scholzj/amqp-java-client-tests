@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  test_1.37:
+  qpid_1.37:
     working_directory: ~/amqp-java-client-tests
     docker:
       - image: circleci/openjdk:8-jdk
@@ -38,7 +38,7 @@ jobs:
           path: test-reports/${BROKER_VERSION}
       - store_artifacts:
           path: test-reports/${BROKER_VERSION}
-  test_1.36:
+  qpid_1.36:
     working_directory: ~/amqp-java-client-tests
     docker:
       - image: circleci/openjdk:8-jdk
@@ -76,7 +76,7 @@ jobs:
           path: test-reports/${BROKER_VERSION}
       - store_artifacts:
           path: test-reports/${BROKER_VERSION}
-  test_1.35:
+  qpid_1.35:
     working_directory: ~/amqp-java-client-tests
     docker:
       - image: circleci/openjdk:8-jdk
@@ -114,7 +114,7 @@ jobs:
           path: test-reports/${BROKER_VERSION}
       - store_artifacts:
           path: test-reports/${BROKER_VERSION}
-  test_0.34:
+  qpid_0.34:
     working_directory: ~/amqp-java-client-tests
     docker:
       - image: circleci/openjdk:8-jdk
@@ -156,7 +156,7 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - test_1.37
-      - test_1.36
-      - test_1.35
-      - test_0.34
+      - qpid_1.37
+      - qpid_1.36
+      - qpid_1.35
+      - qpid_0.34
