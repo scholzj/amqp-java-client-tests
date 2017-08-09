@@ -4,16 +4,22 @@ jobs:
     working_directory: ~/amqp-java-client-tests
     docker:
       - image: circleci/openjdk:8-jdk
+        environment:
+          BROKER_VERSION: qpid-1.37
       - image: scholzj/java-client-tests:1.37
     steps:
       - checkout
-      - run: echo 127.0.0.1 amqp-host | sudo tee -a /etc/hosts
+      - run:
+          name: Modify /etc/hosts
+          command: echo 127.0.0.1 amqp-host | sudo tee -a /etc/hosts
       - run:
          name: Install Java Cryptographsy Extension
          command: unzip jce_policy-8.zip && sudo cp UnlimitedJCEPolicyJDK8/local_policy.jar ${JAVA_HOME}/jre/lib/security && sudo cp UnlimitedJCEPolicyJDK8/US_export_policy.jar ${JAVA_HOME}/jre/lib/security
       - restore_cache:
           key: amqp-java-client-tests
-      - run: mvn install -DskipTests
+      - run:
+          name: Install tests and their utilities
+          command: mvn install -DskipTests
       - run: mvn dependency:go-offline
       - save_cache:
           paths:
@@ -21,13 +27,17 @@ jobs:
           key: amqp-java-client-tests
       - run:
          name: Run tests
-         command: mvn -fae test -Dsurefire.suiteXmlFiles=$(pwd)/qpid-1.37.xml
-      - run: mkdir -p test-reports/qpid-1.37/junit
-      - run: find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} test-reports/qpid-1.37/junit \;
+         command: mvn -fae test -Dsurefire.suiteXmlFiles=$(pwd)/${BROKER_VERSION}.xml
+      - run:
+          name: Create dir for test reports
+          command: mkdir -p test-reports/${BROKER_VERSION}/junit
+      - run:
+          name: Copy test reports to the new directory
+          command: find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} test-reports/${BROKER_VERSION}/junit \;
       - store_test_results:
-          path: test-reports/qpid-1.37
+          path: test-reports/${BROKER_VERSION}
       - store_artifacts:
-          path: test-reports/qpid-1.37
+          path: test-reports/${BROKER_VERSION}
 workflows:
   version: 2
   build_and_test:
