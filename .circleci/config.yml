@@ -1,0 +1,33 @@
+version: 2
+jobs:
+  test_1.37:
+    working_directory: ~/amqp-java-client-tests
+    docker:
+      - image: circleci/openjdk:8-jdk
+      - image: scholzj/java-client-tests:1.37
+    steps:
+      - checkout
+      - run: echo 127.0.0.1 amqp-host | sudo tee -a /etc/hosts
+      - run:
+         name: Install Java Cryptographsy Extension
+         command: unzip jce_policy-8.zip && sudo cp UnlimitedJCEPolicyJDK8/local_policy.jar ${JAVA_HOME}/jre/lib/security && sudo cp UnlimitedJCEPolicyJDK8/US_export_policy.jar ${JAVA_HOME}/jre/lib/security
+      - restore_cache:
+          key: amqp-java-client-tests
+      - run: mvn dependency:go-offline
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: amqp-java-client-tests
+      - run: mvn install -DskipTests
+      - run:
+         name: Run tests
+         command: mvn -fae test -Dsurefire.suiteXmlFiles=$(pwd)/qpid-1.37.xml
+      - store_test_results:
+          path: .*/target/surefire-reports/
+      - store_artifacts:
+          path: .*/target/surefire-reports/
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - test_1.37
