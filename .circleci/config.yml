@@ -22,8 +22,8 @@ jobs:
       - run:
          name: Run tests
          command: mvn -fae test -Dsurefire.suiteXmlFiles=$(pwd)/qpid-1.37.xml
-      - run: mkdir -p test-reports/qpid-1.37
-      - run: find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} test-reports/qpid-1.37 ;
+      - run: mkdir -p test-reports/qpid-1.37/junit
+      - run: find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} test-reports/qpid-1.37/junit \;
       - store_test_results:
           path: test-reports/qpid-1.37
       - store_artifacts:
