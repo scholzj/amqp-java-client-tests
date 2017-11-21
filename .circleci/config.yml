@@ -1,5 +1,43 @@
 version: 2
 jobs:
+  qpid_1.38:
+    working_directory: ~/amqp-java-client-tests
+    docker:
+      - image: circleci/openjdk:8-jdk
+        environment:
+          BROKER_VERSION: qpid-1.38
+      - image: scholzj/java-client-tests:1.38
+    steps:
+      - checkout
+      - run:
+          name: Modify /etc/hosts
+          command: echo 127.0.0.1 amqp-host | sudo tee -a /etc/hosts
+      - run:
+         name: Install Java Cryptographsy Extension
+         command: unzip jce_policy-8.zip && sudo cp UnlimitedJCEPolicyJDK8/local_policy.jar ${JAVA_HOME}/jre/lib/security && sudo cp UnlimitedJCEPolicyJDK8/US_export_policy.jar ${JAVA_HOME}/jre/lib/security
+      - restore_cache:
+          key: amqp-java-client-tests
+      - run:
+          name: Install tests and their utilities
+          command: mvn install -DskipTests
+      - run: mvn dependency:go-offline
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: amqp-java-client-tests
+      - run:
+         name: Run tests
+         command: mvn -fae test -Dsurefire.suiteXmlFiles=$(pwd)/${BROKER_VERSION}.xml
+      - run:
+          name: Create dir for test reports
+          command: mkdir -p test-reports/${BROKER_VERSION}/junit
+      - run:
+          name: Copy test reports to the new directory
+          command: find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} test-reports/${BROKER_VERSION}/junit \;
+      - store_test_results:
+          path: test-reports/${BROKER_VERSION}
+      - store_artifacts:
+          path: test-reports/${BROKER_VERSION}
   qpid_1.37:
     working_directory: ~/amqp-java-client-tests
     docker:
@@ -114,44 +152,44 @@ jobs:
           path: test-reports/${BROKER_VERSION}
       - store_artifacts:
           path: test-reports/${BROKER_VERSION}
-  qpid_0.34:
-    working_directory: ~/amqp-java-client-tests
-    docker:
-      - image: circleci/openjdk:8-jdk
-        environment:
-          BROKER_VERSION: qpid-0.34
-      - image: scholzj/java-client-tests:0.34
-    steps:
-      - checkout
-      - run:
-          name: Modify /etc/hosts
-          command: echo 127.0.0.1 amqp-host | sudo tee -a /etc/hosts
-      - run:
-         name: Install Java Cryptographsy Extension
-         command: unzip jce_policy-8.zip && sudo cp UnlimitedJCEPolicyJDK8/local_policy.jar ${JAVA_HOME}/jre/lib/security && sudo cp UnlimitedJCEPolicyJDK8/US_export_policy.jar ${JAVA_HOME}/jre/lib/security
-      - restore_cache:
-          key: amqp-java-client-tests
-      - run:
-          name: Install tests and their utilities
-          command: mvn install -DskipTests
-      - run: mvn dependency:go-offline
-      - save_cache:
-          paths:
-            - ~/.m2
-          key: amqp-java-client-tests
-      - run:
-         name: Run tests
-         command: mvn -fae test -Dsurefire.suiteXmlFiles=$(pwd)/${BROKER_VERSION}.xml
-      - run:
-          name: Create dir for test reports
-          command: mkdir -p test-reports/${BROKER_VERSION}/junit
-      - run:
-          name: Copy test reports to the new directory
-          command: find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} test-reports/${BROKER_VERSION}/junit \;
-      - store_test_results:
-          path: test-reports/${BROKER_VERSION}
-      - store_artifacts:
-          path: test-reports/${BROKER_VERSION}
+#  qpid_0.34:
+#    working_directory: ~/amqp-java-client-tests
+#    docker:
+#      - image: circleci/openjdk:8-jdk
+#        environment:
+#          BROKER_VERSION: qpid-0.34
+#      - image: scholzj/java-client-tests:0.34
+#    steps:
+#      - checkout
+#      - run:
+#          name: Modify /etc/hosts
+#          command: echo 127.0.0.1 amqp-host | sudo tee -a /etc/hosts
+#      - run:
+#         name: Install Java Cryptographsy Extension
+#         command: unzip jce_policy-8.zip && sudo cp UnlimitedJCEPolicyJDK8/local_policy.jar ${JAVA_HOME}/jre/lib/security && sudo cp UnlimitedJCEPolicyJDK8/US_export_policy.jar ${JAVA_HOME}/jre/lib/security
+#      - restore_cache:
+#          key: amqp-java-client-tests
+#      - run:
+#          name: Install tests and their utilities
+#          command: mvn install -DskipTests
+#      - run: mvn dependency:go-offline
+#      - save_cache:
+#          paths:
+#            - ~/.m2
+#          key: amqp-java-client-tests
+#      - run:
+#         name: Run tests
+#         command: mvn -fae test -Dsurefire.suiteXmlFiles=$(pwd)/${BROKER_VERSION}.xml
+#      - run:
+#          name: Create dir for test reports
+#          command: mkdir -p test-reports/${BROKER_VERSION}/junit
+#      - run:
+#          name: Copy test reports to the new directory
+#          command: find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} test-reports/${BROKER_VERSION}/junit \;
+#      - store_test_results:
+#          path: test-reports/${BROKER_VERSION}
+#      - store_artifacts:
+#          path: test-reports/${BROKER_VERSION}
 workflows:
   version: 2
   build_and_test:
