@@ -42,7 +42,7 @@ public class TestDisposition extends Disposition {
         super.testModifiedFailedDisposition();
     }
 
-    @Test(groups = { "disableInQpid1.35", "disableInQpid1.36", "disableInQpid1.37", "disableInArtemis" })
+    @Test(groups = { "disableInQpid1.35", "disableInQpid1.36", "disableInQpid1.37", "disableInQpid1.38", "disableInArtemis" })
     @Override
     public void testModifiedUndeliverableDisposition() throws JMSException, NamingException, QmfException {
         super.testModifiedUndeliverableDisposition();

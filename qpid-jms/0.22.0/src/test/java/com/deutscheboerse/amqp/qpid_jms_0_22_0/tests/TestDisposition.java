@@ -1,13 +1,14 @@
 package com.deutscheboerse.amqp.qpid_jms_0_22_0.tests;
 
-import com.deutscheboerse.amqp.qpid_jms_0_22_0.utils.Utils;
-import com.deutscheboerse.amqp.tests.Disposition;
+import javax.jms.JMSException;
+import javax.naming.NamingException;
+
 import org.apache.qpid.qmf2.common.QmfException;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import javax.jms.JMSException;
-import javax.naming.NamingException;
+import com.deutscheboerse.amqp.qpid_jms_0_22_0.utils.Utils;
+import com.deutscheboerse.amqp.tests.Disposition;
 
 public class TestDisposition extends Disposition {
 
@@ -41,7 +42,7 @@ public class TestDisposition extends Disposition {
         super.testModifiedFailedDisposition();
     }
 
-    @Test(groups = { "disableInQpid1.35", "disableInQpid1.36", "disableInQpid1.37", "disableInArtemis" })
+    @Test(groups = { "disableInQpid1.35", "disableInQpid1.36", "disableInQpid1.37", "disableInQpid1.38", "disableInArtemis" })
     @Override
     public void testModifiedUndeliverableDisposition() throws JMSException, NamingException, QmfException {
         super.testModifiedUndeliverableDisposition();

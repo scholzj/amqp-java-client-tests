@@ -1,14 +1,15 @@
 package com.deutscheboerse.amqp.qpid_amqp_0_10_jms_6_1_0.tests;
 
-import com.deutscheboerse.amqp.qpid_amqp_0_10_jms_6_1_0.utils.Utils;
-import com.deutscheboerse.amqp.tests.SSL;
+import javax.jms.JMSException;
+import javax.naming.NamingException;
+
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import javax.jms.JMSException;
-import javax.naming.NamingException;
+import com.deutscheboerse.amqp.qpid_amqp_0_10_jms_6_1_0.utils.Utils;
+import com.deutscheboerse.amqp.tests.SSL;
 
 public class TestSSL extends SSL {
 
@@ -24,7 +25,7 @@ public class TestSSL extends SSL {
 
     This method should disabled for newer broker releases with TLSv1.1 and 1.2
      */
-    @BeforeMethod(groups = { "disableInQpid1.35", "disableInQpid1.36", "disableInQpid1.37" })
+    @BeforeMethod(groups = { "disableInQpid1.35", "disableInQpid1.36", "disableInQpid1.37", "disableInQpid1.38" })
     public void enabledTLSv1()
     {
         System.setProperty("qpid.security.tls.protocolWhiteList", "TLSv1, TLSv1.1, TLSv1.2");
@@ -37,7 +38,7 @@ public class TestSSL extends SSL {
 
     This method should disabled for newer broker releases with TLSv1.1 and 1.2
      */
-    @AfterMethod(groups = { "disableInQpid1.35", "disableInQpid1.36", "disableInQpid1.37" })
+    @AfterMethod(groups = { "disableInQpid1.35", "disableInQpid1.36", "disableInQpid1.37", "disableInQpid1.38" })
     public void disableTLSv1()
     {
         System.clearProperty("qpid.security.tls.protocolWhiteList");
