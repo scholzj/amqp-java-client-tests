@@ -1,11 +1,11 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
-<suite name="qpid-1.38" verbose="1" >
+<suite name="qpid-1.39" verbose="1" >
   <test name="amqp">
     <groups>
       <run>
         <exclude name="disableInMRG" />
-        <exclude name="disableInQpid1.38" />
+        <exclude name="disableInQpid1.39" />
       </run>
     </groups>
 
