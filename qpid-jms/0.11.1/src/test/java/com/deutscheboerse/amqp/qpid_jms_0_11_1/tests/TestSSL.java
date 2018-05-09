@@ -70,7 +70,7 @@ public class TestSSL extends SSL {
         super.testTLSv12();
     }
 
-    @Test(groups = { "disableInArtemis" })
+    @Test(enabled = false, groups = { "disableInArtemis" })
     @Override
     public void testCipherSuite3DES() throws JMSException, NamingException, InterruptedException {
         super.testCipherSuite3DES();
