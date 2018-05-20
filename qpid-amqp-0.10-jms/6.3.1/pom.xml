@@ -35,12 +35,4 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <repositories>
-    <repository>
-      <id>staging</id>
-      <url>https://repository.apache.org/content/repositories/orgapacheqpid-1140</url>
-    </repository>
-  </repositories>
-
 </project>
