@@ -38,6 +38,7 @@
         <!--<module>0.31.0</module>-->
         <module>0.32.0</module>
         <module>0.33.0</module>
+        <module>0.34.0</module>
     </modules>
 
 </project>
