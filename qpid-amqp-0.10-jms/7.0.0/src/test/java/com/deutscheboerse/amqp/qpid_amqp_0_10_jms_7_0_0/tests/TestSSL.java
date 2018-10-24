@@ -25,7 +25,7 @@ public class TestSSL extends SSL {
 
     This method should disabled for newer broker releases with TLSv1.1 and 1.2
      */
-    @BeforeMethod(groups = { "disableInQpid1.35", "disableInQpid1.36", "disableInQpid1.37", "disableInQpid1.38", "disableInQpid1.39" })
+    @BeforeMethod(groups = { "disableInQpid1.35", "disableInQpid1.36", "disableInQpid1.37", "disableInQpid1.38", "disableInQpid1.39", "disableInQpid1.40" })
     public void enabledTLSv1()
     {
         System.setProperty("qpid.security.tls.protocolWhiteList", "TLSv1, TLSv1.1, TLSv1.2");
@@ -38,7 +38,7 @@ public class TestSSL extends SSL {
 
     This method should disabled for newer broker releases with TLSv1.1 and 1.2
      */
-    @AfterMethod(groups = { "disableInQpid1.35", "disableInQpid1.36", "disableInQpid1.37", "disableInQpid1.38", "disableInQpid1.39" })
+    @AfterMethod(groups = { "disableInQpid1.35", "disableInQpid1.36", "disableInQpid1.37", "disableInQpid1.38", "disableInQpid1.39", "disableInQpid1.40" })
     public void disableTLSv1()
     {
         System.clearProperty("qpid.security.tls.protocolWhiteList");
