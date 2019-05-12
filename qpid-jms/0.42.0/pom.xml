@@ -11,13 +11,6 @@
 
     <artifactId>qpid-jms-0.42.0</artifactId>
 
-    <repositories>
-        <repository>
-            <id>staging</id>
-            <url>https://repository.apache.org/content/repositories/orgapacheqpid-1173</url>
-        </repository>
-    </repositories>
-
     <dependencies>
         <dependency>
             <groupId>org.apache.qpid</groupId>
