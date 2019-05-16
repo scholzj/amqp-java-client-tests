@@ -35,6 +35,7 @@
     <!--<module>6.3.1</module>-->
     <!--<module>6.3.2</module>-->
     <module>6.3.3</module>
+    <module>6.3.4</module>
     <module>7.0.0</module>
   </modules>
 </project>
