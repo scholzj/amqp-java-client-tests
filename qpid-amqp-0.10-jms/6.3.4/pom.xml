@@ -11,14 +11,6 @@
 
   <artifactId>qpid-amqp-0.10-jms-6.3.4</artifactId>
 
-  <repositories>
-    <repository>
-      <id>staging</id>
-      <url>
-        https://repository.apache.org/content/repositories/orgapacheqpid-1175</url>
-    </repository>
-  </repositories>
-
   <dependencies>
     <dependency>
       <groupId>org.apache.qpid</groupId>
