@@ -46,8 +46,9 @@
         <!--<module>0.39.0</module>-->
         <!--<module>0.40.0</module>-->
         <!--<module>0.41.0</module>-->
-        <module>0.42.0</module>
+        <!--<module>0.42.0</module>-->
         <module>0.43.0</module>
+        <module>0.44.0</module>
     </modules>
 
 </project>

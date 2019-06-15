@@ -1,6 +1,6 @@
-package com.deutscheboerse.amqp.qpid_jms_0_42_0.tests;
+package com.deutscheboerse.amqp.qpid_jms_0_44_0.tests;
 
-import com.deutscheboerse.amqp.qpid_jms_0_42_0.utils.Utils;
+import com.deutscheboerse.amqp.qpid_jms_0_44_0.utils.Utils;
 import com.deutscheboerse.amqp.tests.Disposition;
 
 import javax.jms.JMSException;
